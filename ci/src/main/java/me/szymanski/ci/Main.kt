@@ -26,6 +26,8 @@ object Main {
 
 object Const {
     const val SCRIPT_FAILED_CODE = 42
+    const val MAX_COMMAND_MINUTES = 30L
+    const val MAX_READING_STREAMS_AFTER_COMMAND_END_MS = 5000L
 
     // gradle.properties
     const val PROPERTIES_FILE = "gradle.properties"

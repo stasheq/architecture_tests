@@ -5,10 +5,11 @@ interface RestApi {
 }
 
 class RestApiImpl(
-    private val api: GitHubService
+    private val api: GitHubService,
+    private val restConfig: RestConfig
 ) : RestApi {
 
     override suspend fun getRepositories(): List<Repository> {
-        return api.getRepositoriesList("stasheq", 5)
+        return api.getRepositoriesList(restConfig.user, restConfig.limit)
     }
 }

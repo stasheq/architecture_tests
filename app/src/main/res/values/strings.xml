@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">LIstTest</string>
+    <string name="app_name_debug">Arch DEBUG</string>
+    <string name="app_name_release">Arch Tests</string>
 </resources>
