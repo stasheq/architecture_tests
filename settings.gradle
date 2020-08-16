@@ -1,3 +1,4 @@
 include ':logic'
 include ':app'
-rootProject.name = "LIstTest"
+include ':ci'
+rootProject.name = "Arch Tests"
