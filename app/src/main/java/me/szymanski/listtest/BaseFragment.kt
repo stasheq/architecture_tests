@@ -10,7 +10,7 @@ import me.szymanski.logic.Case
 import me.szymanski.logic.Logger
 import javax.inject.Inject
 
-open class BaseFragment<T : Case> : Fragment() {
+abstract class BaseFragment<T : Case> : Fragment() {
     private val model: GenericViewModel<T> by activityViewModels {
         requireActivity().injector.reposListViewModelFactory()
     }
@@ -20,12 +20,6 @@ open class BaseFragment<T : Case> : Fragment() {
     fun log(message: String, tag: String? = null, level: Logger.Level = Logger.Level.DEBUG) =
         logger.log(message, tag, level)
 
-    val case: T by lazy {
-        model.case
-    }
-
-    val Context.component get() = (applicationContext as Application).component
-
     fun <T> Observable<T>.onNext(onNext: (next: T) -> Unit) {
         subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -34,6 +28,15 @@ open class BaseFragment<T : Case> : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        linkCase(model.case)
         model.start()
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        inject((context.applicationContext as Application).component)
+    }
+
+    abstract fun linkCase(case: T)
+    abstract fun inject(component: ApplicationComponent)
 }

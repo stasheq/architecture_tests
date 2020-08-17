@@ -1,6 +1,5 @@
 package me.szymanski.logic.rest
 
-
 import dagger.Module
 import dagger.Provides
 import me.szymanski.logic.Logger

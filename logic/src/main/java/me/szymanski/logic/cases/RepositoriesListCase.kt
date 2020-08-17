@@ -1,6 +1,6 @@
 package me.szymanski.logic.cases
 
-import com.jakewharton.rxrelay3.PublishRelay
+import com.jakewharton.rxrelay3.BehaviorRelay
 import kotlinx.coroutines.launch
 import me.szymanski.logic.Case
 import me.szymanski.logic.rest.Repository
@@ -8,8 +8,8 @@ import me.szymanski.logic.rest.RestApi
 import javax.inject.Inject
 
 class RepositoriesListCase @Inject constructor(private val restApi: RestApi) : Case() {
-    val loading = PublishRelay.create<Boolean>()
-    val list = PublishRelay.create<List<Repository>>()
+    val loading: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
+    val list: BehaviorRelay<List<Repository>> = BehaviorRelay.create<List<Repository>>()
 
     override fun start() {
         loading.accept(true)
@@ -19,6 +19,5 @@ class RepositoriesListCase @Inject constructor(private val restApi: RestApi) : C
             loading.accept(false)
             list.accept(items)
         }
-
     }
 }
