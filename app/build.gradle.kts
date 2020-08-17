@@ -73,6 +73,7 @@ android {
 }
 
 dependencies {
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.4")
     implementation(project(":logic"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlinVersion}")
     implementation("androidx.core:core-ktx:1.3.1")
