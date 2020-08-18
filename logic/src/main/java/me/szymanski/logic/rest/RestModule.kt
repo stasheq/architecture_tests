@@ -14,10 +14,7 @@ open class RestModule {
 
     @Provides
     @Singleton
-    fun provideApiRepository(config: RestConfig, logger: Logger): RestApi =
-        RestApiImpl(getApiService(config, logger), config)
-
-    private fun getApiService(config: RestConfig, logger: Logger): GitHubService =
+    fun getApiService(config: RestConfig, logger: Logger): GitHubService =
         Retrofit.Builder()
             .baseUrl(config.baseUrl)
             .client(getHttpClient(logger).build())

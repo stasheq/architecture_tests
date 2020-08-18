@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.main_fragment.*
-import kotlinx.android.synthetic.main.list_item.view.*
-import me.szymanski.listtest.*
+import me.szymanski.listtest.ApplicationComponent
+import me.szymanski.listtest.BaseFragment
+import me.szymanski.listtest.R
 import me.szymanski.logic.cases.RepositoriesListCase
-import me.szymanski.logic.rest.Repository
+import me.szymanski.logic.cases.RepositoriesListCase.LoadingState.*
 
 class MainFragment : BaseFragment<RepositoriesListCase>() {
     private val adapter = ReposAdapter()
@@ -28,40 +29,13 @@ class MainFragment : BaseFragment<RepositoriesListCase>() {
     override fun inject(component: ApplicationComponent) = component.inject(this)
 
     override fun linkCase(case: RepositoriesListCase) {
-        case.loading.onNext { result -> reposSwipeRefresh.isRefreshing = result }
-        case.list.onNext { result -> adapter.setItems(result) }
-    }
-}
-
-class ReposAdapter : RecyclerView.Adapter<ReposAdapter.ViewHolder>() {
-    private val repositories = ArrayList<Repository>()
-    var onClick: ((id: String) -> Unit)? = null
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val repo = repositories[position]
-        holder.description.text = repo.description
-        holder.title.text = repo.name
-        holder.clickArea.setOnClickListener {
-            onClick?.invoke(repo.id)
+        case.loading.onNext { loadingState ->
+            reposSwipeRefresh.isRefreshing = loadingState == LOADING
+            reposRecycler.isVisible = loadingState == LOADING || loadingState == SUCCESS
+            reposEmptyText.isVisible = loadingState == EMPTY
+            reposErrorText.isVisible = loadingState == ERROR
         }
-    }
-
-    override fun getItemCount() = repositories.size
-
-    fun setItems(repositories: List<Repository>) {
-        this.repositories.clear()
-        this.repositories.addAll(repositories)
-        notifyDataSetChanged()
-    }
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val title: TextView = view.itemTitle
-        val description: TextView = view.itemDescription
-        val clickArea = view.itemClickArea
+        case.list.onNext { result -> adapter.setItems(result) }
+        reposSwipeRefresh.setOnRefreshListener { case.reload() }
     }
 }

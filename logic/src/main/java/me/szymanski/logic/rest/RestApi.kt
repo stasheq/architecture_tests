@@ -1,15 +1,19 @@
 package me.szymanski.logic.rest
 
-interface RestApi {
-    suspend fun getRepositories(): List<Repository>
-}
+import javax.inject.Inject
 
-class RestApiImpl(
-    private val api: GitHubService,
+class RestApi @Inject constructor(
+    private val service: GitHubService,
     private val restConfig: RestConfig
-) : RestApi {
+) {
 
-    override suspend fun getRepositories(): List<Repository> {
-        return api.getRepositoriesList(restConfig.user, restConfig.limit)
+    suspend fun getRepositories() = call { service.getRepositoriesList(restConfig.user, restConfig.limit) }
+
+    private suspend fun <T> call(request: suspend () -> T): T {
+        try {
+            return request()
+        } catch (e: Throwable) {
+            throw ApiError.UnknownError(e)
+        }
     }
 }
