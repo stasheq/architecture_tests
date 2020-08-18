@@ -12,6 +12,7 @@ import javax.inject.Inject
 class RepositoriesListCase @Inject constructor(private val restApi: RestApi) : Case() {
     val loading: BehaviorRelay<LoadingState> = BehaviorRelay.create<LoadingState>()
     val list: BehaviorRelay<List<Repository>> = BehaviorRelay.create<List<Repository>>()
+    private var lastJob: Job? = null
 
     fun reload() {
         lastJob?.cancel()
@@ -22,12 +23,11 @@ class RepositoriesListCase @Inject constructor(private val restApi: RestApi) : C
                 loading.accept(if (items.isEmpty()) LoadingState.EMPTY else LoadingState.SUCCESS)
                 list.accept(items)
             } catch (e: ApiError) {
+                list.accept(emptyList())
                 loading.accept(LoadingState.ERROR)
             }
         }
     }
-
-    private var lastJob: Job? = null
 
     override fun start() {
         reload()
