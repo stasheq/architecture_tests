@@ -24,6 +24,7 @@ class MainFragment : BaseFragment<RepositoriesListCase>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         reposRecycler.adapter = this.adapter
         reposRecycler.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun inject(component: ApplicationComponent) = component.inject(this)

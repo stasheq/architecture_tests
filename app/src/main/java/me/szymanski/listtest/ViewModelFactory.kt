@@ -15,6 +15,9 @@ class ViewModelFactory<VM : ViewModel> @Inject constructor(
 }
 
 class GenericViewModel<C : Case> @Inject constructor(val case: C) : ViewModel() {
-    fun start() = case.start()
+    init {
+        case.create()
+    }
+
     override fun onCleared() = case.destroy()
 }

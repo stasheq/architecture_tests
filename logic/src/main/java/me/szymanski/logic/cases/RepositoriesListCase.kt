@@ -29,7 +29,7 @@ class RepositoriesListCase @Inject constructor(private val restApi: RestApi) : C
         }
     }
 
-    override fun start() {
+    override fun create() {
         reload()
     }
 
