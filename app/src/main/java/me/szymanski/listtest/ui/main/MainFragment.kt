@@ -1,5 +1,6 @@
 package me.szymanski.listtest.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +9,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.main_fragment.*
-import me.szymanski.listtest.ApplicationComponent
-import me.szymanski.listtest.BaseFragment
-import me.szymanski.listtest.R
+import me.szymanski.listtest.*
 import me.szymanski.logic.cases.RepositoriesListCase
 import me.szymanski.logic.cases.RepositoriesListCase.LoadingState.*
 
@@ -24,10 +23,7 @@ class MainFragment : BaseFragment<RepositoriesListCase>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         reposRecycler.adapter = this.adapter
         reposRecycler.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        super.onViewCreated(view, savedInstanceState)
     }
-
-    override fun inject(component: ApplicationComponent) = component.inject(this)
 
     override fun linkCase(case: RepositoriesListCase) {
         case.loading.onNext { loadingState ->
@@ -39,4 +35,11 @@ class MainFragment : BaseFragment<RepositoriesListCase>() {
         case.list.onNext { result -> adapter.setItems(result) }
         reposSwipeRefresh.setOnRefreshListener { case.reload() }
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        component.inject(this)
+    }
+
+    override fun caseFactory() = component.reposListViewModelFactory()
 }

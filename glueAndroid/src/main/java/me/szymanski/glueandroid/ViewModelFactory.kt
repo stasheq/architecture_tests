@@ -1,11 +1,13 @@
-package me.szymanski.listtest
+package me.szymanski.glueandroid
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import me.szymanski.logic.Case
+import me.szymanski.gluekotlin.Case
 import javax.inject.Inject
 import javax.inject.Provider
+import javax.inject.Singleton
 
+@Singleton
 class ViewModelFactory<VM : ViewModel> @Inject constructor(
     private val viewModel: Provider<VM>
 ) : ViewModelProvider.Factory {

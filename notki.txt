@@ -1,0 +1,3 @@
+
+Zrobić ekran szczegółów.
+Zrobić ekran łączony dla tabletów.

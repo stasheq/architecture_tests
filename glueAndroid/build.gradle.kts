@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
@@ -10,55 +10,31 @@ android {
     buildToolsVersion("30.0.2")
 
     defaultConfig {
-        applicationId = "me.szymanski.listtest"
         minSdkVersion(21)
         targetSdkVersion(29)
-        versionCode = (project.properties["BUILD_NUMBER"] as String).toInt()
-        versionName = project.properties["VERSION_NAME"] as String
+        versionCode = 1
+        versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    signingConfigs {
-        maybeCreate("release").apply {
-            // command line signing config set on CI machine
-            storeFile = file(project.properties["SIGN_STORE_FILE"] as String)
-            storePassword = project.properties["SIGN_STORE_PASSWORD"] as String
-            keyAlias = project.properties["SIGN_KEY_ALIAS"] as String
-            keyPassword = project.properties["SIGN_KEY_PASSWORD"] as String
-        }
     }
 
     buildTypes {
         fun buildType(
             name: String,
             minify: Boolean = true,
-            proguard: Boolean = true,
-            commandLineSigning: Boolean = true,
-            appNameRes: String,
-            idSuffix: String? = null,
-            versionSuffix: String? = null
+            proguard: Boolean = true
         ) = maybeCreate(name).apply {
             isMinifyEnabled = minify
             if (proguard) proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            resValue("string", "app_name", appNameRes)
-            if (commandLineSigning) signingConfig = signingConfigs["release"]
-            if (idSuffix != null) applicationIdSuffix = ".$idSuffix"
-            if (versionSuffix != null) versionNameSuffix = " $versionSuffix"
         }
 
         buildType(
             name = "debug",
             minify = false,
-            proguard = false,
-            appNameRes = "@string/app_name_debug",
-            idSuffix = "debug",
-            versionSuffix = "debug",
-            commandLineSigning = false
+            proguard = false
         )
 
         buildType(
-            name = "release",
-            appNameRes = "@string/app_name_release"
+            name = "release"
         )
     }
 
@@ -73,18 +49,12 @@ android {
 }
 
 dependencies {
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.4")
-    implementation(project(":logic"))
-    implementation(project(":glueAndroid"))
     implementation(project(":glueKotlin"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlinVersion}")
     implementation("androidx.core:core-ktx:1.3.1")
     implementation("androidx.activity:activity-ktx:1.1.0")
     implementation("androidx.fragment:fragment-ktx:1.2.5")
     implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.recyclerview:recyclerview:1.1.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0")

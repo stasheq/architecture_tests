@@ -1,3 +1,5 @@
+include ':glueAndroid'
+include ':glueKotlin'
 include ':logic'
 include ':app'
 include ':ci'

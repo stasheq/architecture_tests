@@ -14,5 +14,5 @@ class Application : android.app.Application() {
     }
 }
 
-val Activity.injector get() = (application as Application).component
-val Fragment.injector get() = requireActivity().injector
+val Activity.component get() = (application as Application).component
+val Fragment.component get() = requireActivity().component
