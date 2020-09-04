@@ -2,7 +2,6 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
-    id("kotlin-kapt")
 }
 
 android {
@@ -61,7 +60,6 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJavaVersion}")
     implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelayVersion}")
     implementation("com.google.dagger:dagger:${Deps.daggerVersion}")
-    kapt("com.google.dagger:dagger-compiler:${Deps.daggerVersion}")
     testImplementation("junit:junit:4.13")
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
