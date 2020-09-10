@@ -6,13 +6,13 @@ plugins {
 
 dependencies {
     implementation(project(":glueKotlin"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlinVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Deps.coroutinesVersion}")
-    implementation("com.squareup.retrofit2:retrofit:${Deps.retrofitVersion}")
-    implementation("com.squareup.retrofit2:converter-gson:${Deps.retrofitVersion}")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.8.1")
-    implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJavaVersion}")
-    implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelayVersion}")
-    implementation("com.google.dagger:dagger:${Deps.daggerVersion}")
-    kapt("com.google.dagger:dagger-compiler:${Deps.daggerVersion}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Deps.coroutines}")
+    implementation("com.squareup.retrofit2:retrofit:${Deps.retrofit}")
+    implementation("com.squareup.retrofit2:converter-gson:${Deps.retrofit}")
+    implementation("com.squareup.okhttp3:logging-interceptor:${Deps.okhttpLoggingInterceptor}")
+    implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJava}")
+    implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelay}")
+    implementation("com.google.dagger:dagger:${Deps.dagger}")
+    kapt("com.google.dagger:dagger-compiler:${Deps.dagger}")
 }

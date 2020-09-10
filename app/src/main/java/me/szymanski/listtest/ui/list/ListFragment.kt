@@ -1,4 +1,4 @@
-package me.szymanski.listtest.ui.main
+package me.szymanski.listtest.ui.list
 
 import android.content.Context
 import android.os.Bundle
@@ -13,8 +13,8 @@ import me.szymanski.listtest.*
 import me.szymanski.logic.cases.RepositoriesListCase
 import me.szymanski.logic.cases.RepositoriesListCase.LoadingState.*
 
-class MainFragment : BaseFragment<RepositoriesListCase>() {
-    private val adapter = ReposAdapter()
+class ListFragment : BaseFragment<RepositoriesListCase>() {
+    private val adapter = ListAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.main_fragment, container, false)

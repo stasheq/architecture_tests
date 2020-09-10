@@ -8,6 +8,6 @@ application {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlinVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Deps.coroutinesVersion}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Deps.coroutines}")
 }

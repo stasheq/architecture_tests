@@ -48,18 +48,15 @@ android {
 }
 
 dependencies {
-    implementation(project(":glueKotlin"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
     implementation("androidx.core:core-ktx:${Deps.androidKtx}")
-    implementation("androidx.activity:activity-ktx:${Deps.activityKtx}")
-    implementation("androidx.fragment:fragment-ktx:${Deps.fragmentKtx}")
-    implementation("androidx.appcompat:appcompat:${Deps.androidAppCompat}")
-    implementation("androidx.lifecycle:lifecycle-extensions:${Deps.androidLifecycle}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Deps.viewModelKtx}")
     implementation("io.reactivex.rxjava3:rxandroid:${Deps.rxAndroid}")
     implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJava}")
     implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelay}")
-    implementation("com.google.dagger:dagger:${Deps.dagger}")
+    implementation("com.jakewharton.rxbinding4:rxbinding-core:${Deps.rxBinding}")
+    implementation("com.jakewharton.rxbinding4:rxbinding-material:${Deps.rxBinding}")
+    implementation("com.jakewharton.rxbinding4:rxbinding-swiperefreshlayout:${Deps.rxBinding}")
+    implementation("com.jakewharton.rxbinding4:rxbinding-recyclerview:${Deps.rxBinding}")
     testImplementation("junit:junit:${Deps.junit}")
     androidTestImplementation("androidx.test.ext:junit:${Deps.junitAndroid}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${Deps.espresso}")

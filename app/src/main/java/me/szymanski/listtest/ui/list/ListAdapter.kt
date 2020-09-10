@@ -1,4 +1,4 @@
-package me.szymanski.listtest.ui.main
+package me.szymanski.listtest.ui.list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.list_item.view.*
 import me.szymanski.listtest.R
 import me.szymanski.logic.rest.Repository
 
-class ReposAdapter : RecyclerView.Adapter<ReposAdapter.ViewHolder>() {
+class ListAdapter : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
     private val repositories = ArrayList<Repository>()
     var onClick: ((id: String) -> Unit)? = null
 

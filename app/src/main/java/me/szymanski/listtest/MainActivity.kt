@@ -2,7 +2,7 @@ package me.szymanski.listtest
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import me.szymanski.listtest.ui.main.MainFragment
+import me.szymanski.listtest.ui.list.ListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment())
+                .replace(R.id.container, ListFragment())
                 .commitNow()
         }
     }

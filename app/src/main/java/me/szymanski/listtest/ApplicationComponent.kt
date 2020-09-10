@@ -5,7 +5,7 @@ import dagger.BindsInstance
 import dagger.Component
 import me.szymanski.glueandroid.GenericViewModel
 import me.szymanski.glueandroid.ViewModelFactory
-import me.szymanski.listtest.ui.main.MainFragment
+import me.szymanski.listtest.ui.list.ListFragment
 import me.szymanski.logic.cases.RepositoriesListCase
 import me.szymanski.logic.rest.RestModule
 import javax.inject.Singleton
@@ -24,5 +24,5 @@ interface ApplicationComponent {
 
     fun reposListViewModelFactory(): ViewModelFactory<GenericViewModel<RepositoriesListCase>>
 
-    fun inject(mainFragment: MainFragment)
+    fun inject(mainFragment: ListFragment)
 }

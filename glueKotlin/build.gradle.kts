@@ -4,5 +4,5 @@ plugins {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlinVersion}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
 }

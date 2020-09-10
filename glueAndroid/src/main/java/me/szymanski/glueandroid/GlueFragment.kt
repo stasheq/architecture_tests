@@ -13,7 +13,7 @@ abstract class GlueFragment<T : Case> : Fragment() {
     private var disposables = CompositeDisposable()
     lateinit var case: Case
 
-    fun <T> Observable<T>.onNext(onNext: (next: T) -> Unit) = disposables.add(
+    protected fun <T> Observable<T>.onNext(onNext: (next: T) -> Unit) = disposables.add(
         subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ next -> onNext(next) }, { error -> throw error })
