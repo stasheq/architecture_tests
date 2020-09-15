@@ -6,34 +6,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.main_fragment.*
+import kotlinx.android.synthetic.main.main_fragment.view.*
 import me.szymanski.listtest.*
 import me.szymanski.logic.cases.RepositoriesListCase
 import me.szymanski.logic.cases.RepositoriesListCase.LoadingState.*
+import me.szymanski.widgets.ListItem
+import me.szymanski.widgets.ListWidget
 
 class ListFragment : BaseFragment<RepositoriesListCase>() {
-    private val adapter = ListAdapter()
+    lateinit var listWidget: ListWidget
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        reposRecycler.adapter = this.adapter
-        reposRecycler.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        val view = inflater.inflate(R.layout.main_fragment, container, false)
+        listWidget = ListWidget(requireContext(), view.reposMainFrame)
+        view.reposMainFrame.addView(listWidget.root)
+        return view
     }
 
     override fun linkCase(case: RepositoriesListCase) {
         case.loading.onNext { loadingState ->
-            reposSwipeRefresh.isRefreshing = loadingState == LOADING
-            reposRecycler.isVisible = loadingState == LOADING || loadingState == SUCCESS
+            //TODO reposSwipeRefresh.isRefreshing = loadingState == LOADING
+            listWidget.root.isVisible = loadingState == LOADING || loadingState == SUCCESS
             reposEmptyText.isVisible = loadingState == EMPTY
             reposErrorText.isVisible = loadingState == ERROR
         }
-        case.list.onNext { result -> adapter.setItems(result) }
-        reposSwipeRefresh.setOnRefreshListener { case.reload() }
+        case.list.onNext { result -> listWidget.items = result.map { ListItem(it.name, it.description) } }
+        //TODO reposSwipeRefresh.setOnRefreshListener { case.reload() }
     }
 
     override fun onAttach(context: Context) {
