@@ -23,5 +23,5 @@ class Application : android.app.Application() {
 
 val Activity.component get() = (application as Application).component
 val Fragment.component get() = requireActivity().component
-fun Context.log(msg: String) = (applicationContext as? Application)?.logger?.log(msg, "Arch")
+fun Context.log(msg: String) = (applicationContext as? Application)?.logger?.log(msg)
 fun Fragment.log(msg: String) = context?.log(msg)

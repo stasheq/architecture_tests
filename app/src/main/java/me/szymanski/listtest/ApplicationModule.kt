@@ -22,7 +22,7 @@ class ApplicationModule {
                 Logger.Level.WARN -> Log.WARN
                 Logger.Level.ERROR -> Log.ERROR
             }
-            Log.println(priority, tag ?: "Arch", message)
+            Log.println(priority, tag ?: "ArchTest", message)
         }
     }
 }
