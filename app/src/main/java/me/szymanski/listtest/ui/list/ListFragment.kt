@@ -15,7 +15,7 @@ import me.szymanski.widgets.ListItem
 import me.szymanski.widgets.ListWidget
 
 class ListFragment : BaseFragment<RepositoriesListCase>() {
-    lateinit var listWidget: ListWidget
+    private lateinit var listWidget: ListWidget
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.main_fragment, container, false)
@@ -26,13 +26,14 @@ class ListFragment : BaseFragment<RepositoriesListCase>() {
 
     override fun linkCase(case: RepositoriesListCase) {
         case.loading.onNext { loadingState ->
-            //TODO reposSwipeRefresh.isRefreshing = loadingState == LOADING
+            listWidget.refreshing = loadingState == LOADING
             listWidget.root.isVisible = loadingState == LOADING || loadingState == SUCCESS
             reposEmptyText.isVisible = loadingState == EMPTY
             reposErrorText.isVisible = loadingState == ERROR
         }
         case.list.onNext { result -> listWidget.items = result.map { ListItem(it.name, it.description) } }
-        //TODO reposSwipeRefresh.setOnRefreshListener { case.reload() }
+
+        listWidget.refreshAction.onNext { case.reload() }
     }
 
     override fun onAttach(context: Context) {

@@ -5,7 +5,6 @@ import androidx.fragment.app.viewModels
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import me.szymanski.gluekotlin.Case
 
 abstract class GlueFragment<T : Case> : Fragment() {
@@ -14,7 +13,7 @@ abstract class GlueFragment<T : Case> : Fragment() {
     lateinit var case: Case
 
     protected fun <T> Observable<T>.onNext(onNext: (next: T) -> Unit) = disposables.add(
-        subscribeOn(Schedulers.newThread())
+        subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ next -> onNext(next) }, { error -> throw error })
     )
