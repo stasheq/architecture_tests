@@ -1,3 +1,4 @@
 przesunąć widoki do widgets
+może nie trzeba robić oddzielnych fragmentów tylko jeden i do tego View i linkCase, żeby ich nie wypisywać w inject
 Zrobić ekran szczegółów.
 Zrobić ekran łączony dla tabletów.

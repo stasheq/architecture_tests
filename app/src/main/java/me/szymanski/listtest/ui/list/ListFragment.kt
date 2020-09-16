@@ -1,6 +1,5 @@
 package me.szymanski.listtest.ui.list
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,13 +31,7 @@ class ListFragment : BaseFragment<RepositoriesListCase>() {
             reposErrorText.isVisible = loadingState == ERROR
         }
         case.list.onNext { result -> listWidget.items = result.map { ListItem(it.name, it.description) } }
-
         listWidget.refreshAction.onNext { case.reload() }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        component.inject(this)
     }
 
     override fun caseFactory() = component.reposListViewModelFactory()
