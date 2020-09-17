@@ -1,26 +1,36 @@
 package me.szymanski.glueandroid
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.gluekotlin.Case
 
-abstract class GlueFragment<T : Case> : Fragment(), LifecycleGlueView<T> {
-    private val model: GenericViewModel<T> by viewModels { caseFactory() }
+abstract class GlueFragment<C : Case, V : ViewWidget> : Fragment(), LifecycleGlueView<C, V> {
+    private val model: GenericViewModel<C> by viewModels { caseFactory() }
     override var disposableContainer = CompositeDisposable()
-    internal lateinit var case: T
+    internal lateinit var logic: C
+    private lateinit var view: V
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        view = createView(inflater.context, container)
+        return view.root
+    }
 
     override fun onStart() {
         super.onStart()
         disposableContainer.dispose()
         disposableContainer = CompositeDisposable()
-        case = model.case
+        logic = model.case
         when (val parent = parentFragment ?: activity) {
-            is GlueFragment<*> -> case.parent = parent.case
-            is GlueActivity<*> -> case.parent = parent.case
-            else -> case.parent = null
+            is GlueFragment<*, *> -> logic.parent = parent.logic
+            is GlueActivity<*, *> -> logic.parent = parent.logic
+            else -> logic.parent = null
         }
-        linkCase(case)
+        linkViewAndLogic(view, logic)
     }
 
     override fun onStop() {

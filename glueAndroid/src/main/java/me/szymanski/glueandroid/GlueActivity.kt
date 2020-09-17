@@ -1,27 +1,38 @@
 package me.szymanski.glueandroid
 
+import android.os.Bundle
+import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.gluekotlin.Case
 
-abstract class GlueActivity<T : Case> : AppCompatActivity(), LifecycleGlueView<T> {
-    private val model: GenericViewModel<T> by viewModels { caseFactory() }
+abstract class GlueActivity<C : Case, V : ViewWidget> : AppCompatActivity(), LifecycleGlueView<C, V> {
+    private val model: GenericViewModel<C> by viewModels { caseFactory() }
     override var disposableContainer = CompositeDisposable()
-    internal lateinit var case: T
+    internal lateinit var logic: C
+    private lateinit var view: V
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        view = createView(this, null)
+        setContentView(
+            view.root,
+            ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        )
+        logic = model.case
+        logic.parent = null
+    }
 
     override fun onStart() {
         super.onStart()
         disposableContainer.dispose()
         disposableContainer = CompositeDisposable()
-        case = model.case
-        case.parent = null
-        linkCase(case)
+        linkViewAndLogic(view, logic)
     }
 
     override fun onStop() {
         disposableContainer.dispose()
         super.onStop()
     }
-
 }
