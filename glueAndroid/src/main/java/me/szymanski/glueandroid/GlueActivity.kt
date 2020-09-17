@@ -1,11 +1,11 @@
 package me.szymanski.glueandroid
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.gluekotlin.Case
 
-abstract class GlueFragment<T : Case> : Fragment(), LifecycleGlueView<T> {
+abstract class GlueActivity<T : Case> : AppCompatActivity(), LifecycleGlueView<T> {
     private val model: GenericViewModel<T> by viewModels { caseFactory() }
     override var disposableContainer = CompositeDisposable()
     internal lateinit var case: T
@@ -15,11 +15,7 @@ abstract class GlueFragment<T : Case> : Fragment(), LifecycleGlueView<T> {
         disposableContainer.dispose()
         disposableContainer = CompositeDisposable()
         case = model.case
-        when (val parent = parentFragment ?: activity) {
-            is GlueFragment<*> -> case.parent = parent.case
-            is GlueActivity<*> -> case.parent = parent.case
-            else -> case.parent = null
-        }
+        case.parent = null
         linkCase(case)
     }
 
@@ -27,4 +23,5 @@ abstract class GlueFragment<T : Case> : Fragment(), LifecycleGlueView<T> {
         disposableContainer.dispose()
         super.onStop()
     }
+
 }
