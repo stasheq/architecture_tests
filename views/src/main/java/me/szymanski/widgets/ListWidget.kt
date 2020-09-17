@@ -12,7 +12,11 @@ import com.example.widgets.R
 import com.jakewharton.rxbinding4.swiperefreshlayout.refreshes
 import kotlinx.android.synthetic.main.list.view.*
 import kotlinx.android.synthetic.main.list_item.view.*
+import me.szymanski.glueandroid.ViewWidget
+import me.szymanski.refreshing
 import kotlin.collections.ArrayList
+import me.szymanski.getValue
+import me.szymanski.setValue
 
 class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     var items: List<ListItem> = ArrayList()

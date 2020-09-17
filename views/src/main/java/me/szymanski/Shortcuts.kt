@@ -1,4 +1,4 @@
-package me.szymanski.widgets
+package me.szymanski
 
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
