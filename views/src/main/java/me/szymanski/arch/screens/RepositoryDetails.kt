@@ -28,4 +28,5 @@ class RepositoryDetails(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     var errorText by errorWidget::errorText
     var loading by loadingView::isVisible
     var title by titleView::textValue
+    var detailsVisible by titleView::isVisible
 }

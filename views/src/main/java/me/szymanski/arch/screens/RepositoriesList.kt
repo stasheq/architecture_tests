@@ -32,4 +32,5 @@ class RepositoriesList(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     var errorText by errorWidget::errorText
     var items by listWidget::items
     val refreshAction = listWidget.refreshAction
+    val selectAction = listWidget.selectAction
 }
