@@ -14,6 +14,6 @@ interface GitHubService {
     @GET("repos/{user}/{repo}")
     suspend fun getRepositoryDetails(
         @Path("user") user: String,
-        @Query("repo") repo: String
+        @Path("repo") repo: String
     ): RepositoryDetails
 }

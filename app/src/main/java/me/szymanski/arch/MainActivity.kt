@@ -16,13 +16,18 @@ class MainActivity : GlueActivity<MainCase, MainFrame>() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .add(mainFrame.frameId, ListFragment())
+                .replace(mainFrame.frameId, ListFragment())
                 .commitNow()
         }
     }
 
     override fun linkViewAndLogic(view: MainFrame, case: MainCase) {
-        case.selectedRepoName.onNext { log(it) }
+        case.selectedRepoName.onNext {
+            val transaction = supportFragmentManager.beginTransaction()
+                .replace(mainFrame.frameId, DetailsFragment())
+            if (!view.isPreviewVisible) transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
     override fun caseFactory(): ViewModelFactory<GenericViewModel<MainCase>> = component.mainVMFactory()
