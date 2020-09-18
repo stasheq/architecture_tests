@@ -3,6 +3,7 @@ package me.szymanski.arch
 import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import me.szymanski.arch.glue.GlueActivity
 import me.szymanski.arch.logic.cases.MainCase
 import me.szymanski.arch.screens.MainFrame
@@ -15,19 +16,22 @@ class MainActivity : GlueActivity<MainCase, MainFrame>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(mainFrame.frameId, ListFragment())
-                .commitNow()
+            changeFragment(mainFrame.frameId, ListFragment())
         }
     }
 
     override fun linkViewAndLogic(view: MainFrame, case: MainCase) {
         case.selectedRepoName.onNext {
-            val transaction = supportFragmentManager.beginTransaction()
-                .replace(mainFrame.frameId, DetailsFragment())
-            if (!view.isPreviewVisible) transaction.addToBackStack(null)
-            transaction.commit()
+            changeFragment(mainFrame.frameId, DetailsFragment(), true, "DetailsFragment")
         }
+    }
+
+    private fun changeFragment(frameId: Int, fragment: Fragment, addToBackStack: Boolean = false, tag: String? = null) {
+        if (tag != null && supportFragmentManager.findFragmentByTag(tag) != null) return
+        val transaction = supportFragmentManager.beginTransaction()
+            .replace(frameId, fragment, tag)
+        if (addToBackStack) transaction.addToBackStack(null)
+        transaction.commit()
     }
 
     override fun caseFactory(): ViewModelFactory<GenericViewModel<MainCase>> = component.mainVMFactory()
