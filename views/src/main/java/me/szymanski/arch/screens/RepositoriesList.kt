@@ -10,15 +10,17 @@ import me.szymanski.arch.ViewWidget
 import me.szymanski.arch.widgets.ListWidget
 import me.szymanski.arch.getValue
 import me.szymanski.arch.setValue
+import me.szymanski.arch.textValue
+import me.szymanski.arch.widgets.ErrorWidget
 
 class RepositoriesList(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
 
-    private val errorView: TextView
+    private val errorWidget: ErrorWidget
     private val emptyView: TextView
     private val listWidget: ListWidget
 
     override val root = inflate(ctx, R.layout.screen_repos_list, parent).apply {
-        errorView = reposErrorText
+        errorWidget = ErrorWidget(ctx, reposMainFrame)
         emptyView = reposEmptyText
         listWidget = ListWidget(ctx, reposMainFrame)
         reposMainFrame.addView(listWidget.root)
@@ -26,8 +28,8 @@ class RepositoriesList(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
 
     var refreshing by listWidget::refreshing
     var listVisible by listWidget.root::isVisible
-    var emptyTextVisible by emptyView::isVisible
-    var errorTextVisible by errorView::isVisible
+    var emptyText by emptyView::textValue
+    var errorText by errorWidget::errorText
     var items by listWidget::items
     val refreshAction = listWidget.refreshAction
 }

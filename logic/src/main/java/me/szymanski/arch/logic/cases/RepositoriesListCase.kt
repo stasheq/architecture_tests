@@ -29,8 +29,16 @@ class RepositoriesListCase @Inject constructor(private val restApi: RestApi) : B
         }
     }
 
+    fun selectItem(repoName: String) {
+        (parent as? MainCase)?.selectedRepoName?.accept(repoName)
+    }
+
     override fun create() {
         reload()
+    }
+
+    override fun destroy() {
+        lastJob?.cancel()
     }
 
     enum class LoadingState { LOADING, EMPTY, ERROR, SUCCESS }

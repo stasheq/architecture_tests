@@ -10,4 +10,10 @@ interface GitHubService {
         @Path("user") user: String,
         @Query("per_page") limit: Int
     ): List<Repository>
+
+    @GET("repos/{user}/{repo}")
+    suspend fun getRepositoryDetails(
+        @Path("user") user: String,
+        @Query("repo") repo: String
+    ): RepositoryDetails
 }

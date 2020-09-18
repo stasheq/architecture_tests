@@ -9,6 +9,8 @@ class RestApi @Inject constructor(
 
     suspend fun getRepositories() = call { service.getRepositoriesList(restConfig.user, restConfig.limit) }
 
+    suspend fun getRepository(name: String) = call { service.getRepositoryDetails(restConfig.user, name) }
+
     private suspend fun <T> call(request: suspend () -> T): T {
         try {
             return request()

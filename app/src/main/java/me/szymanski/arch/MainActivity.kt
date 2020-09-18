@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
 import me.szymanski.arch.glue.GlueActivity
-import me.szymanski.arch.ui.list.ListFragment
 import me.szymanski.arch.logic.cases.MainCase
 import me.szymanski.arch.screens.MainFrame
 import me.szymanski.arch.glue.GenericViewModel
@@ -22,10 +21,10 @@ class MainActivity : GlueActivity<MainCase, MainFrame>() {
         }
     }
 
-    override fun linkViewAndLogic(view: MainFrame, case: MainCase) = Unit
-    override fun caseFactory(): ViewModelFactory<GenericViewModel<MainCase>> = component.mainVMFactory()
-    override fun createView(ctx: Context, parent: ViewGroup?): MainFrame {
-        mainFrame = MainFrame(ctx)
-        return mainFrame
+    override fun linkViewAndLogic(view: MainFrame, case: MainCase) {
+        case.selectedRepoName.onNext { log(it) }
     }
+
+    override fun caseFactory(): ViewModelFactory<GenericViewModel<MainCase>> = component.mainVMFactory()
+    override fun createView(ctx: Context, parent: ViewGroup?) = MainFrame(ctx).apply { mainFrame = this }
 }

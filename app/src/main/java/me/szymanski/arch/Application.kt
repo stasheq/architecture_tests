@@ -3,6 +3,8 @@ package me.szymanski.arch
 import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.Fragment
+import me.szymanski.arch.di.ApplicationComponent
+import me.szymanski.arch.di.DaggerApplicationComponent
 import me.szymanski.arch.logic.Logger
 import javax.inject.Inject
 

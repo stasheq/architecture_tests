@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.widgets.R
 import com.jakewharton.rxbinding4.swiperefreshlayout.refreshes
+import com.jakewharton.rxrelay3.BehaviorRelay
 import kotlinx.android.synthetic.main.list.view.*
 import kotlinx.android.synthetic.main.list_item.view.*
 import me.szymanski.arch.ViewWidget
@@ -33,10 +34,9 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     }
     var refreshing: Boolean by refreshLayout::refreshing
     val refreshAction = refreshLayout.refreshes()
+    val selectAction: BehaviorRelay<String> = BehaviorRelay.create<String>()
 
     inner class ListAdapter : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
-        var onClick: ((id: ListItem) -> Unit)? = null
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
             return ViewHolder(view)
@@ -46,9 +46,7 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
             val item = items[position]
             holder.description.text = item.description
             holder.title.text = item.text
-            holder.clickArea.setOnClickListener {
-                onClick?.invoke(item)
-            }
+            holder.clickArea.setOnClickListener { selectAction.accept(item.id) }
         }
 
         override fun getItemCount() = items.size
@@ -61,4 +59,4 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     }
 }
 
-data class ListItem(val text: String?, val description: String?)
+data class ListItem(val id: String, val text: String?, val description: String?)

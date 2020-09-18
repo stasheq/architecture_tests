@@ -1,4 +1,4 @@
-package me.szymanski.arch
+package me.szymanski.arch.di
 
 import android.util.Log
 import dagger.Module
