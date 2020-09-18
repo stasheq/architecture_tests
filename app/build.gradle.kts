@@ -10,22 +10,12 @@ android {
     buildToolsVersion("30.0.2")
 
     defaultConfig {
-        applicationId = "me.szymanski.listtest"
+        applicationId = "me.szymanski.arch"
         minSdkVersion(21)
         targetSdkVersion(29)
-        versionCode = (project.properties["BUILD_NUMBER"] as String).toInt()
-        versionName = project.properties["VERSION_NAME"] as String
+        versionCode = 1
+        versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    signingConfigs {
-        maybeCreate("release").apply {
-            // command line signing config set on CI machine
-            storeFile = file(project.properties["SIGN_STORE_FILE"] as String)
-            storePassword = project.properties["SIGN_STORE_PASSWORD"] as String
-            keyAlias = project.properties["SIGN_KEY_ALIAS"] as String
-            keyPassword = project.properties["SIGN_KEY_PASSWORD"] as String
-        }
     }
 
     buildTypes {
@@ -33,7 +23,6 @@ android {
             name: String,
             minify: Boolean = true,
             proguard: Boolean = true,
-            commandLineSigning: Boolean = true,
             appNameRes: String,
             idSuffix: String? = null,
             versionSuffix: String? = null
@@ -41,7 +30,6 @@ android {
             isMinifyEnabled = minify
             if (proguard) proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             resValue("string", "app_name", appNameRes)
-            if (commandLineSigning) signingConfig = signingConfigs["release"]
             if (idSuffix != null) applicationIdSuffix = ".$idSuffix"
             if (versionSuffix != null) versionNameSuffix = " $versionSuffix"
         }
@@ -52,8 +40,7 @@ android {
             proguard = false,
             appNameRes = "@string/app_name_debug",
             idSuffix = "debug",
-            versionSuffix = "debug",
-            commandLineSigning = false
+            versionSuffix = "debug"
         )
 
         buildType(
@@ -76,8 +63,6 @@ dependencies {
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.4")
     implementation(project(":logic"))
     implementation(project(":views"))
-    implementation(project(":glueAndroid"))
-    implementation(project(":glueKotlin"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
     implementation("androidx.core:core-ktx:${Deps.androidKtx}")
     implementation("androidx.activity:activity-ktx:${Deps.activityKtx}")

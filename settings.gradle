@@ -1,7 +1,4 @@
 include ':views'
-include ':glueAndroid'
-include ':glueKotlin'
 include ':logic'
 include ':app'
-include ':ci'
 rootProject.name = "Arch Tests"
