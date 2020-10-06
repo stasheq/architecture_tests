@@ -9,4 +9,6 @@ open class BaseCase : Case {
     override var parent: Case? = null
     override fun create() = Unit
     override fun destroy() = Unit
+    override fun onSaveState(): String? = null
+    override fun onRestoreState(state: String?) = Unit
 }

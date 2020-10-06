@@ -1,39 +1,33 @@
 package me.szymanski.arch
 
 import android.content.Context
-import android.os.Bundle
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import me.szymanski.arch.glue.GlueActivity
 import me.szymanski.arch.logic.cases.MainCase
-import me.szymanski.arch.screens.MainFrame
+import me.szymanski.arch.widgets.FrameDouble
 import me.szymanski.arch.glue.GenericViewModel
 import me.szymanski.arch.glue.ViewModelFactory
+import me.szymanski.arch.widgets.FrameSingle
 
-class MainActivity : GlueActivity<MainCase, MainFrame>() {
-    private lateinit var mainFrame: MainFrame
+class MainActivity : GlueActivity<MainCase, ViewWidget>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            changeFragment(mainFrame.frameId, ListFragment())
-        }
-    }
-
-    override fun linkViewAndLogic(view: MainFrame, case: MainCase) {
+    override fun linkViewAndLogic(view: ViewWidget, case: MainCase) {
         case.selectedRepoName.onNext {
-            changeFragment(mainFrame.frameId, DetailsFragment(), true, "DetailsFragment")
+            when (view) {
+                is FrameSingle -> changeFragment(view.frame.id, DetailsFragment(), true)
+                is FrameDouble -> changeFragment((view.rightColumn.id), DetailsFragment())
+            }
         }
     }
 
-    private fun changeFragment(frameId: Int, fragment: Fragment, addToBackStack: Boolean = false, tag: String? = null) {
-        if (tag != null && supportFragmentManager.findFragmentByTag(tag) != null) return
-        val transaction = supportFragmentManager.beginTransaction()
-            .replace(frameId, fragment, tag)
-        if (addToBackStack) transaction.addToBackStack(null)
-        transaction.commit()
+    override fun createView(ctx: Context, parent: ViewGroup?): ViewWidget {
+        return if (isWideScreen()) FrameDouble(ctx).apply {
+            changeFragment(leftColumn.id, ListFragment())
+            changeFragment(rightColumn.id, DetailsFragment())
+        } else FrameSingle(ctx).apply {
+            changeFragment(frame.id, ListFragment())
+        }
     }
 
     override fun caseFactory(): ViewModelFactory<GenericViewModel<MainCase>> = component.mainVMFactory()
-    override fun createView(ctx: Context, parent: ViewGroup?) = MainFrame(ctx).apply { mainFrame = this }
 }

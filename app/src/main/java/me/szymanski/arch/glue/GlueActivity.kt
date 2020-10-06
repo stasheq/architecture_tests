@@ -1,5 +1,6 @@
 package me.szymanski.arch.glue
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.activity.viewModels
@@ -13,6 +14,7 @@ abstract class GlueActivity<C : Case, V : ViewWidget> : AppCompatActivity(), Lif
     override var disposableContainer = CompositeDisposable()
     internal lateinit var logic: C
     private lateinit var view: V
+    private val keyState = "state"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,5 +37,10 @@ abstract class GlueActivity<C : Case, V : ViewWidget> : AppCompatActivity(), Lif
     override fun onStop() {
         disposableContainer.dispose()
         super.onStop()
+    }
+
+    @SuppressLint("MissingSuperCall") // on purpose, data should be preserved in case
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(keyState, model.case.onSaveState())
     }
 }

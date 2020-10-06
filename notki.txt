@@ -1,5 +1,4 @@
-Zrobić ekran szczegółów.
-Zrobić ekran łączony dla tabletów.
+ogarnąć żeby fragmenty nie robiły nowych caseów, może przechowywać w case dzieci
 zrobić wyszukiwanie repo i zmienić na repo google
 dodać paging
 mozliwośc wpisania czyje repo, żeby zobaczyć puste i błąd
