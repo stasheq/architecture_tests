@@ -1,6 +1,7 @@
 package me.szymanski.arch
 
 import android.content.Context
+import android.os.Bundle
 import android.view.ViewGroup
 import me.szymanski.arch.logic.cases.RepositoriesListCase
 import me.szymanski.arch.screens.RepositoriesList
@@ -13,8 +14,12 @@ import me.szymanski.glue.GlueFragment
 
 class ListFragment : GlueFragment<RepositoriesListCase, RepositoriesList>() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun createView(ctx: Context, parent: ViewGroup?) = RepositoriesList(ctx, parent)
-    override fun caseFactory() = component.reposListVMFactory()
 
     override fun linkViewAndLogic(view: RepositoriesList, case: RepositoriesListCase) {
         case.loading.onNext { loadingState ->

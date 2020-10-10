@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import javax.inject.Inject
 
 abstract class GlueActivity<C : Case, V : ViewWidget> : AppCompatActivity(), LifecycleGlueView<C, V> {
     private val model: GenericViewModel<C> by lazyCreateViewModel { this }
@@ -13,6 +14,9 @@ abstract class GlueActivity<C : Case, V : ViewWidget> : AppCompatActivity(), Lif
     private lateinit var view: V
     private val keyState = "state"
     override val caseKey: String? = null
+
+    @Inject
+    override lateinit var caseFactory: ViewModelFactory<GenericViewModel<C>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

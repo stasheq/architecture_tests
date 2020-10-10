@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import javax.inject.Inject
 
 abstract class GlueFragment<C : Case, V : ViewWidget> : Fragment(), LifecycleGlueView<C, V> {
     private val model: GenericViewModel<C> by lazyCreateViewModel(::requireActivity)
@@ -13,6 +14,9 @@ abstract class GlueFragment<C : Case, V : ViewWidget> : Fragment(), LifecycleGlu
     internal lateinit var logic: C
     private lateinit var view: V
     override val caseKey: String? = null
+
+    @Inject
+    override lateinit var caseFactory: ViewModelFactory<GenericViewModel<C>>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view = createView(inflater.context, container)

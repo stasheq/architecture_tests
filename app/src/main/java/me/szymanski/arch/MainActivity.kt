@@ -1,16 +1,20 @@
 package me.szymanski.arch
 
 import android.content.Context
+import android.os.Bundle
 import android.view.ViewGroup
 import me.szymanski.arch.logic.cases.MainCase
 import me.szymanski.arch.widgets.FrameDouble
 import me.szymanski.arch.widgets.FrameSingle
-import me.szymanski.glue.GenericViewModel
 import me.szymanski.glue.GlueActivity
-import me.szymanski.glue.ViewModelFactory
 import me.szymanski.glue.ViewWidget
 
 class MainActivity : GlueActivity<MainCase, ViewWidget>() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun linkViewAndLogic(view: ViewWidget, case: MainCase) {
         case.selectedRepoName.onNext {
@@ -29,6 +33,4 @@ class MainActivity : GlueActivity<MainCase, ViewWidget>() {
             changeFragment(frame.id, ListFragment())
         }
     }
-
-    override fun caseFactory(): ViewModelFactory<GenericViewModel<MainCase>> = component.mainVMFactory()
 }
