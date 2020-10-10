@@ -1,4 +1,4 @@
-package me.szymanski.arch.logic
+package me.szymanski.glue
 
 interface Case {
     var parent: Case?

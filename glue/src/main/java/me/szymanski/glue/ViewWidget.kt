@@ -1,4 +1,4 @@
-package me.szymanski.arch
+package me.szymanski.glue
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package me.szymanski.arch.glue
+package me.szymanski.glue
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import me.szymanski.arch.ViewWidget
-import me.szymanski.arch.logic.Case
 
 abstract class GlueFragment<C : Case, V : ViewWidget> : Fragment(), LifecycleGlueView<C, V> {
     private val model: GenericViewModel<C> by lazyCreateViewModel(::requireActivity)

@@ -1,12 +1,10 @@
-package me.szymanski.arch.glue
+package me.szymanski.glue
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import me.szymanski.arch.ViewWidget
-import me.szymanski.arch.logic.Case
 
 abstract class GlueActivity<C : Case, V : ViewWidget> : AppCompatActivity(), LifecycleGlueView<C, V> {
     private val model: GenericViewModel<C> by lazyCreateViewModel { this }

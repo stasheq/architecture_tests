@@ -1,4 +1,4 @@
-package me.szymanski.arch.glue
+package me.szymanski.glue
 
 import android.content.Context
 import android.view.ViewGroup
@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.DisposableContainer
-import me.szymanski.arch.ViewWidget
-import me.szymanski.arch.logic.Case
 
 interface LifecycleGlueView<C : Case, V : ViewWidget> {
 

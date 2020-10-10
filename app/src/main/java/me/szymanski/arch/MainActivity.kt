@@ -2,12 +2,13 @@ package me.szymanski.arch
 
 import android.content.Context
 import android.view.ViewGroup
-import me.szymanski.arch.glue.GlueActivity
 import me.szymanski.arch.logic.cases.MainCase
 import me.szymanski.arch.widgets.FrameDouble
-import me.szymanski.arch.glue.GenericViewModel
-import me.szymanski.arch.glue.ViewModelFactory
 import me.szymanski.arch.widgets.FrameSingle
+import me.szymanski.glue.GenericViewModel
+import me.szymanski.glue.GlueActivity
+import me.szymanski.glue.ViewModelFactory
+import me.szymanski.glue.ViewWidget
 
 class MainActivity : GlueActivity<MainCase, ViewWidget>() {
 

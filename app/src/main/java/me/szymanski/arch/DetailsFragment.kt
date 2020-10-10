@@ -2,12 +2,12 @@ package me.szymanski.arch
 
 import android.content.Context
 import android.view.ViewGroup
-import me.szymanski.arch.glue.GlueFragment
 import me.szymanski.arch.logic.cases.DetailsCase
 import me.szymanski.arch.screens.RepositoryDetails
 import me.szymanski.arch.logic.cases.DetailsCase.LoadingState.LOADING
 import me.szymanski.arch.logic.cases.DetailsCase.LoadingState.ERROR
 import me.szymanski.arch.logic.cases.DetailsCase.LoadingState.SUCCESS
+import me.szymanski.glue.GlueFragment
 
 class DetailsFragment : GlueFragment<DetailsCase, RepositoryDetails>() {
 

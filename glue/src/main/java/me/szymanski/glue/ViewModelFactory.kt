@@ -1,8 +1,7 @@
-package me.szymanski.arch.glue
+package me.szymanski.glue
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import me.szymanski.arch.logic.Case
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton

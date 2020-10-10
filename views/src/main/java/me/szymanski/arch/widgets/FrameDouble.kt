@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.example.widgets.R
 import kotlinx.android.synthetic.main.frame_double.view.*
-import me.szymanski.arch.ViewWidget
+import me.szymanski.glue.ViewWidget
 
 class FrameDouble(ctx: Context) : ViewWidget {
 

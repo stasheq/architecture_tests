@@ -4,12 +4,12 @@ import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import me.szymanski.arch.Application
-import me.szymanski.arch.glue.GenericViewModel
-import me.szymanski.arch.glue.ViewModelFactory
 import me.szymanski.arch.logic.cases.DetailsCase
 import me.szymanski.arch.logic.cases.MainCase
 import me.szymanski.arch.logic.cases.RepositoriesListCase
 import me.szymanski.arch.logic.rest.RestModule
+import me.szymanski.glue.GenericViewModel
+import me.szymanski.glue.ViewModelFactory
 import javax.inject.Singleton
 
 @Singleton

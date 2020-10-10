@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import com.example.widgets.R
 import kotlinx.android.synthetic.main.error_center.view.*
-import me.szymanski.arch.ViewWidget
+import me.szymanski.glue.ViewWidget
 
 class ErrorWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     private val errorView: TextView
