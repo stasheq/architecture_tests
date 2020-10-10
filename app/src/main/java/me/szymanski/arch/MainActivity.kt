@@ -18,9 +18,16 @@ class MainActivity : GlueActivity<MainCase, ViewWidget>() {
 
     override fun linkViewAndLogic(view: ViewWidget, case: MainCase) {
         case.selectedRepoName.onNext {
-            when (view) {
-                is FrameSingle -> changeFragment(view.frame.id, DetailsFragment(), true)
+            if (it.get() != null) when (view) {
+                is FrameSingle -> changeFragment(view.frame.id, DetailsFragment())
                 is FrameDouble -> changeFragment((view.rightColumn.id), DetailsFragment())
+            }
+        }
+        case.backPressed.onNext { finish() }
+        case.onDetailsBackPress.onNext {
+            when (view) {
+                is FrameSingle -> changeFragment(view.frame.id, ListFragment())
+                is FrameDouble -> finish()
             }
         }
     }

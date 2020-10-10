@@ -41,6 +41,10 @@ abstract class GlueActivity<C : Case, V : ViewWidget> : AppCompatActivity(), Lif
         super.onStop()
     }
 
+    override fun onBackPressed() {
+        logic.onBackPressed()
+    }
+
     @SuppressLint("MissingSuperCall") // on purpose, data should be preserved in case
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString(keyState, model.case.onSaveState())

@@ -3,10 +3,11 @@ package me.szymanski.arch.logic.cases
 import com.jakewharton.rxrelay3.BehaviorRelay
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import me.szymanski.arch.logic.BaseCase
 import me.szymanski.arch.logic.rest.ApiError
 import me.szymanski.arch.logic.rest.Repository
 import me.szymanski.arch.logic.rest.RestApi
+import me.szymanski.glue.BaseCase
+import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
 class RepositoriesListCase @Inject constructor(private val restApi: RestApi) : BaseCase() {
@@ -30,7 +31,7 @@ class RepositoriesListCase @Inject constructor(private val restApi: RestApi) : B
     }
 
     fun selectItem(repoName: String) {
-        (parent as? MainCase)?.selectedRepoName?.accept(repoName)
+        (parent as? MainCase)?.selectedRepoName?.accept(AtomicReference(repoName))
     }
 
     override fun create() {

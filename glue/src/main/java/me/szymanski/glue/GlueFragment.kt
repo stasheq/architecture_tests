@@ -37,6 +37,7 @@ abstract class GlueFragment<C : Case, V : ViewWidget> : Fragment(), LifecycleGlu
     }
 
     override fun onStop() {
+        logic.parent = null
         disposableContainer.dispose()
         super.onStop()
     }
