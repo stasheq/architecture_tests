@@ -3,18 +3,18 @@ package me.szymanski.arch.glue
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.ViewWidget
 import me.szymanski.arch.logic.Case
 
 abstract class GlueActivity<C : Case, V : ViewWidget> : AppCompatActivity(), LifecycleGlueView<C, V> {
-    private val model: GenericViewModel<C> by viewModels { caseFactory() }
+    private val model: GenericViewModel<C> by lazyCreateViewModel { this }
     override var disposableContainer = CompositeDisposable()
     internal lateinit var logic: C
     private lateinit var view: V
     private val keyState = "state"
+    override val caseKey: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

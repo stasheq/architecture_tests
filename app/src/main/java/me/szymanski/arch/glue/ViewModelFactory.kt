@@ -9,11 +9,11 @@ import javax.inject.Singleton
 
 @Singleton
 class ViewModelFactory<VM : ViewModel> @Inject constructor(
-    private val viewModel: Provider<VM>
+    private val viewModelProvider: Provider<VM>
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>) = viewModel.get() as T
+    override fun <T : ViewModel> create(modelClass: Class<T>) = viewModelProvider.get() as T
 }
 
 class GenericViewModel<C : Case> @Inject constructor(val case: C) : ViewModel() {
