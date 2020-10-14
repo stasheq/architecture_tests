@@ -17,9 +17,12 @@ class ListCase @Inject constructor(private val restApi: RestApi, restConfig: Res
     private var lastJob: Job? = null
     var userName = restConfig.defaultUser
         set(value) {
-            val changed = field == value
+            if (field == value) return
             field = value
-            if (changed && value.isNotBlank()) reload()
+            if (value.isNotBlank()) {
+                (parent as? MainCase)?.userName?.accept(value)
+                reload()
+            }
         }
 
     fun reload() {
