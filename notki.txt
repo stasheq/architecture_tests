@@ -1,4 +1,4 @@
-zrobić wyszukiwanie repo i zmienić na repo google
+zrobić wyszukiwanie po nazwie usera, błąd, puste itp
 dodać paging
-mozliwośc wpisania czyje repo, żeby zobaczyć puste i błąd
+podpicować ui
 dodać przykładowe testy do logic

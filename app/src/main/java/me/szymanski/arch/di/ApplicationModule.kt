@@ -10,7 +10,7 @@ import me.szymanski.arch.logic.rest.RestConfig
 class ApplicationModule {
 
     @Provides
-    fun provideApiRepository(): RestConfig = RestConfig("https://api.github.com/", "stasheq", 10)
+    fun provideRestConfig(): RestConfig = RestConfig("https://api.github.com/", "google", 20)
 
     @Provides
     fun provideLogger(): Logger = object : Logger {

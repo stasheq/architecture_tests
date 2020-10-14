@@ -17,9 +17,11 @@ class DetailsCase @Inject constructor(private val restApi: RestApi) : BaseCase()
     fun reload(forceReload: Boolean = false) {
         lastJob?.cancel()
         val lastValue = result.value
-        val repoName = (parent as? MainCase)?.selectedRepoName?.value?.get()
+        val parentMainCase = (parent as? MainCase)
+        val repoName = parentMainCase?.selectedRepoName?.value?.get()
+        val userName = parentMainCase?.userName?.value
         if (lastValue != null && !forceReload && lastValue.name == repoName) return
-        if (repoName == null) {
+        if (repoName == null || userName == null) {
             loading.accept(LoadingState.ERROR)
             return
         }
@@ -27,7 +29,7 @@ class DetailsCase @Inject constructor(private val restApi: RestApi) : BaseCase()
         loading.accept(LoadingState.LOADING)
         lastJob = ioScope.launch {
             try {
-                val item = restApi.getRepository(repoName)
+                val item = restApi.getRepository(userName, repoName)
                 loading.accept(LoadingState.SUCCESS)
                 result.accept(item)
             } catch (e: ApiError) {

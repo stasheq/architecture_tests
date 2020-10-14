@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:textSize="18sp"
+        android:textSize="@dimen/titleTextSize"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Repo title" />
 
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:textSize="14sp"
+        android:textSize="@dimen/descriptionTextSize"
         app:layout_constraintTop_toBottomOf="@id/itemTitle"
         tools:text="Repo interesting description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sagittis sit amet ipsum vitae consequat." />
 

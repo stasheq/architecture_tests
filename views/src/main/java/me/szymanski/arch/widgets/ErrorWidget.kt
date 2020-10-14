@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
-import com.example.widgets.R
 import kotlinx.android.synthetic.main.error_center.view.*
 import me.szymanski.glue.ViewWidget
 
