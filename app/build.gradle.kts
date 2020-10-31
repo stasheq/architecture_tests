@@ -3,16 +3,17 @@ plugins {
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(30)
     buildToolsVersion("30.0.2")
 
     defaultConfig {
         applicationId = "me.szymanski.arch"
         minSdkVersion(21)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -60,7 +61,7 @@ android {
 }
 
 dependencies {
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.4")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.5")
     implementation(project(":logic"))
     implementation(project(":views"))
     implementation(project(":glueKotlin"))
@@ -79,7 +80,8 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJava}")
     implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelay}")
     implementation("com.google.dagger:dagger:${Deps.dagger}")
-    kapt("com.google.dagger:dagger-compiler:${Deps.dagger}")
+    implementation("com.google.dagger:hilt-android:${Deps.hilt}")
+    kapt("com.google.dagger:hilt-android-compiler:${Deps.hilt}")
     testImplementation("junit:junit:${Deps.junit}")
     androidTestImplementation("androidx.test.ext:junit:${Deps.junitAndroid}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${Deps.espresso}")

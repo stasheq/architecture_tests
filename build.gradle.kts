@@ -1,5 +1,4 @@
 buildscript {
-    val kotlin_version by extra("1.4.10")
     repositories {
         google()
         jcenter()
@@ -7,6 +6,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:4.1.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Deps.kotlin}")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:${Deps.hilt}")
     }
 }
 

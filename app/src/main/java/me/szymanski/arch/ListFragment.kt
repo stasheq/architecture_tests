@@ -1,8 +1,8 @@
 package me.szymanski.arch
 
 import android.content.Context
-import android.os.Bundle
 import android.view.ViewGroup
+import dagger.hilt.android.AndroidEntryPoint
 import me.szymanski.arch.logic.cases.ListCase
 import me.szymanski.arch.screens.RepositoriesList
 import me.szymanski.arch.widgets.ListItem
@@ -12,12 +12,8 @@ import me.szymanski.arch.logic.cases.ListCase.LoadingState.ERROR
 import me.szymanski.arch.logic.cases.ListCase.LoadingState.SUCCESS
 import me.szymanski.glue.GlueFragment
 
+@AndroidEntryPoint
 class ListFragment : GlueFragment<ListCase, RepositoriesList>() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        component.inject(this)
-        super.onCreate(savedInstanceState)
-    }
 
     override fun createView(ctx: Context, parent: ViewGroup?) = RepositoriesList(ctx, parent)
 

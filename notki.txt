@@ -1,3 +1,4 @@
+nie dziedziczenie po activity
 zrobić wyszukiwanie po nazwie usera, błąd, puste itp
 dodać paging
 podpicować ui

@@ -1,8 +1,8 @@
 package me.szymanski.arch
 
 import android.content.Context
-import android.os.Bundle
 import android.view.ViewGroup
+import dagger.hilt.android.AndroidEntryPoint
 import me.szymanski.arch.logic.cases.DetailsCase
 import me.szymanski.arch.screens.RepositoryDetails
 import me.szymanski.arch.logic.cases.DetailsCase.LoadingState.LOADING
@@ -10,12 +10,8 @@ import me.szymanski.arch.logic.cases.DetailsCase.LoadingState.ERROR
 import me.szymanski.arch.logic.cases.DetailsCase.LoadingState.SUCCESS
 import me.szymanski.glue.GlueFragment
 
+@AndroidEntryPoint
 class DetailsFragment : GlueFragment<DetailsCase, RepositoryDetails>() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        component.inject(this)
-        super.onCreate(savedInstanceState)
-    }
 
     override fun createView(ctx: Context, parent: ViewGroup?) = RepositoryDetails(ctx, parent)
 

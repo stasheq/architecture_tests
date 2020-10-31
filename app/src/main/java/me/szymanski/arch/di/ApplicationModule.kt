@@ -3,10 +3,14 @@ package me.szymanski.arch.di
 import android.util.Log
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import me.szymanski.arch.logic.Logger
 import me.szymanski.arch.logic.rest.RestConfig
+import me.szymanski.arch.logic.rest.RestModule
 
-@Module
+@Module(includes = [RestModule::class])
+@InstallIn(ApplicationComponent::class)
 class ApplicationModule {
 
     @Provides
