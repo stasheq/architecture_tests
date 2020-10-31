@@ -6,10 +6,10 @@ import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.rest.ApiError
 import me.szymanski.arch.logic.rest.RepositoryDetails
 import me.szymanski.arch.logic.rest.RestApi
-import me.szymanski.glue.BaseCase
+import me.szymanski.glue.CaseTemplate
 import javax.inject.Inject
 
-class DetailsCase @Inject constructor(private val restApi: RestApi) : BaseCase() {
+class DetailsCase @Inject constructor(private val restApi: RestApi) : CaseTemplate() {
     val loading: BehaviorRelay<LoadingState> = BehaviorRelay.create<LoadingState>()
     val result: BehaviorRelay<RepositoryDetails> = BehaviorRelay.create<RepositoryDetails>()
     private var lastJob: Job? = null

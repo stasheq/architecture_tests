@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.screen_repos_list.view.*
+import me.szymanski.arch.ViewWidget
 import me.szymanski.arch.widgets.ListWidget
 import me.szymanski.arch.getValue
 import me.szymanski.arch.setValue
@@ -12,7 +13,6 @@ import me.szymanski.arch.textValue
 import me.szymanski.arch.widgets.ErrorWidget
 import me.szymanski.arch.widgets.R
 import me.szymanski.arch.widgets.TextInputWidget
-import me.szymanski.glue.ViewWidget
 
 class RepositoriesList(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
 

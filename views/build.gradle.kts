@@ -48,7 +48,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":glue"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
     implementation("androidx.core:core-ktx:${Deps.androidKtx}")
     implementation("io.reactivex.rxjava3:rxandroid:${Deps.rxAndroid}")

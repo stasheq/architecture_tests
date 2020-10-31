@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
-open class BaseCase : Case {
+open class CaseTemplate : Case {
     override fun create() = Unit
     override fun destroy() = Unit
     override fun onSaveState(): String? = null

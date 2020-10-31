@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.screen_repo_details.view.*
+import me.szymanski.arch.ViewWidget
 import me.szymanski.arch.getValue
 import me.szymanski.arch.setValue
 import me.szymanski.arch.textValue
 import me.szymanski.arch.widgets.ErrorWidget
 import me.szymanski.arch.widgets.R
-import me.szymanski.glue.ViewWidget
 
 class RepositoryDetails(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     private val errorWidget: ErrorWidget

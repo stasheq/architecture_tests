@@ -65,7 +65,6 @@ dependencies {
     implementation(project(":logic"))
     implementation(project(":views"))
     implementation(project(":glueKotlin"))
-    implementation(project(":glue"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
     implementation("androidx.core:core-ktx:${Deps.androidKtx}")
     implementation("androidx.activity:activity-ktx:${Deps.activityKtx}")

@@ -7,11 +7,11 @@ import me.szymanski.arch.logic.rest.ApiError
 import me.szymanski.arch.logic.rest.Repository
 import me.szymanski.arch.logic.rest.RestApi
 import me.szymanski.arch.logic.rest.RestConfig
-import me.szymanski.glue.BaseCase
+import me.szymanski.glue.CaseTemplate
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
-class ListCase @Inject constructor(private val restApi: RestApi, restConfig: RestConfig) : BaseCase() {
+class ListCase @Inject constructor(private val restApi: RestApi, restConfig: RestConfig) : CaseTemplate() {
     val loading: BehaviorRelay<LoadingState> = BehaviorRelay.create<LoadingState>()
     val list: BehaviorRelay<List<Repository>> = BehaviorRelay.create<List<Repository>>()
     private var lastJob: Job? = null

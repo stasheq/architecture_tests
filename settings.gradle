@@ -1,4 +1,3 @@
-include ':glue'
 include ':glueKotlin'
 include ':views'
 include ':logic'

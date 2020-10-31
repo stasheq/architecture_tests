@@ -3,7 +3,7 @@ package me.szymanski.arch.widgets
 import android.content.Context
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.frame_double.view.*
-import me.szymanski.glue.ViewWidget
+import me.szymanski.arch.ViewWidget
 
 class FrameDouble(ctx: Context) : ViewWidget {
 

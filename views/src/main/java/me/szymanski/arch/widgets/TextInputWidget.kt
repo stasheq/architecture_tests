@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.core.Observable
-import me.szymanski.glue.ViewWidget
 import kotlinx.android.synthetic.main.text_input.view.*
+import me.szymanski.arch.ViewWidget
 import me.szymanski.arch.textValue
 import me.szymanski.arch.getValue
 import me.szymanski.arch.setValue
