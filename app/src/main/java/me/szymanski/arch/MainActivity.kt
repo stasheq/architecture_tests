@@ -1,14 +1,13 @@
 package me.szymanski.arch
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.logic.cases.MainLogic
 import me.szymanski.arch.utils.observeOnUi
 import me.szymanski.arch.widgets.FrameDouble
-import me.szymanski.arch.widgets.FrameSingle
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -16,18 +15,19 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var logic: MainLogic
-    lateinit var view: ViewWidget
+    lateinit var view: FrameDouble
     private var disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        view = if (isWideScreen()) FrameDouble(this).apply {
+        view = FrameDouble(this)
+        setContentView(view)
+        updateColumns(showLeft = true, showRight = isWideScreen())
+
+        if (savedInstanceState == null) view.apply {
             changeFragment(leftColumn.id, ListFragment())
             changeFragment(rightColumn.id, DetailsFragment())
-        } else FrameSingle(this).apply {
-            changeFragment(frame.id, ListFragment())
         }
-        setContentView(view)
     }
 
     override fun onStart() {
@@ -41,22 +41,19 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
 
-    private fun linkViewAndLogic(view: ViewWidget, case: MainLogic) {
-        case.selectedRepoName.observeOnUi(disposables) {
-            if (it.get() != null) when (view) {
-                is FrameSingle -> changeFragment(view.frame.id, DetailsFragment())
-                is FrameDouble -> changeFragment((view.rightColumn.id), DetailsFragment())
-            }
+    private fun linkViewAndLogic(view: FrameDouble, case: MainLogic) {
+        case.selectedRepoName.filter { !it.get().isNullOrBlank() }.observeOnUi(disposables) {
+            changeFragment((view.rightColumn.id), DetailsFragment())
+            if (!isWideScreen()) updateColumns(showLeft = false, showRight = true)
         }
         case.backPressed.observeOnUi(disposables) { finish() }
         case.onDetailsBackPress.observeOnUi(disposables) {
-            when (view) {
-                is FrameSingle -> changeFragment(view.frame.id, ListFragment())
-                is FrameDouble -> finish()
-            }
+            if (isWideScreen()) finish() else updateColumns(showLeft = true, showRight = false)
         }
     }
 
-    @SuppressLint("MissingSuperCall") // to not store fragments state
-    override fun onSaveInstanceState(outState: Bundle) = Unit
+    private fun updateColumns(showLeft: Boolean, showRight: Boolean) {
+        view.leftColumn.isVisible = showLeft
+        view.rightColumn.isVisible = showRight
+    }
 }
