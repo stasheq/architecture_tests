@@ -1,20 +1,23 @@
 package me.szymanski.arch
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.hilt.lifecycle.ViewModelInject
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import me.szymanski.arch.di.LogicViewModel
 import me.szymanski.arch.logic.cases.MainLogic
+import me.szymanski.arch.logic.cases.MainLogicImpl
 import me.szymanski.arch.utils.observeOnUi
 import me.szymanski.arch.widgets.FrameDouble
-import javax.inject.Inject
+
+class MainViewModel @ViewModelInject constructor(logic: MainLogicImpl) : LogicViewModel<MainLogic>(logic)
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var logic: MainLogic
+    private val viewModel: MainViewModel by viewModels()
     lateinit var view: FrameDouble
     private var disposables = CompositeDisposable()
 
@@ -32,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        linkViewAndLogic(view, logic)
+        linkViewAndLogic(view, viewModel.logic)
     }
 
     override fun onStop() {

@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
-open class CaseTemplate : Case {
+open class LogicTemplate : Logic {
     override fun create() = Unit
     override fun destroy() = Unit
     override fun onSaveState(): String? = null
@@ -14,19 +14,19 @@ open class CaseTemplate : Case {
     val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     val backPressed: PublishRelay<Unit> = PublishRelay.create()
     var enableBackPress = false
-    private val children = ArrayList<Case>()
-    override var parent: Case? = null
+    private val children = ArrayList<Logic>()
+    override var parent: Logic? = null
         set(value) {
             field?.removeChild(this)
             field = value
             field?.addChild(this)
         }
 
-    override fun addChild(child: Case) {
+    override fun addChild(child: Logic) {
         children.add(child)
     }
 
-    override fun removeChild(child: Case) {
+    override fun removeChild(child: Logic) {
         children.remove(child)
     }
 

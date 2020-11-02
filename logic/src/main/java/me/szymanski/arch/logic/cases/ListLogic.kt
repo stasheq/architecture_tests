@@ -8,11 +8,12 @@ import me.szymanski.arch.logic.rest.ApiError
 import me.szymanski.arch.logic.rest.Repository
 import me.szymanski.arch.logic.rest.RestApi
 import me.szymanski.arch.logic.rest.RestConfig
-import me.szymanski.glue.CaseTemplate
+import me.szymanski.glue.Logic
+import me.szymanski.glue.LogicTemplate
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
-interface ListLogic {
+interface ListLogic : Logic {
     fun reload()
     fun selectItem(repoName: String)
     var userName: String
@@ -23,7 +24,7 @@ interface ListLogic {
 }
 
 class ListLogicImpl @Inject constructor(private val restApi: RestApi, restConfig: RestConfig) :
-    CaseTemplate(), ListLogic {
+    LogicTemplate(), ListLogic {
     override val loading: BehaviorRelay<ListLogic.LoadingState> = BehaviorRelay.create<ListLogic.LoadingState>()
     override val list: BehaviorRelay<List<Repository>> = BehaviorRelay.create<List<Repository>>()
     private var lastJob: Job? = null

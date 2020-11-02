@@ -7,10 +7,11 @@ import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.rest.ApiError
 import me.szymanski.arch.logic.rest.RepositoryDetails
 import me.szymanski.arch.logic.rest.RestApi
-import me.szymanski.glue.CaseTemplate
+import me.szymanski.glue.Logic
+import me.szymanski.glue.LogicTemplate
 import javax.inject.Inject
 
-interface DetailsLogic {
+interface DetailsLogic : Logic {
     fun reload(forceReload: Boolean = false)
     val result: Observable<RepositoryDetails>
     val loading: Observable<LoadingState>
@@ -18,7 +19,7 @@ interface DetailsLogic {
     enum class LoadingState { LOADING, ERROR, SUCCESS }
 }
 
-class DetailsLogicImpl @Inject constructor(private val restApi: RestApi) : CaseTemplate(), DetailsLogic {
+class DetailsLogicImpl @Inject constructor(private val restApi: RestApi) : LogicTemplate(), DetailsLogic {
     override val loading: BehaviorRelay<DetailsLogic.LoadingState> = BehaviorRelay.create<DetailsLogic.LoadingState>()
     override val result: BehaviorRelay<RepositoryDetails> = BehaviorRelay.create<RepositoryDetails>()
     private var lastJob: Job? = null

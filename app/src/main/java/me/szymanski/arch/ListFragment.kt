@@ -5,23 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.hilt.lifecycle.ViewModelInject
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import me.szymanski.arch.screens.RepositoriesList
-import me.szymanski.arch.widgets.ListItem
-import me.szymanski.arch.logic.cases.ListLogic.LoadingState.LOADING
-import me.szymanski.arch.logic.cases.ListLogic.LoadingState.EMPTY
-import me.szymanski.arch.logic.cases.ListLogic.LoadingState.ERROR
-import me.szymanski.arch.logic.cases.ListLogic.LoadingState.SUCCESS
+import me.szymanski.arch.di.LogicViewModel
 import me.szymanski.arch.logic.cases.ListLogic
+import me.szymanski.arch.logic.cases.ListLogic.LoadingState.*
+import me.szymanski.arch.logic.cases.ListLogicImpl
+import me.szymanski.arch.screens.RepositoriesList
 import me.szymanski.arch.utils.observeOnUi
-import javax.inject.Inject
+import me.szymanski.arch.widgets.ListItem
+
+class ListViewModel @ViewModelInject constructor(logic: ListLogicImpl) : LogicViewModel<ListLogic>(logic)
 
 @AndroidEntryPoint
 class ListFragment : Fragment() {
-
-    @Inject
-    lateinit var logic: ListLogic
+    private val viewModel: ListViewModel by activityViewModels()
     private lateinit var view: RepositoriesList
     private var disposables = CompositeDisposable()
 
@@ -32,7 +32,7 @@ class ListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        linkViewAndLogic(view, logic)
+        linkViewAndLogic(view, viewModel.logic)
     }
 
     override fun onStop() {
