@@ -8,15 +8,18 @@ import dagger.hilt.android.components.ApplicationComponent
 import me.szymanski.arch.logic.Logger
 import me.szymanski.arch.logic.rest.RestConfig
 import me.szymanski.arch.logic.rest.RestModule
+import javax.inject.Singleton
 
 @Module(includes = [RestModule::class])
 @InstallIn(ApplicationComponent::class)
 class ApplicationModule {
 
     @Provides
+    @Singleton
     fun provideRestConfig(): RestConfig = RestConfig("https://api.github.com/", "google", 20)
 
     @Provides
+    @Singleton
     fun provideLogger(): Logger = object : Logger {
         override fun log(message: String, tag: String?, level: Logger.Level) {
             val priority = when (level) {

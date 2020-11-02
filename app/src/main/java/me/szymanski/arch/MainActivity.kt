@@ -1,11 +1,11 @@
 package me.szymanski.arch
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import me.szymanski.arch.di.CaseReference
-import me.szymanski.arch.logic.cases.MainCase
+import me.szymanski.arch.logic.cases.MainLogic
 import me.szymanski.arch.utils.observeOnUi
 import me.szymanski.arch.widgets.FrameDouble
 import me.szymanski.arch.widgets.FrameSingle
@@ -15,9 +15,9 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var caseRef: CaseReference<MainCase>
+    lateinit var logic: MainLogic
     lateinit var view: ViewWidget
-    private val disposables = CompositeDisposable()
+    private var disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,15 +28,20 @@ class MainActivity : AppCompatActivity() {
             changeFragment(frame.id, ListFragment())
         }
         setContentView(view)
-        linkViewAndLogic(view, caseRef.case)
     }
 
-    override fun onDestroy() {
+    override fun onStart() {
+        super.onStart()
+        linkViewAndLogic(view, logic)
+    }
+
+    override fun onStop() {
         disposables.dispose()
-        super.onDestroy()
+        disposables = CompositeDisposable()
+        super.onStop()
     }
 
-    private fun linkViewAndLogic(view: ViewWidget, case: MainCase) {
+    private fun linkViewAndLogic(view: ViewWidget, case: MainLogic) {
         case.selectedRepoName.observeOnUi(disposables) {
             if (it.get() != null) when (view) {
                 is FrameSingle -> changeFragment(view.frame.id, DetailsFragment())
@@ -51,4 +56,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    @SuppressLint("MissingSuperCall") // to not store fragments state
+    override fun onSaveInstanceState(outState: Bundle) = Unit
 }

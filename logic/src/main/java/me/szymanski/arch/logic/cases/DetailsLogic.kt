@@ -1,6 +1,7 @@
 package me.szymanski.arch.logic.cases
 
 import com.jakewharton.rxrelay3.BehaviorRelay
+import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.rest.ApiError
@@ -9,31 +10,39 @@ import me.szymanski.arch.logic.rest.RestApi
 import me.szymanski.glue.CaseTemplate
 import javax.inject.Inject
 
-class DetailsCase @Inject constructor(private val restApi: RestApi) : CaseTemplate() {
-    val loading: BehaviorRelay<LoadingState> = BehaviorRelay.create<LoadingState>()
-    val result: BehaviorRelay<RepositoryDetails> = BehaviorRelay.create<RepositoryDetails>()
+interface DetailsLogic {
+    fun reload(forceReload: Boolean = false)
+    val result: Observable<RepositoryDetails>
+    val loading: Observable<LoadingState>
+
+    enum class LoadingState { LOADING, ERROR, SUCCESS }
+}
+
+class DetailsLogicImpl @Inject constructor(private val restApi: RestApi) : CaseTemplate(), DetailsLogic {
+    override val loading: BehaviorRelay<DetailsLogic.LoadingState> = BehaviorRelay.create<DetailsLogic.LoadingState>()
+    override val result: BehaviorRelay<RepositoryDetails> = BehaviorRelay.create<RepositoryDetails>()
     private var lastJob: Job? = null
 
-    fun reload(forceReload: Boolean = false) {
+    override fun reload(forceReload: Boolean) {
         lastJob?.cancel()
         val lastValue = result.value
-        val parentMainCase = (parent as? MainCase)
+        val parentMainCase = (parent as? MainLogicImpl)
         val repoName = parentMainCase?.selectedRepoName?.value?.get()
         val userName = parentMainCase?.userName?.value
         if (lastValue != null && !forceReload && lastValue.name == repoName) return
         if (repoName == null || userName == null) {
-            loading.accept(LoadingState.ERROR)
+            loading.accept(DetailsLogic.LoadingState.ERROR)
             return
         }
 
-        loading.accept(LoadingState.LOADING)
+        loading.accept(DetailsLogic.LoadingState.LOADING)
         lastJob = ioScope.launch {
             try {
                 val item = restApi.getRepository(userName, repoName)
-                loading.accept(LoadingState.SUCCESS)
+                loading.accept(DetailsLogic.LoadingState.SUCCESS)
                 result.accept(item)
             } catch (e: ApiError) {
-                loading.accept(LoadingState.ERROR)
+                loading.accept(DetailsLogic.LoadingState.ERROR)
             }
         }
     }
@@ -45,13 +54,11 @@ class DetailsCase @Inject constructor(private val restApi: RestApi) : CaseTempla
     override fun onBackPressed(): Boolean {
         if (super.onBackPressed()) return true
         parent.let {
-            if (it is MainCase) {
+            if (it is MainLogic) {
                 it.detailsBackPressed()
                 return true
             }
             return false
         }
     }
-
-    enum class LoadingState { LOADING, ERROR, SUCCESS }
 }

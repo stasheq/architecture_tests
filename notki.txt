@@ -1,4 +1,4 @@
-nie dziedziczenie po activity
+scope dla fragmentów, zapis stanów gdy zmieniają się same fragmenty
 zrobić wyszukiwanie po nazwie usera, błąd, puste itp
 dodać paging
 podpicować ui

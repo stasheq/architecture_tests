@@ -73,8 +73,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:${Deps.constraintLayout}")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:${Deps.swipeRefreshLayout}")
     implementation("androidx.recyclerview:recyclerview:${Deps.recyclerView}")
-    implementation("androidx.lifecycle:lifecycle-extensions:${Deps.androidLifecycle}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Deps.viewModelKtx}")
     implementation("io.reactivex.rxjava3:rxandroid:${Deps.rxAndroid}")
     implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJava}")
     implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelay}")

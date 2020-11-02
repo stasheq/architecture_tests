@@ -7,33 +7,41 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import me.szymanski.arch.di.CaseReference
-import me.szymanski.arch.logic.cases.ListCase
 import me.szymanski.arch.screens.RepositoriesList
 import me.szymanski.arch.widgets.ListItem
-import me.szymanski.arch.logic.cases.ListCase.LoadingState.LOADING
-import me.szymanski.arch.logic.cases.ListCase.LoadingState.EMPTY
-import me.szymanski.arch.logic.cases.ListCase.LoadingState.ERROR
-import me.szymanski.arch.logic.cases.ListCase.LoadingState.SUCCESS
+import me.szymanski.arch.logic.cases.ListLogic.LoadingState.LOADING
+import me.szymanski.arch.logic.cases.ListLogic.LoadingState.EMPTY
+import me.szymanski.arch.logic.cases.ListLogic.LoadingState.ERROR
+import me.szymanski.arch.logic.cases.ListLogic.LoadingState.SUCCESS
+import me.szymanski.arch.logic.cases.ListLogic
 import me.szymanski.arch.utils.observeOnUi
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class ListFragment : Fragment() {
 
     @Inject
-    lateinit var caseRef: CaseReference<ListCase>
+    lateinit var logic: ListLogic
     private lateinit var view: RepositoriesList
-    private val disposables = CompositeDisposable()
+    private var disposables = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view = RepositoriesList(inflater.context, container)
-        linkViewAndLogic(view, caseRef.case)
         return view.root
     }
 
-    private fun linkViewAndLogic(view: RepositoriesList, case: ListCase) {
+    override fun onStart() {
+        super.onStart()
+        linkViewAndLogic(view, logic)
+    }
+
+    override fun onStop() {
+        disposables.dispose()
+        disposables = CompositeDisposable()
+        super.onStop()
+    }
+
+    private fun linkViewAndLogic(view: RepositoriesList, case: ListLogic) {
         case.loading.observeOnUi(disposables) { loadingState ->
             view.refreshing = loadingState == LOADING
             view.listVisible = loadingState == LOADING || loadingState == SUCCESS
