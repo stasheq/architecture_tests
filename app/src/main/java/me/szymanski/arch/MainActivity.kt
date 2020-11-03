@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         view = FrameDouble(this)
         setContentView(view)
-        updateColumns(showLeft = true, showRight = isWideScreen())
-
         if (savedInstanceState == null) view.apply {
             changeFragment(leftColumn.id, ListFragment())
             changeFragment(rightColumn.id, DetailsFragment())
@@ -44,19 +42,10 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
 
-    private fun linkViewAndLogic(view: FrameDouble, case: MainLogic) {
-        case.selectedRepoName.filter { !it.get().isNullOrBlank() }.observeOnUi(disposables) {
-            changeFragment((view.rightColumn.id), DetailsFragment())
-            if (!isWideScreen()) updateColumns(showLeft = false, showRight = true)
-        }
-        case.backPressed.observeOnUi(disposables) { finish() }
-        case.onDetailsBackPress.observeOnUi(disposables) {
-            if (isWideScreen()) finish() else updateColumns(showLeft = true, showRight = false)
-        }
-    }
-
-    private fun updateColumns(showLeft: Boolean, showRight: Boolean) {
-        view.leftColumn.isVisible = showLeft
-        view.rightColumn.isVisible = showRight
+    private fun linkViewAndLogic(view: FrameDouble, logic: MainLogic) {
+        logic.wideScreen = isWideScreen()
+        logic.closeApp.observeOnUi(disposables) { finish() }
+        logic.showList.observeOnUi(disposables) { view.leftColumn.isVisible = it }
+        logic.showDetails.observeOnUi(disposables) { view.rightColumn.isVisible = it }
     }
 }

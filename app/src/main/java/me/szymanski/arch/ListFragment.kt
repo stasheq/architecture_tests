@@ -10,6 +10,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.di.LogicViewModel
+import me.szymanski.arch.logic.cases.DetailsLogic
 import me.szymanski.arch.logic.cases.ListLogic
 import me.szymanski.arch.logic.cases.ListLogic.LoadingState.*
 import me.szymanski.arch.logic.cases.ListLogicImpl
@@ -21,7 +22,8 @@ class ListViewModel @ViewModelInject constructor(logic: ListLogicImpl) : LogicVi
 
 @AndroidEntryPoint
 class ListFragment : Fragment() {
-    private val viewModel: ListViewModel by activityViewModels()
+    private val listModel: ListViewModel by activityViewModels()
+    private val detailsModel: DetailsViewModel by activityViewModels()
     private lateinit var view: RepositoriesList
     private var disposables = CompositeDisposable()
 
@@ -32,7 +34,7 @@ class ListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        linkViewAndLogic(view, viewModel.logic)
+        linkViewAndLogic(view, listModel.logic, detailsModel.logic)
     }
 
     override fun onStop() {
@@ -41,24 +43,22 @@ class ListFragment : Fragment() {
         super.onStop()
     }
 
-    private fun linkViewAndLogic(view: RepositoriesList, case: ListLogic) {
-        case.loading.observeOnUi(disposables) { loadingState ->
-            view.refreshing = loadingState == LOADING
-            view.listVisible = loadingState == LOADING || loadingState == SUCCESS
-            view.emptyText = if (loadingState == EMPTY) getString(R.string.empty_list) else null
-            view.errorText = if (loadingState == ERROR) getString(R.string.error) else null
+    private fun linkViewAndLogic(view: RepositoriesList, logic: ListLogic, detailsLogic: DetailsLogic) {
+        logic.state.observeOnUi(disposables) { state ->
+            view.refreshing = state == LOADING
+            view.listVisible = state == LOADING || state == SUCCESS
+            view.emptyText = if (state == EMPTY) getString(R.string.empty_list) else null
+            view.errorText = if (state == ERROR) getString(R.string.error) else null
         }
-        case.list
+        logic.list
             .map { list -> list.map { ListItem(it.name, it.name, it.description) } }
             .observeOnUi(disposables) { result -> view.items = result }
-        view.userName = case.userName
-        view.refreshAction.observeOnUi(disposables) { case.reload() }
-        view.selectAction.observeOnUi(disposables) { case.selectItem(it) }
-        view.userNameChanges.observeOnUi(disposables) { case.userName = it.toString() }
-    }
-
-    override fun onDestroyView() {
-        disposables.dispose()
-        super.onDestroyView()
+        view.userName = logic.userName
+        view.refreshAction.observeOnUi(disposables) { logic.reload() }
+        view.userNameChanges.observeOnUi(disposables) { logic.userName = it.toString() }
+        view.selectAction.observeOnUi(disposables) {
+            detailsLogic.repositoryName = it
+            detailsLogic.userName = logic.userName
+        }
     }
 }

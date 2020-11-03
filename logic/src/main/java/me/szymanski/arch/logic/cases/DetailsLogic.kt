@@ -4,62 +4,54 @@ import com.jakewharton.rxrelay3.BehaviorRelay
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import me.szymanski.arch.logic.Logic
 import me.szymanski.arch.logic.rest.ApiError
 import me.szymanski.arch.logic.rest.RepositoryDetails
 import me.szymanski.arch.logic.rest.RestApi
-import me.szymanski.glue.Logic
-import me.szymanski.glue.LogicTemplate
 import javax.inject.Inject
 
 interface DetailsLogic : Logic {
+    var repositoryName: String?
+    var userName: String?
     fun reload(forceReload: Boolean = false)
     val result: Observable<RepositoryDetails>
-    val loading: Observable<LoadingState>
+    val state: Observable<LoadingState>
 
     enum class LoadingState { LOADING, ERROR, SUCCESS }
 }
 
-class DetailsLogicImpl @Inject constructor(private val restApi: RestApi) : LogicTemplate(), DetailsLogic {
-    override val loading: BehaviorRelay<DetailsLogic.LoadingState> = BehaviorRelay.create<DetailsLogic.LoadingState>()
+class DetailsLogicImpl @Inject constructor(private val restApi: RestApi) : DetailsLogic {
+    private val scope = instantiateCoroutineScope()
+    override val state: BehaviorRelay<DetailsLogic.LoadingState> = BehaviorRelay.create<DetailsLogic.LoadingState>()
     override val result: BehaviorRelay<RepositoryDetails> = BehaviorRelay.create<RepositoryDetails>()
     private var lastJob: Job? = null
+    override var repositoryName: String? = null
+    override var userName: String? = null
 
     override fun reload(forceReload: Boolean) {
         lastJob?.cancel()
         val lastValue = result.value
-        val parentMainCase = (parent as? MainLogicImpl)
-        val repoName = parentMainCase?.selectedRepoName?.value?.get()
-        val userName = parentMainCase?.userName?.value
-        if (lastValue != null && !forceReload && lastValue.name == repoName) return
-        if (repoName == null || userName == null) {
-            loading.accept(DetailsLogic.LoadingState.ERROR)
+        if (lastValue != null && !forceReload && lastValue.name == repositoryName) return
+        val repositoryName = this.repositoryName
+        val userName = this.userName
+        if (repositoryName == null || userName == null) {
+            state.accept(DetailsLogic.LoadingState.ERROR)
             return
         }
 
-        loading.accept(DetailsLogic.LoadingState.LOADING)
-        lastJob = ioScope.launch {
+        state.accept(DetailsLogic.LoadingState.LOADING)
+        lastJob = scope.launch {
             try {
-                val item = restApi.getRepository(userName, repoName)
-                loading.accept(DetailsLogic.LoadingState.SUCCESS)
+                val item = restApi.getRepository(userName, repositoryName)
+                state.accept(DetailsLogic.LoadingState.SUCCESS)
                 result.accept(item)
             } catch (e: ApiError) {
-                loading.accept(DetailsLogic.LoadingState.ERROR)
+                state.accept(DetailsLogic.LoadingState.ERROR)
             }
         }
     }
 
     override fun destroy() {
         lastJob?.cancel()
-    }
-
-    override fun onBackPressed(): Boolean {
-        if (super.onBackPressed()) return true
-        parent.let {
-            if (it is MainLogic) {
-                it.detailsBackPressed()
-                return true
-            }
-            return false
-        }
     }
 }

@@ -3,36 +3,34 @@ package me.szymanski.arch.logic.cases
 import com.jakewharton.rxrelay3.BehaviorRelay
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
-import me.szymanski.arch.logic.rest.RestConfig
-import me.szymanski.glue.Logic
-import me.szymanski.glue.LogicTemplate
-import java.util.concurrent.atomic.AtomicReference
+import me.szymanski.arch.logic.Logic
 import javax.inject.Inject
 
-interface MainLogic: Logic {
-    val onDetailsBackPress: Observable<Unit>
-    val backPressed: Observable<Unit>
-    val selectedRepoName: Observable<AtomicReference<String?>>
-
-    fun detailsBackPressed()
+interface MainLogic : Logic {
+    var wideScreen: Boolean
+    val closeApp: Observable<Unit>
+    val showList: Observable<Boolean>
+    val showDetails: Observable<Boolean>
 }
 
-class MainLogicImpl @Inject constructor(restConfig: RestConfig) : LogicTemplate(), MainLogic {
-    override val selectedRepoName: BehaviorRelay<AtomicReference<String?>> =
-        BehaviorRelay.create<AtomicReference<String?>>().apply {
-            accept(AtomicReference(null))
+class MainLogicImpl @Inject constructor() : MainLogic {
+    override var wideScreen: Boolean = false
+        set(value) {
+            field = value
+            showList.accept(true)
+            showDetails.accept(value)
         }
-    val userName: BehaviorRelay<String> = BehaviorRelay.create<String>().apply {
-        accept(restConfig.defaultUser)
-    }
-    override val onDetailsBackPress: PublishRelay<Unit> = PublishRelay.create()
+    override val closeApp: PublishRelay<Unit> = PublishRelay.create<Unit>()
+    override val showList: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
+    override val showDetails: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
 
-    init {
-        enableBackPress = true
-    }
-
-    override fun detailsBackPressed() {
-        selectedRepoName.accept(AtomicReference(null))
-        onDetailsBackPress.accept(Unit)
+    override fun onBackPressed(): Boolean {
+        if (wideScreen || showList.value == true) {
+            closeApp.accept(Unit)
+        } else {
+            showList.accept(true)
+            showDetails.accept(false)
+        }
+        return true
     }
 }

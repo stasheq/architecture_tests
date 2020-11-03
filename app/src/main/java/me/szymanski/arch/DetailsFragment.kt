@@ -43,17 +43,12 @@ class DetailsFragment : Fragment() {
     }
 
     private fun linkViewAndLogic(view: RepositoryDetails, case: DetailsLogic) {
-        case.loading.observeOnUi(disposables) { loadingState ->
-            view.loading = loadingState == LOADING
-            view.errorText = if (loadingState == ERROR) getString(R.string.error) else null
-            view.detailsVisible = loadingState == SUCCESS
+        case.state.observeOnUi(disposables) { state ->
+            view.loading = state == LOADING
+            view.errorText = if (state == ERROR) getString(R.string.error) else null
+            view.detailsVisible = state == SUCCESS
         }
         case.result.observeOnUi(disposables) { view.title = it.name }
         case.reload()
-    }
-
-    override fun onDestroyView() {
-        disposables.dispose()
-        super.onDestroyView()
     }
 }
