@@ -4,20 +4,15 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.hilt.lifecycle.ViewModelInject
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import me.szymanski.arch.di.LogicViewModel
-import me.szymanski.arch.logic.cases.MainLogic
-import me.szymanski.arch.logic.cases.MainLogicImpl
+import me.szymanski.arch.logic.cases.ListLogic
 import me.szymanski.arch.utils.observeOnUi
 import me.szymanski.arch.widgets.FrameDouble
 
-class MainViewModel @ViewModelInject constructor(logic: MainLogicImpl) : LogicViewModel<MainLogic>(logic)
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: ListViewModel by viewModels()
     lateinit var view: FrameDouble
     private var disposables = CompositeDisposable()
 
@@ -42,10 +37,14 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
 
-    private fun linkViewAndLogic(view: FrameDouble, logic: MainLogic) {
+    private fun linkViewAndLogic(view: FrameDouble, logic: ListLogic) {
         logic.wideScreen = isWideScreen()
         logic.closeApp.observeOnUi(disposables) { finish() }
         logic.showList.observeOnUi(disposables) { view.leftColumn.isVisible = it }
         logic.showDetails.observeOnUi(disposables) { view.rightColumn.isVisible = it }
+    }
+
+    override fun onBackPressed() {
+        viewModel.logic.onBackPressed()
     }
 }

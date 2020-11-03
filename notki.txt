@@ -1,4 +1,3 @@
-cięzko łączyć logiki, może połączyć w jedną? albo dwie? lista z kolumnami -> detale
 zrobić wyszukiwanie po nazwie usera, błąd, puste itp
 dodać paging
 podpicować ui

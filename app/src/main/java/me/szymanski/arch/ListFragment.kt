@@ -56,9 +56,6 @@ class ListFragment : Fragment() {
         view.userName = logic.userName
         view.refreshAction.observeOnUi(disposables) { logic.reload() }
         view.userNameChanges.observeOnUi(disposables) { logic.userName = it.toString() }
-        view.selectAction.observeOnUi(disposables) {
-            detailsLogic.repositoryName = it
-            detailsLogic.userName = logic.userName
-        }
+        view.selectAction.observeOnUi(disposables) { logic.itemClick(detailsLogic, it) }
     }
 }
