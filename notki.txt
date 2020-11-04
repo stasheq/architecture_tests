@@ -1,4 +1,4 @@
-zrobić wyszukiwanie po nazwie usera, błąd, puste itp
+dlaczego nie pokazuje się error od razu?
 dodać paging
+dodać testy do logic
 podpicować ui
-dodać przykładowe testy do logic

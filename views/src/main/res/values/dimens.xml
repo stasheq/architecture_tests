@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="barPadding">10dp</dimen>
+    <dimen name="barTextSize">18sp</dimen>
     <dimen name="inputTextSize">18sp</dimen>
     <dimen name="titleTextSize">18sp</dimen>
     <dimen name="descriptionTextSize">16sp</dimen>

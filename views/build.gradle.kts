@@ -55,7 +55,6 @@ dependencies {
     implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelay}")
     implementation("com.jakewharton.rxbinding4:rxbinding-core:${Deps.rxBinding}")
     implementation("com.jakewharton.rxbinding4:rxbinding-material:${Deps.rxBinding}")
-    implementation("com.jakewharton.rxbinding4:rxbinding-swiperefreshlayout:${Deps.rxBinding}")
     implementation("com.jakewharton.rxbinding4:rxbinding-recyclerview:${Deps.rxBinding}")
     implementation("androidx.constraintlayout:constraintlayout:${Deps.constraintLayout}")
     testImplementation("junit:junit:${Deps.junit}")

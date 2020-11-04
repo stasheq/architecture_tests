@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="divider">#555555</color>
+    <color name="error">#FF6961</color>
+    <color name="text">#000000</color>
+    <color name="barText">#FFFFFF</color>
 </resources>

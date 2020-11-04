@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.Logic
+import me.szymanski.arch.logic.Optional
 import me.szymanski.arch.logic.rest.ApiError
 import me.szymanski.arch.logic.rest.Repository
 import me.szymanski.arch.logic.rest.RestApi
@@ -18,19 +19,21 @@ interface ListLogic : Logic {
     var userName: String
     var wideScreen: Boolean
     val list: Observable<List<Repository>>
-    val state: Observable<LoadingState>
+    val loading: Observable<Boolean>
+    val error: Observable<Optional<ErrorType>>
     val closeApp: Observable<Unit>
     val showList: Observable<Boolean>
     val showDetails: Observable<Boolean>
 
-    enum class LoadingState { LOADING, EMPTY, ERROR, SUCCESS }
+    enum class ErrorType { NORMAL }
 }
 
 class ListLogicImpl @Inject constructor(private val restApi: RestApi, restConfig: RestConfig) : ListLogic {
     private val scope = instantiateCoroutineScope()
     private var lastJob: Job? = null
-    override val state: BehaviorRelay<ListLogic.LoadingState> = BehaviorRelay.create<ListLogic.LoadingState>()
     override val list: BehaviorRelay<List<Repository>> = BehaviorRelay.create<List<Repository>>()
+    override val loading: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
+    override val error: BehaviorRelay<Optional<ListLogic.ErrorType>> = BehaviorRelay.createDefault(Optional())
     override val closeApp: PublishRelay<Unit> = PublishRelay.create<Unit>()
     override val showList: BehaviorRelay<Boolean> = BehaviorRelay.createDefault<Boolean>(true)
     override val showDetails: BehaviorRelay<Boolean> = BehaviorRelay.createDefault<Boolean>(false)
@@ -51,15 +54,16 @@ class ListLogicImpl @Inject constructor(private val restApi: RestApi, restConfig
 
     override fun reload() {
         lastJob?.cancel()
-        state.accept(ListLogic.LoadingState.LOADING)
+        loading.accept(true)
         lastJob = scope.launch {
             try {
                 val items = restApi.getRepositories(userName)
-                state.accept(if (items.isEmpty()) ListLogic.LoadingState.EMPTY else ListLogic.LoadingState.SUCCESS)
                 list.accept(items)
             } catch (e: ApiError) {
                 list.accept(emptyList())
-                state.accept(ListLogic.LoadingState.ERROR)
+                error.accept(Optional(ListLogic.ErrorType.NORMAL))
+            } finally {
+                loading.accept(false)
             }
         }
     }

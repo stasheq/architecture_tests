@@ -8,15 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.jakewharton.rxbinding4.swiperefreshlayout.refreshes
 import com.jakewharton.rxrelay3.BehaviorRelay
+import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.list.view.*
 import kotlinx.android.synthetic.main.list_item.view.*
-import me.szymanski.arch.ViewWidget
-import me.szymanski.arch.refreshing
+import me.szymanski.arch.*
 import kotlin.collections.ArrayList
-import me.szymanski.arch.getValue
-import me.szymanski.arch.setValue
 
 class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     var items: List<ListItem> = ArrayList()
@@ -32,7 +29,7 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
         refreshLayout = reposSwipeRefresh
     }
     var refreshing: Boolean by refreshLayout::refreshing
-    val refreshAction = refreshLayout.refreshes()
+    val refreshAction: Observable<Unit> = refreshLayout.refreshes()
     val selectAction: BehaviorRelay<String> = BehaviorRelay.create<String>()
 
     inner class ListAdapter : RecyclerView.Adapter<ListAdapter.ViewHolder>() {

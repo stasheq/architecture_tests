@@ -4,12 +4,12 @@ import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.error_center.view.*
+import kotlinx.android.synthetic.main.error_bar.view.*
 import me.szymanski.arch.ViewWidget
 
-class ErrorWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
+class ErrorBar(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     private val errorView: TextView
-    override val root = inflate(ctx, R.layout.error_center, parent).apply {
+    override val root = inflate(ctx, R.layout.error_bar, parent).apply {
         errorView = reposErrorText
     }
 
