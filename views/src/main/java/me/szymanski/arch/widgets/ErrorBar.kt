@@ -17,7 +17,7 @@ class ErrorBar(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
         get() = errorView.text
         set(value) {
             errorView.text = value
-            root.isVisible = field != null
+            root.isVisible = value != null
             field = value
         }
 }

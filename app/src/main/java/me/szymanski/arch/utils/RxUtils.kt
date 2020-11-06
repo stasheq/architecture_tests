@@ -10,3 +10,10 @@ fun <T> Observable<T>.observeOnUi(disposables: CompositeDisposable, onNext: (nex
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe({ next -> onNext(next) }, { error -> throw error })
 )
+
+fun <T> Observable<T>.observeChangesOnUi(disposables: CompositeDisposable, onNext: (next: T) -> Unit) = disposables.add(
+    distinctUntilChanged()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe({ next -> onNext(next) }, { error -> throw error })
+)

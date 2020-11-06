@@ -31,5 +31,8 @@ class ApplicationModule {
             }
             Log.println(priority, tag ?: "ArchTest", message)
         }
+
+        override fun log(t: Throwable, tag: String?, level: Logger.Level) =
+            this.log("${t.javaClass.simpleName} ${t.message}", tag, level)
     }
 }

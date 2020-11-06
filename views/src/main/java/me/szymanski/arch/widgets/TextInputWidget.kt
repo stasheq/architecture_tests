@@ -16,6 +16,6 @@ class TextInputWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     override val root: View = inflate(ctx, R.layout.text_input, parent)
 
     var textValue by root.inputEditText::textValue
-    val textValueChanges: Observable<CharSequence> =
-        root.inputEditText.textChanges().debounce(50, TimeUnit.MILLISECONDS)
+    val textValueChanges: Observable<String> =
+        root.inputEditText.textChanges().debounce(50, TimeUnit.MILLISECONDS).map { it.toString() }
 }

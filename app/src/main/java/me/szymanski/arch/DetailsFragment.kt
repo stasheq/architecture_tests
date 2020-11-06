@@ -45,7 +45,7 @@ class DetailsFragment : Fragment() {
     private fun linkViewAndLogic(view: RepositoryDetails, case: DetailsLogic) {
         case.state.observeOnUi(disposables) { state ->
             view.loading = state == LOADING
-            view.errorText = if (state == ERROR) getString(R.string.error) else null
+            view.errorText = if (state == ERROR) getString(R.string.loading_details_error) else null
             view.detailsVisible = state == SUCCESS
         }
         case.result.observeOnUi(disposables) { view.title = it.name }

@@ -14,6 +14,7 @@ import me.szymanski.arch.logic.cases.DetailsLogic
 import me.szymanski.arch.logic.cases.ListLogic
 import me.szymanski.arch.logic.cases.ListLogicImpl
 import me.szymanski.arch.screens.RepositoriesList
+import me.szymanski.arch.utils.observeChangesOnUi
 import me.szymanski.arch.utils.observeOnUi
 import me.szymanski.arch.widgets.ListItem
 
@@ -43,9 +44,13 @@ class ListFragment : Fragment() {
     }
 
     private fun linkViewAndLogic(view: RepositoriesList, logic: ListLogic, detailsLogic: DetailsLogic) {
-        logic.loading.observeOnUi(disposables) { view.refreshing = it }
-        logic.error.observeOnUi(disposables) {
-            view.errorText = if (it.value != null) getString(R.string.error) else null
+        logic.loading.observeChangesOnUi(disposables) { view.refreshing = it }
+        logic.error.observeChangesOnUi(disposables) {
+            view.errorText = when (it.value) {
+                ListLogic.ErrorType.DOESNT_EXIST -> getString(R.string.loading_error_doesnt_exist)
+                ListLogic.ErrorType.OTHER -> getString(R.string.loading_error_other)
+                null -> null
+            }
         }
         logic.list
             .map { list -> list.map { ListItem(it.name, it.name, it.description) } }
@@ -55,7 +60,7 @@ class ListFragment : Fragment() {
             }
         view.userName = logic.userName
         view.refreshAction.observeOnUi(disposables) { logic.reload() }
-        view.userNameChanges.observeOnUi(disposables) { logic.userName = it.toString() }
+        view.userNameChanges.observeChangesOnUi(disposables) { logic.userName = it }
         view.selectAction.observeOnUi(disposables) { logic.itemClick(detailsLogic, it) }
     }
 }

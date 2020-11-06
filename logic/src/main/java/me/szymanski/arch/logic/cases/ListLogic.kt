@@ -4,6 +4,7 @@ import com.jakewharton.rxrelay3.BehaviorRelay
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.Logic
 import me.szymanski.arch.logic.Optional
@@ -25,7 +26,7 @@ interface ListLogic : Logic {
     val showList: Observable<Boolean>
     val showDetails: Observable<Boolean>
 
-    enum class ErrorType { NORMAL }
+    enum class ErrorType { DOESNT_EXIST, OTHER }
 }
 
 class ListLogicImpl @Inject constructor(private val restApi: RestApi, restConfig: RestConfig) : ListLogic {
@@ -56,14 +57,22 @@ class ListLogicImpl @Inject constructor(private val restApi: RestApi, restConfig
         lastJob?.cancel()
         loading.accept(true)
         lastJob = scope.launch {
+            fun loadingFinished(items: List<Repository>, errorType: ListLogic.ErrorType?) {
+                if (!isActive) return
+                list.accept(items)
+                error.accept(Optional(errorType))
+                loading.accept(false)
+            }
+
             try {
                 val items = restApi.getRepositories(userName)
-                list.accept(items)
+                loadingFinished(items, null)
             } catch (e: ApiError) {
-                list.accept(emptyList())
-                error.accept(Optional(ListLogic.ErrorType.NORMAL))
-            } finally {
-                loading.accept(false)
+                val errorType = if (e is ApiError.HttpErrorResponse && e.code == 404)
+                    ListLogic.ErrorType.DOESNT_EXIST
+                else
+                    ListLogic.ErrorType.OTHER
+                loadingFinished(emptyList(), errorType)
             }
         }
     }
