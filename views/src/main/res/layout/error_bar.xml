@@ -10,4 +10,4 @@
     android:textColor="@color/barText"
     android:textSize="@dimen/barTextSize"
     android:textStyle="bold"
-    tools:text="Bad error" />
+    tools:text="Error text" />

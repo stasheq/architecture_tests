@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import kotlinx.android.synthetic.main.screen_repos_list.view.*
 import me.szymanski.arch.ViewWidget
+import me.szymanski.arch.ViewWidget.Companion.inflate
 import me.szymanski.arch.widgets.ListWidget
 import me.szymanski.arch.getValue
 import me.szymanski.arch.setValue

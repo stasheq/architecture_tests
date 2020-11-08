@@ -16,7 +16,7 @@ import me.szymanski.arch.logic.cases.ListLogicImpl
 import me.szymanski.arch.screens.RepositoriesList
 import me.szymanski.arch.utils.observeChangesOnUi
 import me.szymanski.arch.utils.observeOnUi
-import me.szymanski.arch.widgets.ListItem
+import me.szymanski.arch.widgets.ListItemData
 
 class ListViewModel @ViewModelInject constructor(logic: ListLogicImpl) : LogicViewModel<ListLogic>(logic)
 
@@ -53,7 +53,7 @@ class ListFragment : Fragment() {
             }
         }
         logic.list
-            .map { list -> list.map { ListItem(it.name, it.name, it.description) } }
+            .map { list -> list.map { ListItemData(it.name, it.name, it.description) } }
             .observeOnUi(disposables) { result ->
                 view.emptyText = if (result.isEmpty()) getString(R.string.empty_list) else null
                 view.items = result

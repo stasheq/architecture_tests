@@ -7,6 +7,7 @@ import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.text_input.view.*
 import me.szymanski.arch.ViewWidget
+import me.szymanski.arch.ViewWidget.Companion.inflate
 import me.szymanski.arch.textValue
 import me.szymanski.arch.getValue
 import me.szymanski.arch.setValue
@@ -17,5 +18,5 @@ class TextInputWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
 
     var textValue by root.inputEditText::textValue
     val textValueChanges: Observable<String> =
-        root.inputEditText.textChanges().debounce(50, TimeUnit.MILLISECONDS).map { it.toString() }
+        root.inputEditText.textChanges().debounce(1000, TimeUnit.MILLISECONDS).map { it.toString() }
 }

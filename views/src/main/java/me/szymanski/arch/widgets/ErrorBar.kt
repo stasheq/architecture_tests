@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.error_bar.view.*
 import me.szymanski.arch.ViewWidget
+import me.szymanski.arch.ViewWidget.Companion.inflate
 
 class ErrorBar(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     private val errorView: TextView

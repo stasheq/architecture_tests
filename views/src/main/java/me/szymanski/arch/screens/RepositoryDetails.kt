@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.screen_repo_details.view.*
 import me.szymanski.arch.ViewWidget
+import me.szymanski.arch.ViewWidget.Companion.inflate
 import me.szymanski.arch.getValue
 import me.szymanski.arch.setValue
 import me.szymanski.arch.textValue

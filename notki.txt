@@ -1,4 +1,3 @@
-dlaczego nie pokazuje się error od razu?
 dodać paging
 dodać testy do logic
 podpicować ui

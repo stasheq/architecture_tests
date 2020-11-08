@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.frame_double.view.*
 import me.szymanski.arch.ViewWidget
+import me.szymanski.arch.ViewWidget.Companion.inflate
 
 class FrameDouble(ctx: Context) : ViewWidget {
 
