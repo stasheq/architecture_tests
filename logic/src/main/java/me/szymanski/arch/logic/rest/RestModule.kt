@@ -26,7 +26,7 @@ open class RestModule {
         val loggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
             override fun log(message: String) = logger.log(message)
         })
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(loggingInterceptor)

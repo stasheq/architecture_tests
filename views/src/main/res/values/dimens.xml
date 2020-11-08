@@ -5,4 +5,5 @@
     <dimen name="inputTextSize">18sp</dimen>
     <dimen name="titleTextSize">18sp</dimen>
     <dimen name="descriptionTextSize">16sp</dimen>
+    <dimen name="listItemPadding">15dp</dimen>
 </resources>

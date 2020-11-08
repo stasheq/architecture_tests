@@ -6,13 +6,13 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.screen_repos_list.view.*
 import me.szymanski.arch.ViewWidget
 import me.szymanski.arch.ViewWidget.Companion.inflate
-import me.szymanski.arch.widgets.ListWidget
 import me.szymanski.arch.getValue
 import me.szymanski.arch.setValue
 import me.szymanski.arch.textValue
 import me.szymanski.arch.widgets.ErrorBar
 import me.szymanski.arch.widgets.R
 import me.szymanski.arch.widgets.TextInputWidget
+import me.szymanski.arch.widgets.list.ListWidget
 
 class RepositoriesList(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
 
@@ -39,4 +39,7 @@ class RepositoriesList(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     val refreshAction = listWidget.refreshAction
     val selectAction = listWidget.selectAction
     val userNameChanges = userNameInput.textValueChanges
+    var hasNextPage by listWidget::loadingNextPageIndicator
+    val loadNextPageAction = listWidget.loadNextPageAction
+    var lastItemMessage by listWidget::lastItemMessage
 }

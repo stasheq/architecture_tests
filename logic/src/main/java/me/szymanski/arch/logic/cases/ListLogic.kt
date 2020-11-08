@@ -31,6 +31,8 @@ interface ListLogic : Logic {
 
 class ListLogicImpl @Inject constructor(private val restApi: RestApi, restConfig: RestConfig) : ListLogic {
     private val scope = instantiateCoroutineScope()
+    private val firstPage = 1
+    private var currentPage = firstPage
     private var lastJob: Job? = null
     override val list: BehaviorRelay<List<Repository>> = BehaviorRelay.create<List<Repository>>()
     override val loading: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
@@ -65,7 +67,8 @@ class ListLogicImpl @Inject constructor(private val restApi: RestApi, restConfig
             }
 
             try {
-                val items = restApi.getRepositories(userName)
+                currentPage = firstPage
+                val items = restApi.getRepositories(userName, currentPage)
                 loadingFinished(items, null)
             } catch (e: ApiError) {
                 val errorType = if (e is ApiError.HttpErrorResponse && e.code == 404)

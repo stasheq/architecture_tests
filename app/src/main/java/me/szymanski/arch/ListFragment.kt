@@ -16,7 +16,7 @@ import me.szymanski.arch.logic.cases.ListLogicImpl
 import me.szymanski.arch.screens.RepositoriesList
 import me.szymanski.arch.utils.observeChangedOnUi
 import me.szymanski.arch.utils.observeOnUi
-import me.szymanski.arch.widgets.ListItemData
+import me.szymanski.arch.widgets.list.ListItemData
 
 class ListViewModel @ViewModelInject constructor(logic: ListLogicImpl) : LogicViewModel<ListLogic>(logic)
 
@@ -62,5 +62,7 @@ class ListFragment : Fragment() {
         view.refreshAction.observeOnUi(disposables) { logic.reload() }
         view.userNameChanges.observeChangedOnUi(disposables) { logic.userName = it }
         view.selectAction.observeOnUi(disposables) { logic.itemClick(detailsLogic, it) }
+        view.hasNextPage = true
+        view.loadNextPageAction.observeOnUi(disposables) { log("Shown next page loading") }
     }
 }

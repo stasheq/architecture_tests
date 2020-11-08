@@ -11,7 +11,8 @@ class RestApi @Inject constructor(
     private val logger: Logger
 ) {
 
-    suspend fun getRepositories(user: String) = call { service.getRepositoriesList(user, restConfig.limit) }
+    suspend fun getRepositories(user: String, page: Int) =
+        call { service.getRepositoriesList(user, restConfig.limit, page) }
 
     suspend fun getRepository(user: String, repoName: String) = call { service.getRepositoryDetails(user, repoName) }
 

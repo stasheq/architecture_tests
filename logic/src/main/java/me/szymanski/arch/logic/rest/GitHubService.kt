@@ -8,7 +8,8 @@ interface GitHubService {
     @GET("users/{user}/repos")
     suspend fun getRepositoriesList(
         @Path("user") user: String,
-        @Query("per_page") limit: Int
+        @Query("per_page") limit: Int,
+        @Query("page") page: Int
     ): List<Repository>
 
     @GET("repos/{user}/{repo}")
