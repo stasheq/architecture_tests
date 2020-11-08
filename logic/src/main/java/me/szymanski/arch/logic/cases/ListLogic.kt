@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import me.szymanski.arch.logic.Logger
 import me.szymanski.arch.logic.Logic
 import me.szymanski.arch.logic.Optional
 import me.szymanski.arch.logic.rest.ApiError
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 interface ListLogic : Logic {
     fun reload()
+    fun loadNextPage()
     fun itemClick(detailsLogic: DetailsLogic, repositoryName: String?)
     var userName: String
     var wideScreen: Boolean
@@ -25,12 +27,18 @@ interface ListLogic : Logic {
     val closeApp: Observable<Unit>
     val showList: Observable<Boolean>
     val showDetails: Observable<Boolean>
+    val hasNextPage: Observable<Boolean>
 
     enum class ErrorType { DOESNT_EXIST, OTHER }
 }
 
-class ListLogicImpl @Inject constructor(private val restApi: RestApi, restConfig: RestConfig) : ListLogic {
+class ListLogicImpl @Inject constructor(
+    private val restApi: RestApi,
+    private val restConfig: RestConfig,
+    private val logger: Logger
+) : ListLogic {
     private val scope = instantiateCoroutineScope()
+    private val loadedItems = ArrayList<Repository>()
     private val firstPage = 1
     private var currentPage = firstPage
     private var lastJob: Job? = null
@@ -40,6 +48,7 @@ class ListLogicImpl @Inject constructor(private val restApi: RestApi, restConfig
     override val closeApp: PublishRelay<Unit> = PublishRelay.create<Unit>()
     override val showList: BehaviorRelay<Boolean> = BehaviorRelay.createDefault<Boolean>(true)
     override val showDetails: BehaviorRelay<Boolean> = BehaviorRelay.createDefault<Boolean>(false)
+    override val hasNextPage: BehaviorRelay<Boolean> = BehaviorRelay.createDefault<Boolean>(false)
     override var userName = restConfig.defaultUser
         set(value) {
             if (field == value) return
@@ -58,17 +67,29 @@ class ListLogicImpl @Inject constructor(private val restApi: RestApi, restConfig
     override fun reload() {
         lastJob?.cancel()
         loading.accept(true)
+        currentPage = firstPage
+        loadedItems.clear()
+        loadNextPage()
+    }
+
+    override fun loadNextPage() {
+        if (lastJob?.isActive == true) {
+            logger.log("Not loading next page because previous loading is not finished")
+            return
+        }
         lastJob = scope.launch {
             fun loadingFinished(items: List<Repository>, errorType: ListLogic.ErrorType?) {
                 if (!isActive) return
-                list.accept(items)
+                loadedItems.addAll(items)
+                list.accept(loadedItems)
                 error.accept(Optional(errorType))
                 loading.accept(false)
+                hasNextPage.accept(items.size == restConfig.limit)
             }
 
             try {
-                currentPage = firstPage
                 val items = restApi.getRepositories(userName, currentPage)
+                currentPage++
                 loadingFinished(items, null)
             } catch (e: ApiError) {
                 val errorType = if (e is ApiError.HttpErrorResponse && e.code == 404)

@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.list.view.*
 import me.szymanski.arch.*
 import me.szymanski.arch.ViewWidget.Companion.inflate
 import me.szymanski.arch.widgets.R
-import kotlin.collections.ArrayList
 
 class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     var items: List<ListItemData> = ArrayList()
@@ -24,7 +23,14 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     private val refreshLayout: SwipeRefreshLayout
     override val root: View = inflate(ctx, R.layout.list, parent).apply {
         reposRecycler.adapter = adapter
-        reposRecycler.layoutManager = LinearLayoutManager(ctx, RecyclerView.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(ctx, RecyclerView.VERTICAL, false)
+        reposRecycler.layoutManager = layoutManager
+        reposRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val lastPos = layoutManager.findLastVisibleItemPosition()
+                if (adapter.getItemViewType(lastPos) == typeLoading) loadNextPageAction.accept(Unit)
+            }
+        })
         refreshLayout = reposSwipeRefresh
     }
     var refreshing: Boolean by refreshLayout::refreshing
@@ -51,11 +57,13 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
             if (changed) adapter.notifyItemChanged(items.size)
         }
 
-    inner class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        private val typeItem = 0
-        private val typeLoading = 1
-        private val typeMessage = 2
+    companion object {
+        private const val typeItem = 0
+        private const val typeLoading = 1
+        private const val typeMessage = 2
+    }
 
+    inner class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         init {
             setHasStableIds(true)
         }
@@ -74,6 +82,13 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
             else -> throw IllegalArgumentException("Can't create ViewHolder for type $viewType")
         }
 
+        override fun getItemId(position: Int): Long = when (getItemViewType(position)) {
+            typeItem -> items[position].id.hashCode().toLong()
+            typeLoading -> Int.MAX_VALUE.toLong() + typeLoading.toLong()
+            typeMessage -> Int.MAX_VALUE.toLong() + typeMessage.toLong()
+            else -> throw IllegalArgumentException("Can't find type for position $position for id calculation")
+        }
+
         override fun getItemCount() = items.size +
                 (if (loadingNextPageIndicator || lastItemMessage != null) 1 else 0)
 
@@ -81,7 +96,6 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
             when (holder) {
                 is ListItem -> holder.bind(items[position]) { selectAction.accept(it) }
                 is ListMessageItem -> lastItemMessage?.let { holder.bind(it) }
-                is ListLoadingItem -> loadNextPageAction.accept(Unit)
             }
         }
     }

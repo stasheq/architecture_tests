@@ -1,19 +1,35 @@
 package me.szymanski.arch.utils
 
+import android.content.Context
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import me.szymanski.arch.log
 
-fun <T> Observable<T>.observeOnUi(disposables: CompositeDisposable, onNext: (next: T) -> Unit) = disposables.add(
-    subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe({ next -> onNext(next) }, { error -> throw error })
-)
+interface WithDisposables {
+    var disposables: CompositeDisposable
+}
 
-fun <T> Observable<T>.observeChangedOnUi(disposables: CompositeDisposable, onNext: (next: T) -> Unit) = disposables.add(
-    distinctUntilChanged()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe({ next -> onNext(next) }, { error -> throw error })
-)
+interface WithContext {
+    val ctx: Context
+}
+
+interface AndroidScreen : WithContext, WithDisposables {
+    fun <T> Observable<T>.observeOnUi(logName: String = "", onNext: (next: T) -> Unit) =
+        disposables.add(subscribe(logName, onNext))
+
+    fun <T> Observable<T>.observeChangedOnUi(logName: String = "", onNext: (next: T) -> Unit) =
+        disposables.add(
+            distinctUntilChanged().subscribe(logName, onNext)
+        )
+
+    private fun <T> Observable<T>.subscribe(logName: String = "", onNext: (next: T) -> Unit): Disposable =
+        subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ next ->
+                ctx.log("Received: $next $logName")
+                onNext(next)
+            }, { error -> throw error })
+}

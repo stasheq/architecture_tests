@@ -1,5 +1,6 @@
 package me.szymanski.arch
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,15 +17,16 @@ import me.szymanski.arch.logic.cases.DetailsLogic.LoadingState.ERROR
 import me.szymanski.arch.logic.cases.DetailsLogic.LoadingState.SUCCESS
 import me.szymanski.arch.logic.cases.DetailsLogic
 import me.szymanski.arch.logic.cases.DetailsLogicImpl
-import me.szymanski.arch.utils.observeOnUi
+import me.szymanski.arch.utils.AndroidScreen
 
 class DetailsViewModel @ViewModelInject constructor(logic: DetailsLogicImpl) : LogicViewModel<DetailsLogic>(logic)
 
 @AndroidEntryPoint
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(), AndroidScreen {
     private val viewModel: DetailsViewModel by activityViewModels()
     private lateinit var view: RepositoryDetails
-    private var disposables = CompositeDisposable()
+    override var disposables = CompositeDisposable()
+    override val ctx: Context by lazy { requireContext() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view = RepositoryDetails(inflater.context, container)
@@ -43,12 +45,12 @@ class DetailsFragment : Fragment() {
     }
 
     private fun linkViewAndLogic(view: RepositoryDetails, case: DetailsLogic) {
-        case.state.observeOnUi(disposables) { state ->
+        case.state.observeOnUi { state ->
             view.loading = state == LOADING
             view.errorText = if (state == ERROR) getString(R.string.loading_details_error) else null
             view.detailsVisible = state == SUCCESS
         }
-        case.result.observeOnUi(disposables) { view.title = it.name }
+        case.result.observeOnUi { view.title = it.name }
         case.reload()
     }
 }
