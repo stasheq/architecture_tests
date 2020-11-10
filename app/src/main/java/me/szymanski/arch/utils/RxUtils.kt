@@ -17,19 +17,17 @@ interface WithContext {
 }
 
 interface AndroidScreen : WithContext, WithDisposables {
-    fun <T> Observable<T>.observeOnUi(logName: String = "", onNext: (next: T) -> Unit) =
-        disposables.add(subscribe(logName, onNext))
+    fun <T> Observable<T>.observeOnUi(onNext: (next: T) -> Unit) =
+        disposables.add(subscribeOnUi(onNext))
 
-    fun <T> Observable<T>.observeChangedOnUi(logName: String = "", onNext: (next: T) -> Unit) =
-        disposables.add(
-            distinctUntilChanged().subscribe(logName, onNext)
-        )
+    fun <T> Observable<T>.observeChangedOnUi(onNext: (next: T) -> Unit) =
+        disposables.add(distinctUntilChanged().subscribeOnUi(onNext))
 
-    private fun <T> Observable<T>.subscribe(logName: String = "", onNext: (next: T) -> Unit): Disposable =
+    private fun <T> Observable<T>.subscribeOnUi(onNext: (next: T) -> Unit): Disposable =
         subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ next ->
-                ctx.log("Received: $next $logName")
+                ctx.log("Received: $next")
                 onNext(next)
             }, { error -> throw error })
 }

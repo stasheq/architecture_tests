@@ -64,15 +64,16 @@ class ListLogicImpl @Inject constructor(
             field = value
         }
 
-    override fun reload() {
-        lastJob?.cancel()
-        loading.accept(true)
-        currentPage = firstPage
-        loadedItems.clear()
-        loadNextPage()
-    }
+    override fun reload() = loadNextPage(true)
 
-    override fun loadNextPage() {
+    override fun loadNextPage() = loadNextPage(false)
+
+    private fun loadNextPage(fromFirstPage: Boolean = false) {
+        if (fromFirstPage) {
+            lastJob?.cancel()
+            loading.accept(true)
+            currentPage = firstPage
+        }
         if (lastJob?.isActive == true) {
             logger.log("Not loading next page because previous loading is not finished")
             return
@@ -80,6 +81,7 @@ class ListLogicImpl @Inject constructor(
         lastJob = scope.launch {
             fun loadingFinished(items: List<Repository>, errorType: ListLogic.ErrorType?) {
                 if (!isActive) return
+                if (fromFirstPage && errorType == null) loadedItems.clear()
                 loadedItems.addAll(items)
                 list.accept(loadedItems)
                 error.accept(Optional(errorType))

@@ -1,3 +1,2 @@
-info ze pustei ze koniec na elemencie, i ze blad po kolejnej stronie?
 dodać testy do logic
 podpicować ui

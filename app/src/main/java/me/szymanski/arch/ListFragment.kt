@@ -57,15 +57,14 @@ class ListFragment : Fragment(), AndroidScreen {
         logic.list
             .map { list -> list.map { ListItemData(it.name, it.name, it.description) } }
             .observeOnUi { result ->
-                view.emptyText = if (result.isEmpty()) getString(R.string.empty_list) else null
+                view.lastItemMessage = if (result.isEmpty()) getString(R.string.empty_list) else null
                 view.items = result
             }
-        logic.hasNextPage.observeChangedOnUi("hasNextPage") { view.hasNextPage = it }
+        logic.hasNextPage.observeChangedOnUi { view.hasNextPage = it }
         view.userName = logic.userName
         view.refreshAction.observeOnUi { logic.reload() }
         view.userNameChanges.observeChangedOnUi { logic.userName = it }
         view.selectAction.observeOnUi { logic.itemClick(detailsLogic, it) }
-        view.loadNextPageAction.debounce(500, TimeUnit.MILLISECONDS)
-            .observeOnUi("loadNextPageAction") { logic.loadNextPage() }
+        view.loadNextPageAction.debounce(500, TimeUnit.MILLISECONDS).observeOnUi { logic.loadNextPage() }
     }
 }
