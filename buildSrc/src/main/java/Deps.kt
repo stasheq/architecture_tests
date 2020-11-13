@@ -22,4 +22,5 @@ object Deps {
     const val constraintLayout = "2.0.1"
     const val swipeRefreshLayout = "1.1.0"
     const val recyclerView = "1.1.0"
+    const val kotest = "4.3.1"
 }
