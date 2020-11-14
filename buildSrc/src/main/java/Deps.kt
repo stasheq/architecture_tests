@@ -10,7 +10,7 @@ object Deps {
     const val retrofit = "2.9.0"
     const val dagger = "2.28.3"
     const val hilt = "2.28.3-alpha"
-    const val okhttpLoggingInterceptor = "4.8.1"
+    const val okhttp = "4.9.0"
     const val androidAppCompat = "1.2.0"
     const val rxJava = "3.0.5"
     const val rxRelay = "3.0.0"

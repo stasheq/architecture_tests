@@ -4,17 +4,19 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldNotBe
 import me.szymanski.arch.logic.Optional
 import me.szymanski.arch.logic.cases.ListLogic
+import me.szymanski.arch.logic.rest.RestConfig
 import me.szymanski.arch.logic.test.di.DaggerTestComponent
-import javax.inject.Inject
-
-class LogicContainer {
-    @Inject
-    lateinit var listLogic: ListLogic
-}
+import okhttp3.mockwebserver.MockWebServer
 
 class ListTest : FreeSpec({
     "On init" - {
-        val logic = LogicContainer().apply { DaggerTestComponent.builder().build().inject(this) }.listLogic
+        val server = MockWebServer()
+        server.start()
+        val restConfig = RestConfig(server.url("").toString(), "user", 5)
+
+        val logic = DaggerTestComponent.builder()
+            .restConfig(restConfig)
+            .build().getListLogic()
         logic shouldNotBe null
         logic.create()
         val loading = logic.loading.test()
@@ -30,7 +32,7 @@ class ListTest : FreeSpec({
         "no error" { error.assertLast(Optional<ListLogic.ErrorType>(null)) }
         "app alive" { close.assertNoValues() }
         "list shown" { showList.assertLast(true) }
-        "detailsShown" { showDetails.assertLast(false) }
+        "details not shown" { showDetails.assertLast(false) }
         "has next page" { hasNextPage.assertLast(false) }
     }
 })

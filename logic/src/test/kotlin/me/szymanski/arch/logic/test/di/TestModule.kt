@@ -5,13 +5,9 @@ import dagger.Provides
 import me.szymanski.arch.logic.Logger
 import me.szymanski.arch.logic.cases.ListLogic
 import me.szymanski.arch.logic.cases.ListLogicImpl
-import me.szymanski.arch.logic.rest.RestConfig
 
 @Module
 class TestModule {
-    @Provides
-    fun restConfig(): RestConfig = RestConfig("https://some-bad-url.com", "user", 20)
-
     @Provides
     fun logger(): Logger = object : Logger {
         override fun log(message: String, tag: String?, level: Logger.Level) {
