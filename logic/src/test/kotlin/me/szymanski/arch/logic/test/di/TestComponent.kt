@@ -2,6 +2,7 @@ package me.szymanski.arch.logic.test.di
 
 import dagger.Component
 import me.szymanski.arch.logic.rest.RestModule
+import me.szymanski.arch.logic.test.LogicContainer
 import javax.inject.Singleton
 
 @Singleton
