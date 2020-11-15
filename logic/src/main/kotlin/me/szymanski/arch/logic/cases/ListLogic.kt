@@ -44,11 +44,11 @@ class ListLogicImpl @Inject constructor(
     private var lastJob: Job? = null
     override val list: BehaviorRelay<List<Repository>> = BehaviorRelay.create<List<Repository>>()
     override val loading: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
-    override val error: BehaviorRelay<Optional<ListLogic.ErrorType>> = BehaviorRelay.createDefault(Optional())
+    override val error: BehaviorRelay<Optional<ListLogic.ErrorType>> = BehaviorRelay.create()
     override val closeApp: PublishRelay<Unit> = PublishRelay.create<Unit>()
     override val showList: BehaviorRelay<Boolean> = BehaviorRelay.createDefault<Boolean>(true)
     override val showDetails: BehaviorRelay<Boolean> = BehaviorRelay.createDefault<Boolean>(false)
-    override val hasNextPage: BehaviorRelay<Boolean> = BehaviorRelay.createDefault<Boolean>(false)
+    override val hasNextPage: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
     override var userName = restConfig.defaultUser
         set(value) {
             if (field == value) return
@@ -86,7 +86,7 @@ class ListLogicImpl @Inject constructor(
                 list.accept(loadedItems)
                 error.accept(Optional(errorType))
                 loading.accept(false)
-                hasNextPage.accept(items.size == restConfig.limit)
+                hasNextPage.accept(items.size == restConfig.pageLimit)
             }
 
             try {

@@ -16,7 +16,12 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideRestConfig(): RestConfig = RestConfig("https://api.github.com/", "google", 20)
+    fun provideRestConfig(): RestConfig = RestConfig(
+        baseUrl = "https://api.github.com/",
+        defaultUser = "google",
+        pageLimit = 20,
+        callTimeout = 5000
+    )
 
     @Provides
     @Singleton

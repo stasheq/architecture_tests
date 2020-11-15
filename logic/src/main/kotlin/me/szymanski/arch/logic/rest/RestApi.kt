@@ -12,7 +12,7 @@ class RestApi @Inject constructor(
 ) {
 
     suspend fun getRepositories(user: String, page: Int) =
-        call { service.getRepositoriesList(user, restConfig.limit, page) }
+        call { service.getRepositoriesList(user, restConfig.pageLimit, page) }
 
     suspend fun getRepository(user: String, repoName: String) = call { service.getRepositoryDetails(user, repoName) }
 

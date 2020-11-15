@@ -12,13 +12,18 @@ class ListTest : FreeSpec({
     "On init" - {
         val server = MockWebServer()
         server.start()
-        val restConfig = RestConfig(server.url("").toString(), "user", 5)
+        val restConfig = RestConfig(
+            baseUrl = server.url("").toString(),
+            defaultUser = "user",
+            limit = 5,
+            callTimeout = 500
+        )
 
         val logic = DaggerTestComponent.builder()
             .restConfig(restConfig)
             .build().getListLogic()
         logic shouldNotBe null
-        logic.create()
+
         val loading = logic.loading.test()
         val list = logic.list.test()
         val error = logic.error.test()
@@ -27,12 +32,22 @@ class ListTest : FreeSpec({
         val showDetails = logic.showDetails.test()
         val hasNextPage = logic.hasNextPage.test()
 
-        "is loading"  { loading.assertLast(true) }
+        "loading not started"  { loading.assertNoValues() }
         "has no items yet" { list.assertNoValues() }
-        "no error" { error.assertLast(Optional<ListLogic.ErrorType>(null)) }
+        "no error" { error.assertNoValues() }
         "app alive" { close.assertNoValues() }
         "list shown" { showList.assertLast(true) }
         "details not shown" { showDetails.assertLast(false) }
-        "has next page" { hasNextPage.assertLast(false) }
+        "next page not known" { hasNextPage.assertNoValues() }
+
+        "On started" - {
+            logic.create()
+            "is loading" { loading.assertLast(true) }
+            "On first response" - {
+                error.awaitCount(1)
+                "received error" { error.assertLast(Optional(ListLogic.ErrorType.OTHER)) }
+                "is not loading" { loading.assertLast(false) }
+            }
+        }
     }
 })
