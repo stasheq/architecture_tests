@@ -15,7 +15,7 @@ class ListTest : FreeSpec({
         val restConfig = RestConfig(
             baseUrl = server.url("").toString(),
             defaultUser = "user",
-            limit = 5,
+            pageLimit = 5,
             callTimeout = 500
         )
 
@@ -45,7 +45,7 @@ class ListTest : FreeSpec({
             "is loading" { loading.assertLast(true) }
             "On first response" - {
                 error.awaitCount(1)
-                "received error" { error.assertLast(Optional(ListLogic.ErrorType.OTHER)) }
+                "received error" { error.assertLast(Optional(ListLogic.ErrorType.NO_CONNECTION)) }
                 "is not loading" { loading.assertLast(false) }
             }
         }

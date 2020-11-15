@@ -21,6 +21,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Deps.coroutines}")
     implementation("com.squareup.retrofit2:retrofit:${Deps.retrofit}")
     implementation("com.squareup.retrofit2:converter-gson:${Deps.retrofit}")
+    implementation("com.squareup.okhttp3:okhttp:${Deps.okhttp}")
     implementation("com.squareup.okhttp3:logging-interceptor:${Deps.okhttp}")
     implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJava}")
     implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelay}")

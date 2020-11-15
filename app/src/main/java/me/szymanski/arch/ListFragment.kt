@@ -49,8 +49,8 @@ class ListFragment : Fragment(), AndroidScreen {
         logic.loading.observeChangedOnUi { view.refreshing = it }
         logic.error.observeChangedOnUi {
             view.errorText = when (it.value) {
-                ListLogic.ErrorType.DOESNT_EXIST -> getString(R.string.loading_error_doesnt_exist)
-                ListLogic.ErrorType.OTHER -> getString(R.string.loading_error_other)
+                ListLogic.ErrorType.USER_DOESNT_EXIST -> getString(R.string.loading_error_doesnt_exist)
+                ListLogic.ErrorType.NO_CONNECTION, ListLogic.ErrorType.OTHER -> getString(R.string.loading_error_other)
                 null -> null
             }
         }

@@ -75,6 +75,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-extensions:${Deps.androidLifecycle}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Deps.viewModelKtx}")
     implementation("androidx.hilt:hilt-lifecycle-viewmodel:${Deps.lifecycleHilt}")
+    implementation("com.squareup.okhttp3:okhttp:${Deps.okhttp}")
     implementation("io.reactivex.rxjava3:rxandroid:${Deps.rxAndroid}")
     implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJava}")
     implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelay}")

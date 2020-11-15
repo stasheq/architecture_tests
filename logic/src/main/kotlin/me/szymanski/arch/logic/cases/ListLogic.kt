@@ -29,7 +29,7 @@ interface ListLogic : Logic {
     val showDetails: Observable<Boolean>
     val hasNextPage: Observable<Boolean>
 
-    enum class ErrorType { DOESNT_EXIST, OTHER }
+    enum class ErrorType { USER_DOESNT_EXIST, NO_CONNECTION, OTHER }
 }
 
 class ListLogicImpl @Inject constructor(
@@ -94,10 +94,11 @@ class ListLogicImpl @Inject constructor(
                 currentPage++
                 loadingFinished(items, null)
             } catch (e: ApiError) {
-                val errorType = if (e is ApiError.HttpErrorResponse && e.code == 404)
-                    ListLogic.ErrorType.DOESNT_EXIST
-                else
-                    ListLogic.ErrorType.OTHER
+                val errorType = when {
+                    e is ApiError.HttpErrorResponse && e.code == 404 -> ListLogic.ErrorType.USER_DOESNT_EXIST
+                    e is ApiError.NoConnection -> ListLogic.ErrorType.NO_CONNECTION
+                    else -> ListLogic.ErrorType.OTHER
+                }
                 loadingFinished(emptyList(), errorType)
             }
         }

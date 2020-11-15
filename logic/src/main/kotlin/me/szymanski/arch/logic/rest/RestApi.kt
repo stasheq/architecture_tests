@@ -2,6 +2,7 @@ package me.szymanski.arch.logic.rest
 
 import me.szymanski.arch.logic.Logger
 import retrofit2.HttpException
+import java.io.IOException
 import java.util.concurrent.CancellationException
 import javax.inject.Inject
 
@@ -25,6 +26,9 @@ class RestApi @Inject constructor(
         } catch (e: HttpException) {
             logger.log(e, level = Logger.Level.DEBUG)
             throw ApiError.HttpErrorResponse(e, e.code())
+        } catch (e: IOException) {
+            logger.log(e, level = Logger.Level.DEBUG)
+            throw ApiError.NoConnection(e)
         } catch (e: Throwable) {
             logger.log(e, level = Logger.Level.DEBUG)
             throw ApiError.UnknownError(e)
