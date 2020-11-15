@@ -1,2 +1,2 @@
-dodać testy do logic
+kotest coś szaleje. zobaczyć coś innego
 podpicować ui

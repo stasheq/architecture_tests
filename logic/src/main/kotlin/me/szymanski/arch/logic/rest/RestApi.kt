@@ -2,7 +2,8 @@ package me.szymanski.arch.logic.rest
 
 import me.szymanski.arch.logic.Logger
 import retrofit2.HttpException
-import java.io.IOException
+import java.io.InterruptedIOException
+import java.net.UnknownHostException
 import java.util.concurrent.CancellationException
 import javax.inject.Inject
 
@@ -26,7 +27,10 @@ class RestApi @Inject constructor(
         } catch (e: HttpException) {
             logger.log(e, level = Logger.Level.DEBUG)
             throw ApiError.HttpErrorResponse(e, e.code())
-        } catch (e: IOException) {
+        } catch (e: InterruptedIOException) {
+            logger.log(e, level = Logger.Level.DEBUG)
+            throw ApiError.NoConnection(e)
+        } catch (e: UnknownHostException) {
             logger.log(e, level = Logger.Level.DEBUG)
             throw ApiError.NoConnection(e)
         } catch (e: Throwable) {

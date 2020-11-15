@@ -40,13 +40,30 @@ class ListTest : FreeSpec({
         "details not shown" { showDetails.assertLast(false) }
         "next page not known" { hasNextPage.assertNoValues() }
 
-        "On started" - {
+        "On started with unsupported response" - {
+            server.dispatch("/users/user/repos" to "Unsupported Format Response")
             logic.create()
-            "is loading" { loading.assertLast(true) }
-            "On first response" - {
-                error.awaitCount(1)
-                "received error" { error.assertLast(Optional(ListLogic.ErrorType.NO_CONNECTION)) }
-                "is not loading" { loading.assertLast(false) }
+            error.awaitCount(1)
+            "finished loading" { loading.containsValue(true); loading.assertLast(false) }
+            "received error" { error.assertLast(Optional(ListLogic.ErrorType.OTHER)) }
+        }
+
+        "On started with not found response" - {
+            server.dispatch("/users/user/repos" to 404)
+            logic.create()
+            error.awaitCount(1)
+            "finished loading" { loading.containsValue(true); loading.assertLast(false) }
+            "received error" { error.assertLast(Optional(ListLogic.ErrorType.USER_DOESNT_EXIST)) }
+        }
+
+        "On started with no connection" - {
+            server.shutdown()
+            logic.create()
+            error.awaitCount(1)
+            "finished loading" { loading.containsValue(true); loading.assertLast(false) }
+            "received error" {
+                val oo = error.values()
+                error.assertLast(Optional(ListLogic.ErrorType.NO_CONNECTION))
             }
         }
     }
