@@ -1,2 +1,1 @@
-kotest coś szaleje. zobaczyć coś innego
 podpicować ui
