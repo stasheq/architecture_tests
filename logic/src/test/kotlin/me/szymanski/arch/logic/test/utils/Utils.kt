@@ -1,15 +1,9 @@
-package me.szymanski.arch.logic.test
+package me.szymanski.arch.logic.test.utils
 
 import io.reactivex.rxjava3.observers.TestObserver
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
-import org.junit.jupiter.api.Assertions
+import okhttp3.mockwebserver.*
 
-fun <T> TestObserver<T>.assertLast(value: T) = Assertions.assertEquals(value, values().last())
-
-fun <T> TestObserver<T>.containsValue(value: T) = Assertions.assertTrue(values().contains(value))
+fun <T> TestObserver<T>.last(): T = values().last()
 
 fun MockWebServer.dispatch(vararg pairs: Pair<String, Any>) {
     val map = hashMapOf(*pairs)
@@ -19,11 +13,24 @@ fun MockWebServer.dispatch(vararg pairs: Pair<String, Any>) {
             println("Request path: $path")
             val response = map[path]
             return MockResponse().apply {
+                socketPolicy = SocketPolicy.DISCONNECT_AT_END
                 when (response) {
                     is String -> setBody(response)
                     is Int -> setResponseCode(response)
                     else -> setResponseCode(404)
                 }
+            }
+        }
+    }
+}
+
+fun MockWebServer.noConnection() {
+    dispatcher = object : Dispatcher() {
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            val path = request.path?.substringBeforeLast("?")
+            println("Request path: $path")
+            return MockResponse().apply {
+                socketPolicy = SocketPolicy.NO_RESPONSE
             }
         }
     }

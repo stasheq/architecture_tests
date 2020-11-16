@@ -3,6 +3,8 @@ package me.szymanski.arch.logic.test.di
 import dagger.Module
 import dagger.Provides
 import me.szymanski.arch.logic.Logger
+import me.szymanski.arch.logic.cases.DetailsLogic
+import me.szymanski.arch.logic.cases.DetailsLogicImpl
 import me.szymanski.arch.logic.cases.ListLogic
 import me.szymanski.arch.logic.cases.ListLogicImpl
 
@@ -24,4 +26,7 @@ class TestModule {
 
     @Provides
     fun listLogic(logic: ListLogicImpl): ListLogic = logic
+
+    @Provides
+    fun detailsLogic(logic: DetailsLogicImpl): DetailsLogic = logic
 }
