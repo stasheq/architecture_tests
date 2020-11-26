@@ -1,19 +1,18 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
 }
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion("30.0.2")
+    compileSdkVersion(Config.targetSDK)
+    buildToolsVersion(Config.buildTools)
 
     defaultConfig {
         applicationId = "me.szymanski.arch"
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdkVersion(Config.minSDK)
+        targetSdkVersion(Config.targetSDK)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

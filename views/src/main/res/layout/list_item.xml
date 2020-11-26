@@ -5,6 +5,7 @@
     android:id="@+id/itemClickArea"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/ripple"
     android:paddingLeft="@dimen/listItemPadding"
     android:paddingRight="@dimen/listItemPadding">
 
@@ -15,6 +16,7 @@
         android:layout_marginTop="15dp"
         android:textColor="@color/text"
         android:textSize="@dimen/titleTextSize"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Repo title" />
 
@@ -23,7 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:textColor="@color/text"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textColor="@color/textSecondary"
         android:textSize="@dimen/descriptionTextSize"
         app:layout_constraintTop_toBottomOf="@id/itemTitle"
         tools:text="Repo interesting description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sagittis sit amet ipsum vitae consequat." />

@@ -1,16 +1,15 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-android-extensions")
 }
 
 android {
-    compileSdkVersion(29)
-    buildToolsVersion("30.0.2")
+    compileSdkVersion(Config.targetSDK)
+    buildToolsVersion(Config.buildTools)
 
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(29)
+        minSdkVersion(Config.minSDK)
+        targetSdkVersion(Config.targetSDK)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -44,6 +43,10 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 

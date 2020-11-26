@@ -1,18 +1,21 @@
 package me.szymanski.arch.widgets
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.error_bar.view.*
 import me.szymanski.arch.ViewWidget
-import me.szymanski.arch.ViewWidget.Companion.inflate
+import me.szymanski.arch.widgets.databinding.ErrorBarBinding
 
 class ErrorBar(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     private val errorView: TextView
-    override val root = inflate(ctx, R.layout.error_bar, parent).apply {
+
+    override val root = ErrorBarBinding.inflate(
+        LayoutInflater.from(ctx), parent, false
+    ).apply {
         errorView = reposErrorText
-    }
+    }.root
 
     var errorText: CharSequence? = errorView.text
         get() = errorView.text

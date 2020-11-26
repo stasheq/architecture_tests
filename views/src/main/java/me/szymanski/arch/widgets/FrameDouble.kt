@@ -1,14 +1,17 @@
 package me.szymanski.arch.widgets
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.frame_double.view.*
 import me.szymanski.arch.ViewWidget
-import me.szymanski.arch.ViewWidget.Companion.inflate
+import me.szymanski.arch.widgets.databinding.FrameDoubleBinding
 
 class FrameDouble(ctx: Context) : ViewWidget {
+    val rightColumn: ViewGroup
+    val leftColumn: ViewGroup
 
-    override val root = inflate(ctx, R.layout.frame_double)
-    val rightColumn: ViewGroup = root.columnRight
-    val leftColumn: ViewGroup = root.columnLeft
+    override val root = FrameDoubleBinding.inflate(LayoutInflater.from(ctx)).apply {
+        rightColumn = columnRight
+        leftColumn = columnLeft
+    }.root
 }

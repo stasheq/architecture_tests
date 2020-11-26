@@ -1,6 +1,7 @@
 package me.szymanski.arch.widgets.list
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,10 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jakewharton.rxrelay3.BehaviorRelay
 import io.reactivex.rxjava3.core.Observable
-import kotlinx.android.synthetic.main.list.view.*
 import me.szymanski.arch.*
-import me.szymanski.arch.ViewWidget.Companion.inflate
-import me.szymanski.arch.widgets.R
+import me.szymanski.arch.widgets.databinding.ListBinding
 
 class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     var items: List<ListItemData> = ArrayList()
@@ -21,7 +20,9 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
         }
     private val adapter = ListAdapter()
     private val refreshLayout: SwipeRefreshLayout
-    override val root: View = inflate(ctx, R.layout.list, parent).apply {
+    override val root: View = ListBinding.inflate(
+        LayoutInflater.from(ctx), parent, false
+    ).apply {
         reposRecycler.adapter = adapter
         val layoutManager = LinearLayoutManager(ctx, RecyclerView.VERTICAL, false)
         reposRecycler.layoutManager = layoutManager
@@ -32,7 +33,7 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
             }
         })
         refreshLayout = reposSwipeRefresh
-    }
+    }.root
     var refreshing: Boolean by refreshLayout::refreshing
     val refreshAction: Observable<Unit> = refreshLayout.refreshes()
     val selectAction: BehaviorRelay<String> = BehaviorRelay.create<String>()

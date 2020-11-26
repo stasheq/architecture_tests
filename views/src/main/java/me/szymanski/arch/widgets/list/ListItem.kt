@@ -4,9 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.list_item.view.*
 import me.szymanski.arch.ViewWidget
-import me.szymanski.arch.ViewWidget.Companion.inflate
 import me.szymanski.arch.widgets.R
 
 data class ListItemData(val id: String, val text: String?, val description: String?)
