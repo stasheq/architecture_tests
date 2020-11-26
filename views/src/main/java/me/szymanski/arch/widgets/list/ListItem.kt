@@ -1,24 +1,22 @@
 package me.szymanski.arch.widgets.list
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import me.szymanski.arch.ViewHolder
 import me.szymanski.arch.ViewWidget
-import me.szymanski.arch.widgets.R
+import me.szymanski.arch.widgets.databinding.ListItemBinding
 
 data class ListItemData(val id: String, val text: String?, val description: String?)
 
-class ListItem(parent: ViewGroup) : ViewWidget,
-    RecyclerView.ViewHolder(inflate(parent.context, R.layout.list_item, parent)) {
-    override val root: View = itemView
-    val title: TextView = root.itemTitle
-    val description: TextView = root.itemDescription
-    val clickArea: View = root.itemClickArea
+class ListItem(parent: ViewGroup) : ViewWidget, ViewHolder<ListItemBinding>(
+    ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+) {
+    override val root: View = binding.root
 
     fun bind(data: ListItemData, onClick: (String) -> Unit) {
-        description.text = data.description
-        title.text = data.text
-        clickArea.setOnClickListener { onClick(data.id) }
+        binding.itemDescription.text = data.description
+        binding.itemTitle.text = data.text
+        binding.itemClickArea.setOnClickListener { onClick(data.id) }
     }
 }
