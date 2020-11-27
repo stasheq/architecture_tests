@@ -52,9 +52,10 @@ object Deps {
     // https://github.com/ReactiveX/RxAndroid/releases
     const val rxAndroid = "3.0.0"
 
+    // https://github.com/square/leakcanary/releases
+    const val leakCanary = "2.5"
+
     // tests
-    const val junit = "4.13"
-    const val junitAndroid = "1.1.2"
-    const val espresso = "3.3.0"
+    // https://github.com/kotest/kotest/releases
     const val kotest = "4.3.1"
 }

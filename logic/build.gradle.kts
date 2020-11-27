@@ -30,7 +30,7 @@ dependencies {
     // unit tests
     kaptTest("com.google.dagger:dagger-compiler:${Deps.dagger}")
     testImplementation("com.squareup.okhttp3:mockwebserver:${Deps.okhttp}")
-    testImplementation("io.kotest:kotest-runner-junit5:${Deps.kotest}") // for kotest framework
-    testImplementation("io.kotest:kotest-assertions-core:${Deps.kotest}") // for kotest core jvm assertions
-    testImplementation("io.kotest:kotest-property:${Deps.kotest}") // for kotest pr
+    testImplementation("io.kotest:kotest-runner-junit5:${Deps.kotest}")
+    testImplementation("io.kotest:kotest-assertions-core:${Deps.kotest}")
+    testImplementation("io.kotest:kotest-property:${Deps.kotest}")
 }

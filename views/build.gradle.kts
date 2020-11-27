@@ -60,7 +60,4 @@ dependencies {
     implementation("com.jakewharton.rxbinding4:rxbinding-material:${Deps.rxBinding}")
     implementation("com.jakewharton.rxbinding4:rxbinding-recyclerview:${Deps.rxBinding}")
     implementation("androidx.constraintlayout:constraintlayout:${Deps.constraintLayout}")
-    testImplementation("junit:junit:${Deps.junit}")
-    androidTestImplementation("androidx.test.ext:junit:${Deps.junitAndroid}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${Deps.espresso}")
 }

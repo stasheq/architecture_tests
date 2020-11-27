@@ -60,7 +60,7 @@ android {
 }
 
 dependencies {
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.5")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:${Deps.leakCanary}")
     implementation(project(":logic"))
     implementation(project(":views"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
@@ -82,7 +82,4 @@ dependencies {
     implementation("com.google.dagger:hilt-android:${Deps.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Deps.hilt}")
     kapt("androidx.hilt:hilt-compiler:${Deps.hiltJetpack}")
-    testImplementation("junit:junit:${Deps.junit}")
-    androidTestImplementation("androidx.test.ext:junit:${Deps.junitAndroid}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${Deps.espresso}")
 }
