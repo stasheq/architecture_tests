@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/inputLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:hint="Some hint">
+    android:background="@color/colorPrimary"
+    android:paddingHorizontal="@dimen/listItemPadding"
+    android:paddingVertical="5dp">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/inputEditText"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        android:lines="1"
-        android:maxLines="1"
-        android:textSize="@dimen/inputTextSize"
-        tools:text="Some input text" />
+        app:boxBackgroundColor="@color/background"
+        tools:hint="Some hint">
 
-</com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_search_black_24dp"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/selector_color"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
+            android:textSize="@dimen/inputTextSize"
+            tools:ignore="UnusedAttribute"
+            tools:text="Some input text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+</FrameLayout>

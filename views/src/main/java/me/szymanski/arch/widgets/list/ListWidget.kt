@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.jakewharton.rxrelay3.BehaviorRelay
+import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
 import me.szymanski.arch.*
 import me.szymanski.arch.widgets.databinding.ListBinding
@@ -38,8 +38,8 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
 
     var refreshing: Boolean by refreshLayout::refreshing
     val refreshAction: Observable<Unit> = refreshLayout.refreshes()
-    val selectAction: BehaviorRelay<String> = BehaviorRelay.create()
-    val loadNextPageAction: BehaviorRelay<Unit> = BehaviorRelay.create()
+    val selectAction: PublishRelay<String> = PublishRelay.create()
+    val loadNextPageAction: PublishRelay<Unit> = PublishRelay.create()
     var loadingNextPageIndicator: Boolean by adapter::loadingNextPageIndicator
     var lastItemMessage: String? by adapter::lastItemMessage
     var items: List<ListItemData> by adapter::items
