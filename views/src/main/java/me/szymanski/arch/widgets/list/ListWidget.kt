@@ -16,9 +16,7 @@ import me.szymanski.arch.setValue
 
 class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
 
-    private val adapter = ListAdapter().apply {
-        selectItemAction = { id -> selectAction.accept(id) }
-    }
+    private val adapter = ListAdapter()
     private val refreshLayout: SwipeRefreshLayout
 
     override val root: View = ListBinding.inflate(
@@ -34,8 +32,19 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
             }
         })
         refreshLayout = reposSwipeRefresh
+        selectingEnabled = true
     }.root
 
+    var refreshingEnabled: Boolean = true
+        set(value) {
+            field = value
+            refreshLayout.isEnabled = value
+        }
+    var selectingEnabled: Boolean = true
+        set(value) {
+            field = value
+            adapter.selectItemAction = if (value) { id -> selectAction.accept(id) } else null
+        }
     var refreshing: Boolean by refreshLayout::refreshing
     val refreshAction: Observable<Unit> = refreshLayout.refreshes()
     val selectAction: PublishRelay<String> = PublishRelay.create()

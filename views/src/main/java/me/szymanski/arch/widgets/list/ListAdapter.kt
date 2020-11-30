@@ -60,7 +60,7 @@ class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ListItem -> holder.bind(items[position]) { selectItemAction?.invoke(it) }
+            is ListItem -> holder.bind(items[position], selectItemAction)
             is ListMessageItem -> lastItemMessage?.let { holder.bind(it) }
         }
     }

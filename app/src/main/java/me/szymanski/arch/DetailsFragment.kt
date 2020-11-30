@@ -11,25 +11,26 @@ import androidx.hilt.lifecycle.ViewModelInject
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.di.LogicViewModel
-import me.szymanski.arch.screens.RepositoryDetails
-import me.szymanski.arch.logic.cases.DetailsLogic.LoadingState.LOADING
-import me.szymanski.arch.logic.cases.DetailsLogic.LoadingState.ERROR
-import me.szymanski.arch.logic.cases.DetailsLogic.LoadingState.SUCCESS
+import me.szymanski.arch.logic.cases.DetailId
+import me.szymanski.arch.screens.DetailsScreen
 import me.szymanski.arch.logic.cases.DetailsLogic
+import me.szymanski.arch.logic.cases.DetailsLogic.LoadingState.*
 import me.szymanski.arch.logic.cases.DetailsLogicImpl
 import me.szymanski.arch.utils.AndroidScreen
+import me.szymanski.arch.widgets.list.ListItemData
 
 class DetailsViewModel @ViewModelInject constructor(logic: DetailsLogicImpl) : LogicViewModel<DetailsLogic>(logic)
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment(), AndroidScreen {
     private val viewModel: DetailsViewModel by activityViewModels()
-    private lateinit var view: RepositoryDetails
+    private val listViewModel: ListViewModel by activityViewModels()
+    private lateinit var view: DetailsScreen
     override var disposables = CompositeDisposable()
     override val ctx: Context by lazy { requireContext() }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        view = RepositoryDetails(inflater.context, container)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        view = DetailsScreen(inflater.context, container)
         return view.root
     }
 
@@ -44,13 +45,33 @@ class DetailsFragment : Fragment(), AndroidScreen {
         super.onStop()
     }
 
-    private fun linkViewAndLogic(view: RepositoryDetails, case: DetailsLogic) {
-        case.state.observeOnUi { state ->
+    private fun linkViewAndLogic(view: DetailsScreen, logic: DetailsLogic) {
+        view.showBackIcon = !isWideScreen()
+        logic.state.observeOnUi { state ->
             view.loading = state == LOADING
             view.errorText = if (state == ERROR) getString(R.string.loading_details_error) else null
-            view.detailsVisible = state == SUCCESS
+            view.listVisible = state == SUCCESS
         }
-        case.result.observeOnUi { view.title = it.name }
-        case.reload()
+        logic.result.observeOnUi { list ->
+            view.items = list.map { ListItemData(it.type.name, it.type.toTitle(), it.value) }
+        }
+        logic.title.observeOnUi { view.title = it }
+        logic.reload()
+        view.backClick = { listViewModel.logic.onBackPressed() }
     }
+
+    private fun DetailId.toTitle(): String = getString(
+        when (this) {
+            DetailId.NAME -> R.string.detail_name
+            DetailId.DESCRIPTION -> R.string.detail_description
+            DetailId.PRIVATE -> R.string.detail_private
+            DetailId.OWNER -> R.string.detail_owner
+            DetailId.FORKS -> R.string.detail_forks
+            DetailId.LANGUAGE -> R.string.detail_language
+            DetailId.ISSUES -> R.string.detail_issues
+            DetailId.LICENSE -> R.string.detail_license
+            DetailId.WATCHERS -> R.string.detail_watchers
+            DetailId.BRANCH -> R.string.detail_branch
+        }
+    )
 }

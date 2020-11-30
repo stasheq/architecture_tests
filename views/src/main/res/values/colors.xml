@@ -10,4 +10,5 @@
     <color name="text">#CC000000</color>
     <color name="textSecondary">#AA000000</color>
     <color name="barText">#FFFFFF</color>
+    <color name="barTextAlpha">#33FFFFFF</color>
 </resources>

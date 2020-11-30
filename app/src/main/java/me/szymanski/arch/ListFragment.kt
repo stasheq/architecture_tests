@@ -14,7 +14,7 @@ import me.szymanski.arch.di.LogicViewModel
 import me.szymanski.arch.logic.cases.DetailsLogic
 import me.szymanski.arch.logic.cases.ListLogic
 import me.szymanski.arch.logic.cases.ListLogicImpl
-import me.szymanski.arch.screens.RepositoriesList
+import me.szymanski.arch.screens.ListScreen
 import me.szymanski.arch.utils.AndroidScreen
 import me.szymanski.arch.widgets.list.ListItemData
 import java.util.concurrent.TimeUnit
@@ -25,12 +25,12 @@ class ListViewModel @ViewModelInject constructor(logic: ListLogicImpl) : LogicVi
 class ListFragment : Fragment(), AndroidScreen {
     private val listModel: ListViewModel by activityViewModels()
     private val detailsModel: DetailsViewModel by activityViewModels()
-    private lateinit var view: RepositoriesList
+    private lateinit var view: ListScreen
     override val ctx: Context by lazy { requireContext() }
     override var disposables = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        view = RepositoriesList(inflater.context, container)
+        view = ListScreen(inflater.context, container)
         return view.root
     }
 
@@ -45,7 +45,7 @@ class ListFragment : Fragment(), AndroidScreen {
         super.onStop()
     }
 
-    private fun linkViewAndLogic(view: RepositoriesList, logic: ListLogic, detailsLogic: DetailsLogic) {
+    private fun linkViewAndLogic(view: ListScreen, logic: ListLogic, detailsLogic: DetailsLogic) {
         logic.loading.observeChangedOnUi { view.refreshing = it }
         logic.error.observeChangedOnUi {
             view.errorText = when (it.value) {

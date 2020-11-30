@@ -3,30 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?attr/actionBarSize"
     android:background="@color/colorPrimary"
     android:paddingHorizontal="@dimen/listItemPadding"
-    android:paddingVertical="5dp">
+    android:paddingVertical="3dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
         app:boxBackgroundColor="@color/background"
         tools:hint="Some hint">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:drawableStart="@drawable/ic_search_black_24dp"
             android:drawablePadding="8dp"
-            android:drawableTint="@color/selector_color"
+            android:drawableTint="@color/input_indicator"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1"
             android:maxLines="1"
+            android:paddingVertical="6dp"
             android:textSize="@dimen/inputTextSize"
             tools:ignore="UnusedAttribute"
             tools:text="Some input text" />

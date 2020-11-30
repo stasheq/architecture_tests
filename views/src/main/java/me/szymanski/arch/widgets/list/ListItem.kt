@@ -14,9 +14,14 @@ class ListItem(parent: ViewGroup) : ViewWidget, ViewHolder<ListItemBinding>(
 ) {
     override val root: View = binding.root
 
-    fun bind(data: ListItemData, onClick: (String) -> Unit) {
+    fun bind(data: ListItemData, onClick: ((String) -> Unit)?) {
         binding.itemDescription.text = data.description
         binding.itemTitle.text = data.text
-        binding.itemClickArea.setOnClickListener { onClick(data.id) }
+        if (onClick == null) {
+            binding.itemClickArea.isClickable = false
+        } else {
+            binding.itemClickArea.isClickable = true
+            binding.itemClickArea.setOnClickListener { onClick(data.id) }
+        }
     }
 }

@@ -11,7 +11,7 @@ import me.szymanski.arch.widgets.TextInputWidget
 import me.szymanski.arch.widgets.databinding.ScreenReposListBinding
 import me.szymanski.arch.widgets.list.ListWidget
 
-class RepositoriesList(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
+class ListScreen(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
 
     private val errorWidget: ErrorBar
     private val listWidget: ListWidget
