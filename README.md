@@ -6,25 +6,25 @@ This app is created to show the idea of the architecture scheme that is:
 - cool
 
 Utils used:
-- RxJava3 - for between modules communication
+- RxJava3 - for communication between modules
 - Kotlin Coroutines - for doing time consuming jobs in logic
 - JUnit  5 & kotest - for unit tests of logic module
 - Retrofit & okhttp - for network communication
 - Hilt & Dagger - for dependency injection
 - Leak Canary - for memory leaks detection
-- View Model from androidx - to provide Logic injection into views and to avoid Logic rebuilding when view is being rebuilt
+- ViewModel from androidx - to provide Logic injection into views and to avoid Logic rebuilding when view is being rebuilt
 
-Good class to get an overall overview is [ListFragment](app/src/main/java/me/szymanski/arch/ListFragment.kt)\
+Good class to get an overall overview is [ListFragment.kt](app/src/main/java/me/szymanski/arch/ListFragment.kt)
 
 The app shows list of Github repositories for a given user.\
 After choosing a repository, app shows it's details.\
 \
 <img src="readmeImages/app.gif" alt="App" width="300"/>\
+Includes layout for bigger screens\
 <img src="readmeImages/app_tablet.png" alt="On tablet" width="500"/>
 
 ## Modular
 <img src="readmeImages/modules_studio.png" alt="Modules list" width="200"/>\
-Includes layout for bigger screens\
 <img src="readmeImages/modules_diagram.png" alt="Architecture idea diagram" width="600"/>
 
 ## Logic
@@ -62,4 +62,9 @@ Setting `isolationMode = IsolationMode.InstancePerLeaf` allows to write tests `O
 Whole path is executed for every leaf.\
 Suggested method of running tests (because of nice UI output) is to run from Android Studio Gradle menu `logic/Tasks/verification/test`.
 
+## Views
 
+Specific parts of Views are created using xml layouts, but to make them more reusable they are composed
+in the code.\
+[ListScreen.kt](views/src/main/java/me/szymanski/arch/screens/ListScreen.kt) gives a good overview.
+It combines multiple "Widgets" that are used also on other screens.
