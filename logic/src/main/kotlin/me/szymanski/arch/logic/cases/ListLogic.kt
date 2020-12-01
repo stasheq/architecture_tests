@@ -113,7 +113,7 @@ class ListLogicImpl @Inject constructor(
     }
 
     override fun onBackPressed(): Boolean {
-        if (showViews.value == BOTH) {
+        if (showViews.value == BOTH || showViews.value == LIST) {
             closeApp.accept(Unit)
         } else {
             showViews.accept(LIST)
