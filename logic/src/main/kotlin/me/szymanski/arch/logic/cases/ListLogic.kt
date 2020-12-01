@@ -43,6 +43,7 @@ class ListLogicImpl @Inject constructor(
     private val firstPage = 1
     private var currentPage = firstPage
     private var lastJob: Job? = null
+    private var itemClicked = false
     override val list: BehaviorRelay<List<Repository>> = BehaviorRelay.create()
     override val loading: BehaviorRelay<Boolean> = BehaviorRelay.create()
     override val error: BehaviorRelay<Optional<ListLogic.ErrorType>> = BehaviorRelay.create()
@@ -57,10 +58,12 @@ class ListLogicImpl @Inject constructor(
         }
     override var wideScreen: Boolean = false
         set(value) {
-            if (value)
+            if (value) {
                 showViews.accept(BOTH)
-            else if (!showViews.hasValue())
-                showViews.accept(LIST)
+            } else {
+                val lastValue: ListLogic.ShowViews? = showViews.value
+                showViews.accept(if (lastValue == null || lastValue == LIST || !itemClicked) LIST else DETAILS)
+            }
             field = value
         }
 
@@ -108,11 +111,12 @@ class ListLogicImpl @Inject constructor(
         detailsLogic.repositoryName = repositoryName
         detailsLogic.userName = userName
         detailsLogic.reload()
-
+        itemClicked = true
         showViews.accept(if (wideScreen) BOTH else DETAILS)
     }
 
     override fun onBackPressed(): Boolean {
+        itemClicked = false
         if (showViews.value == BOTH || showViews.value == LIST) {
             closeApp.accept(Unit)
         } else {

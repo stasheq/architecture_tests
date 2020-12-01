@@ -1,5 +1,7 @@
 package me.szymanski.arch
 
+import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.reflect.KMutableProperty0
@@ -29,7 +31,21 @@ var TextView.textValue: CharSequence?
         this.text = value
     }
 
-open class ViewHolder<T: ViewBinding>(val binding: T) : RecyclerView.ViewHolder(binding.root)
+open class ViewHolder<T : ViewBinding>(val binding: T) : RecyclerView.ViewHolder(binding.root)
+
+fun View.measure(callback: (width: Int, height: Int) -> Unit) {
+    doOnLayout { callback(width, height) }
+}
+
+fun View.doOnLayout(callback: () -> Unit) {
+    viewTreeObserver.addOnGlobalLayoutListener(
+        object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                viewTreeObserver.removeOnGlobalLayoutListener(this)
+                callback()
+            }
+        })
+}
 
 operator fun <R, T> KProperty0<T>.getValue(thisRef: R, property: KProperty<*>) = get()
 
