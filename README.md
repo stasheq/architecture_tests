@@ -13,6 +13,7 @@ Utils used:
 - Hilt & Dagger - for dependency injection
 - Leak Canary - for memory leaks detection
 - ViewModel from androidx - to provide Logic injection into views and to avoid Logic rebuilding when view is being rebuilt
+- Android view binding, because Kotlin synthetics got deprecated [Info](https://developer.android.com/topic/libraries/view-binding/migration)
 
 Good class to get an overall overview is [ListFragment.kt](app/src/main/java/me/szymanski/arch/ListFragment.kt)
 
@@ -36,8 +37,8 @@ Communication from the logic module to the app:
 
 Example: [ListLogic.kt](logic/src/main/kotlin/me/szymanski/arch/logic/cases/ListLogic.kt)
 
-## Logic unit tests
-[ListLogic tests](logic/src/test/kotlin/me/szymanski/arch/logic/test/ListTest.kt) - Example\
+## Unit tests of logic
+Example: [ListLogic tests](logic/src/test/kotlin/me/szymanski/arch/logic/test/ListTest.kt)\
 It uses [kotest](https://github.com/kotest/kotest) framework that allows to write unit tests efficiently.\
 Setting `isolationMode = IsolationMode.InstancePerLeaf` allows to write tests `On download 2nd page` and
 `On error downloading 2nd page` without taking care of preparing previous steps like `On started and download 1st page`.\
