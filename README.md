@@ -20,7 +20,7 @@ The app shows list of Github repositories for a given user.\
 After choosing a repository, app shows it's details.\
 \
 <img src="readmeImages/app.gif" alt="App" width="300"/>\
-Includes layout for bigger screens\
+It supports bigger screens\
 <img src="readmeImages/app_tablet.png" alt="On tablet" width="500"/>
 
 ## Modular
@@ -28,31 +28,13 @@ Includes layout for bigger screens\
 <img src="readmeImages/modules_diagram.png" alt="Architecture idea diagram" width="600"/>
 
 ## Logic
-```kotlin
-interface ListLogic : Logic {
-    fun reload()
-    fun loadNextPage()
-    fun itemClick(detailsLogic: DetailsLogic, repositoryName: String?)
-    var userName: String
-    var wideScreen: Boolean
-
-    val list: Observable<List<Repository>>
-    val loading: Observable<Boolean>
-    val error: Observable<Optional<ErrorType>>
-    val closeApp: Observable<Unit>
-    val showViews: Observable<ShowViews>
-    val hasNextPage: Observable<Boolean>
-
-    enum class ErrorType { USER_DOESNT_EXIST, NO_CONNECTION, OTHER }
-    enum class ShowViews { LIST, DETAILS, BOTH }
-}
-```
-
 Communication from the app to the logic module:
-- via method calls and setting its variables.
+- via method calls and setting its variables. `logic.loadNextPage()`
 
 Communication from the logic module to the app:
-- via exposed Observables
+- via exposed Observables `val list: Observable<List<Repository>>`
+
+Example: [ListLogic.kt](logic/src/main/kotlin/me/szymanski/arch/logic/cases/ListLogic.kt)
 
 ## Logic unit tests
 [ListLogic tests](logic/src/test/kotlin/me/szymanski/arch/logic/test/ListTest.kt) - Example\
@@ -67,4 +49,4 @@ Suggested method of running tests (because of nice UI output) is to run from And
 Specific parts of Views are created using xml layouts, but to make them more reusable they are composed
 in the code.\
 [ListScreen.kt](views/src/main/java/me/szymanski/arch/screens/ListScreen.kt) gives a good overview.
-It combines multiple "Widgets" that are used also on other screens.
+It combines multiple "Widgets" that are used also in other screens.
