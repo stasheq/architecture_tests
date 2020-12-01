@@ -6,6 +6,7 @@ plugins {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    testLogging { showStandardStreams = true }
 }
 
 sourceSets {
