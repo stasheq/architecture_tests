@@ -4,12 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.logic.cases.ListLogic
 import me.szymanski.arch.utils.AndroidScreen
 import me.szymanski.arch.widgets.FrameDouble
+import me.szymanski.arch.widgets.FrameDouble.State.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), AndroidScreen {
@@ -40,10 +40,19 @@ class MainActivity : AppCompatActivity(), AndroidScreen {
     }
 
     private fun linkViewAndLogic(view: FrameDouble, logic: ListLogic) {
+        var initiated = false
         logic.wideScreen = isWideScreen()
         logic.closeApp.observeOnUi { finish() }
-        logic.showList.observeOnUi { view.leftColumn.isVisible = it }
-        logic.showDetails.observeOnUi { view.rightColumn.isVisible = it }
+        logic.showViews.map {
+            when (it!!) {
+                ListLogic.ShowViews.LIST -> LEFT
+                ListLogic.ShowViews.DETAILS -> RIGHT
+                ListLogic.ShowViews.BOTH -> BOTH
+            }
+        }.observeChangedOnUi {
+            view.setState(it, initiated)
+            initiated = true
+        }
     }
 
     override fun onBackPressed() {

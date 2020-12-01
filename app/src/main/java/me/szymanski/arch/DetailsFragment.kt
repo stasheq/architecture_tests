@@ -56,7 +56,6 @@ class DetailsFragment : Fragment(), AndroidScreen {
             view.items = list.map { ListItemData(it.type.name, it.type.toTitle(), it.value) }
         }
         logic.title.observeOnUi { view.title = it }
-        logic.reload()
         view.backClick = { listViewModel.logic.onBackPressed() }
     }
 

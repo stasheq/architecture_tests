@@ -15,7 +15,7 @@ class ErrorBar(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
         LayoutInflater.from(ctx), parent, false
     ).apply {
         errorView = reposErrorText
-    }.root
+    }.root.apply { isVisible = false }
 
     var errorText: CharSequence? = errorView.text
         get() = errorView.text

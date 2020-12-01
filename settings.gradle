@@ -1,4 +1,4 @@
 include ':views'
 include ':logic'
 include ':app'
-rootProject.name = "Arch Tests"
+rootProject.name = "App Scheme"

@@ -23,11 +23,11 @@ class DetailsScreen(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
         LayoutInflater.from(ctx), parent, false
     ).apply {
         loadingView = detailsLoading
-        errorWidget = ErrorBar(ctx, this.root)
-        detailsList.addView(errorWidget.root)
         toolbar = Toolbar(ctx, this.root)
         toolbar.showBackIcon = true
         detailsList.addView(toolbar.root)
+        errorWidget = ErrorBar(ctx, this.root)
+        detailsList.addView(errorWidget.root)
         list = ListWidget(ctx, root)
         list.refreshingEnabled = false
         list.selectingEnabled = false

@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name_debug">Arch DEBUG</string>
-    <string name="app_name_release">Arch Tests</string>
+    <string name="app_name_debug">App Scheme DEBUG</string>
+    <string name="app_name_release">App Scheme</string>
     <string name="loading_error_other">Failed to download list</string>
     <string name="loading_error_doesnt_exist">Selected user doesn\'t exist</string>
     <string name="loading_details_error">Can\'t download details</string>

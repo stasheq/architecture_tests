@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/reposErrorText"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/error"
-    android:gravity="center"
-    android:padding="@dimen/barPadding"
-    android:textColor="@color/barText"
-    android:textSize="@dimen/barTextSize"
-    android:textStyle="bold"
-    android:visibility="gone"
-    tools:text="Error text"
-    tools:visibility="visible" />
+    android:padding="@dimen/listItemPadding">
+
+    <TextView
+        android:id="@+id/reposErrorText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_rect"
+        android:gravity="center"
+        android:padding="@dimen/barPadding"
+        android:textColor="@color/barText"
+        android:textSize="@dimen/barTextSize"
+        android:textStyle="bold"
+        tools:text="Error text"
+        tools:visibility="visible" />
+</FrameLayout>

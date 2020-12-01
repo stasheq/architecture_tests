@@ -32,6 +32,7 @@ class ListTest : FreeSpec({
         val component = DaggerTestComponent.builder().restConfig(restConfig).build()
         val logic = component.getListLogic()
         val detailsLogic = component.getDetailsLogic()
+        logic.wideScreen = false
         logic shouldNotBe null
         detailsLogic shouldNotBe null
 
@@ -39,16 +40,14 @@ class ListTest : FreeSpec({
         val list = logic.list.test()
         val error = logic.error.test()
         val close = logic.closeApp.test()
-        val showList = logic.showList.test()
-        val showDetails = logic.showDetails.test()
+        val columnsState = logic.showViews.test()
         val hasNextPage = logic.hasNextPage.test()
 
         "loading not started"  { loading.assertNoValues() }
         "has no items yet" { list.assertNoValues() }
         "no error" { error.assertNoValues() }
         "app alive" { close.assertNoValues() }
-        "list shown" { showList.last() shouldBe true }
-        "details not shown" { showDetails.last() shouldBe false }
+        "list shown" { columnsState.last() shouldBe ListLogic.ShowViews.LIST }
         "next page not known" { hasNextPage.assertNoValues() }
 
         "On started with unsupported response" - {
@@ -106,18 +105,15 @@ class ListTest : FreeSpec({
 
             "On Click item" - {
                 logic.itemClick(detailsLogic, list.last()[0].name)
-                "details are shown" { showDetails.last() shouldBe true }
-                "list is hidden" { showList.last() shouldBe false }
+                "details are shown" { columnsState.last() shouldBe ListLogic.ShowViews.DETAILS }
             }
 
             "On big screen" - {
                 logic.wideScreen = true
-                "details are shown" { showDetails.last() shouldBe true }
-                "list is shown" { showList.last() shouldBe true }
+                "both columns are shown" { columnsState.last() shouldBe ListLogic.ShowViews.BOTH }
                 "On Click item" - {
                     logic.itemClick(detailsLogic, list.last()[0].name)
-                    "details are shown" { showDetails.last() shouldBe true }
-                    "list is shown" { showList.last() shouldBe true }
+                    "details are shown" { columnsState.last() shouldBe ListLogic.ShowViews.BOTH }
                 }
             }
         }

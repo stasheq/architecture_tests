@@ -16,7 +16,7 @@ data class RepositoryDetails(
     val language: String,
     @SerializedName("open_issues_count")
     val openIssues: Int,
-    val license: License,
+    val license: License?,
     val watchers: Int,
     @SerializedName("default_branch")
     val defaultBranch: String

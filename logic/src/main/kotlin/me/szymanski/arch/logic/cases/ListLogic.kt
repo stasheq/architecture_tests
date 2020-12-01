@@ -14,6 +14,7 @@ import me.szymanski.arch.logic.rest.Repository
 import me.szymanski.arch.logic.rest.RestApi
 import me.szymanski.arch.logic.rest.RestConfig
 import javax.inject.Inject
+import me.szymanski.arch.logic.cases.ListLogic.ShowViews.*
 
 interface ListLogic : Logic {
     fun reload()
@@ -25,11 +26,11 @@ interface ListLogic : Logic {
     val loading: Observable<Boolean>
     val error: Observable<Optional<ErrorType>>
     val closeApp: Observable<Unit>
-    val showList: Observable<Boolean>
-    val showDetails: Observable<Boolean>
+    val showViews: Observable<ShowViews>
     val hasNextPage: Observable<Boolean>
 
     enum class ErrorType { USER_DOESNT_EXIST, NO_CONNECTION, OTHER }
+    enum class ShowViews { LIST, DETAILS, BOTH }
 }
 
 class ListLogicImpl @Inject constructor(
@@ -42,13 +43,12 @@ class ListLogicImpl @Inject constructor(
     private val firstPage = 1
     private var currentPage = firstPage
     private var lastJob: Job? = null
-    override val list: BehaviorRelay<List<Repository>> = BehaviorRelay.create<List<Repository>>()
-    override val loading: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
+    override val list: BehaviorRelay<List<Repository>> = BehaviorRelay.create()
+    override val loading: BehaviorRelay<Boolean> = BehaviorRelay.create()
     override val error: BehaviorRelay<Optional<ListLogic.ErrorType>> = BehaviorRelay.create()
-    override val closeApp: PublishRelay<Unit> = PublishRelay.create<Unit>()
-    override val showList: BehaviorRelay<Boolean> = BehaviorRelay.createDefault<Boolean>(true)
-    override val showDetails: BehaviorRelay<Boolean> = BehaviorRelay.createDefault<Boolean>(false)
-    override val hasNextPage: BehaviorRelay<Boolean> = BehaviorRelay.create<Boolean>()
+    override val closeApp: PublishRelay<Unit> = PublishRelay.create()
+    override val showViews: BehaviorRelay<ListLogic.ShowViews> = BehaviorRelay.create()
+    override val hasNextPage: BehaviorRelay<Boolean> = BehaviorRelay.create()
     override var userName = restConfig.defaultUser
         set(value) {
             if (field == value) return
@@ -57,10 +57,10 @@ class ListLogicImpl @Inject constructor(
         }
     override var wideScreen: Boolean = false
         set(value) {
-            if (field != value) {
-                showList.accept(true)
-                showDetails.accept(value)
-            }
+            if (value)
+                showViews.accept(BOTH)
+            else if (!showViews.hasValue())
+                showViews.accept(LIST)
             field = value
         }
 
@@ -109,16 +109,14 @@ class ListLogicImpl @Inject constructor(
         detailsLogic.userName = userName
         detailsLogic.reload()
 
-        showList.accept(wideScreen)
-        showDetails.accept(true)
+        showViews.accept(if (wideScreen) BOTH else DETAILS)
     }
 
     override fun onBackPressed(): Boolean {
-        if (wideScreen || showList.value == true) {
+        if (showViews.value == BOTH) {
             closeApp.accept(Unit)
         } else {
-            showList.accept(true)
-            showDetails.accept(false)
+            showViews.accept(LIST)
         }
         return true
     }

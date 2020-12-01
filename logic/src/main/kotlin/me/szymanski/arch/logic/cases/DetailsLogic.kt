@@ -39,7 +39,7 @@ class DetailsLogicImpl @Inject constructor(private val restApi: RestApi) : Detai
         val repositoryName = this.repositoryName
         val userName = this.userName
         if (repositoryName == null || userName == null) {
-            state.accept(DetailsLogic.LoadingState.ERROR)
+            state.accept(DetailsLogic.LoadingState.SUCCESS)
             return
         }
 
@@ -65,10 +65,14 @@ class DetailsLogicImpl @Inject constructor(private val restApi: RestApi) : Detai
         RepositoryDetail(DetailId.OWNER, repo.owner.login),
         RepositoryDetail(DetailId.FORKS, "${repo.forks}"),
         RepositoryDetail(DetailId.ISSUES, "${repo.openIssues}"),
-        RepositoryDetail(DetailId.LICENSE, repo.license.name),
+        RepositoryDetail(DetailId.LICENSE, repo.license?.name ?: ""),
         RepositoryDetail(DetailId.BRANCH, repo.defaultBranch),
         RepositoryDetail(DetailId.WATCHERS, "${repo.watchers}")
     )
+
+    override fun create() {
+        reload()
+    }
 
     override fun destroy() {
         lastJob?.cancel()

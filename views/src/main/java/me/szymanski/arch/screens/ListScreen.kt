@@ -20,10 +20,10 @@ class ListScreen(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     override val root = ScreenReposListBinding.inflate(
         LayoutInflater.from(ctx), parent, false
     ).apply {
-        errorWidget = ErrorBar(ctx, reposLinearLayout)
-        reposLinearLayout.addView(errorWidget.root)
         userNameInput = TextInputWidget(ctx, reposLinearLayout)
         reposLinearLayout.addView(userNameInput.root)
+        errorWidget = ErrorBar(ctx, reposLinearLayout)
+        reposLinearLayout.addView(errorWidget.root)
         listWidget = ListWidget(ctx, reposLinearLayout)
         reposLinearLayout.addView(listWidget.root)
     }.root
