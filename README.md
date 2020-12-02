@@ -8,7 +8,7 @@ This app is created to show the idea of the architecture scheme that is:
 Utils used:
 - RxJava3 - for communication between modules
 - Kotlin Coroutines - for doing time consuming jobs in logic
-- JUnit  5 & kotest - for unit tests of logic module
+- Kotest - for unit tests of logic module
 - Retrofit & okhttp - for network communication
 - Hilt & Dagger - for dependency injection
 - Leak Canary - for memory leaks detection
