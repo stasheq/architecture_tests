@@ -25,16 +25,16 @@ class RestApi @Inject constructor(
             logger.log("Cancelled API request")
             throw e
         } catch (e: HttpException) {
-            logger.log(e, level = Logger.Level.DEBUG)
+            logger.log("API call error", e, level = Logger.Level.DEBUG)
             throw ApiError.HttpErrorResponse(e, e.code())
         } catch (e: InterruptedIOException) {
-            logger.log(e, level = Logger.Level.DEBUG)
+            logger.log("API call error", e, level = Logger.Level.DEBUG)
             throw ApiError.NoConnection(e)
         } catch (e: UnknownHostException) {
-            logger.log(e, level = Logger.Level.DEBUG)
+            logger.log("API call error", e, level = Logger.Level.DEBUG)
             throw ApiError.NoConnection(e)
         } catch (e: Throwable) {
-            logger.log(e, level = Logger.Level.DEBUG)
+            logger.log("API call error", e, level = Logger.Level.DEBUG)
             throw ApiError.UnknownError(e)
         }
     }

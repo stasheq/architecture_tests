@@ -60,7 +60,7 @@ class DetailsLogicImpl @Inject constructor(private val restApi: RestApi) : Detai
     private fun toDetailsItems(repo: RepositoryDetails): List<RepositoryDetail> = listOf(
         RepositoryDetail(DetailId.NAME, repo.name),
         RepositoryDetail(DetailId.DESCRIPTION, repo.description ?: ""),
-        RepositoryDetail(DetailId.LANGUAGE, repo.language),
+        RepositoryDetail(DetailId.LANGUAGE, repo.language ?: ""),
         RepositoryDetail(DetailId.PRIVATE, "${repo.private}"),
         RepositoryDetail(DetailId.OWNER, repo.owner.login),
         RepositoryDetail(DetailId.FORKS, "${repo.forks}"),

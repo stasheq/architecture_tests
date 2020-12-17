@@ -1,5 +1,7 @@
 package me.szymanski.arch
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.TextView
@@ -22,6 +24,20 @@ fun SwipeRefreshLayout.refreshes(): Observable<Unit> {
     val relay = PublishRelay.create<Unit>()
     setOnRefreshListener { relay.accept(Unit) }
     relay.doOnDispose { setOnRefreshListener(null) }
+    return relay
+}
+
+fun TextView.textChanges(): Observable<String> {
+    val relay = PublishRelay.create<String>()
+    val listener = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
+        override fun afterTextChanged(s: Editable) = Unit
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            relay.accept(s.toString())
+        }
+    }
+    addTextChangedListener(listener)
+    relay.doOnDispose { removeTextChangedListener(listener) }
     return relay
 }
 

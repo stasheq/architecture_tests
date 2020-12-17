@@ -40,14 +40,14 @@ object Deps {
     // https://developer.android.com/jetpack/androidx/releases/recyclerview
     const val recyclerView = "1.1.0"
 
+    // https://github.com/material-components/material-components-android/releases
+    const val material = "1.2.1"
+
     // https://github.com/ReactiveX/RxJava/releases
     const val rxJava = "3.0.7"
 
     // https://github.com/JakeWharton/RxRelay/releases
     const val rxRelay = "3.0.0"
-
-    // https://github.com/JakeWharton/RxBinding/releases
-    const val rxBinding = "4.0.0"
 
     // https://github.com/ReactiveX/RxAndroid/releases
     const val rxAndroid = "3.0.0"

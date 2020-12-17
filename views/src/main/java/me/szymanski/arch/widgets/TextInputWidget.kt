@@ -5,12 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.textfield.TextInputEditText
-import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.core.Observable
-import me.szymanski.arch.ViewWidget
-import me.szymanski.arch.textValue
-import me.szymanski.arch.getValue
-import me.szymanski.arch.setValue
+import me.szymanski.arch.*
 import me.szymanski.arch.widgets.databinding.TextInputBinding
 import java.util.concurrent.TimeUnit
 

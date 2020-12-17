@@ -13,7 +13,7 @@ data class RepositoryDetails(
     val private: Boolean,
     val owner: Owner,
     val forks: Int,
-    val language: String,
+    val language: String?,
     @SerializedName("open_issues_count")
     val openIssues: Int,
     val license: License?,

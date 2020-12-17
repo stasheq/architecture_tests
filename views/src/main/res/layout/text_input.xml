@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
@@ -10,11 +9,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        app:boxBackgroundColor="@color/background"
         tools:hint="Some hint">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -29,6 +26,7 @@
             android:lines="1"
             android:maxLines="1"
             android:paddingVertical="6dp"
+            android:textColor="@color/barText"
             android:textSize="@dimen/inputTextSize"
             tools:ignore="UnusedAttribute"
             tools:text="Some input text" />

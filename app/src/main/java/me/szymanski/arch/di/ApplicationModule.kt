@@ -26,7 +26,7 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideLogger(): Logger = object : Logger {
-        override fun log(message: String, tag: String?, level: Logger.Level) {
+        override fun log(message: String, t: Throwable?, tag: String?, level: Logger.Level) {
             val priority = when (level) {
                 Logger.Level.VERBOSE -> Log.VERBOSE
                 Logger.Level.DEBUG -> Log.DEBUG
@@ -34,10 +34,8 @@ class ApplicationModule {
                 Logger.Level.WARN -> Log.WARN
                 Logger.Level.ERROR -> Log.ERROR
             }
-            Log.println(priority, tag ?: "ArchTest", message)
+            val text = t?.let { "${t::class.simpleName} ${t.message} $message" } ?: message
+            Log.println(priority, tag ?: "ArchTest", text)
         }
-
-        override fun log(t: Throwable, tag: String?, level: Logger.Level) =
-            this.log("${t.javaClass.simpleName} ${t.message}", tag, level)
     }
 }

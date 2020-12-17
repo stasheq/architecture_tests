@@ -56,8 +56,8 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxandroid:${Deps.rxAndroid}")
     implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJava}")
     implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelay}")
-    implementation("com.jakewharton.rxbinding4:rxbinding-core:${Deps.rxBinding}")
-    implementation("com.jakewharton.rxbinding4:rxbinding-material:${Deps.rxBinding}")
-    implementation("com.jakewharton.rxbinding4:rxbinding-recyclerview:${Deps.rxBinding}")
     implementation("androidx.constraintlayout:constraintlayout:${Deps.constraintLayout}")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:${Deps.swipeRefreshLayout}")
+    implementation("androidx.recyclerview:recyclerview:${Deps.recyclerView}")
+    implementation("com.google.android.material:material:${Deps.material}")
 }

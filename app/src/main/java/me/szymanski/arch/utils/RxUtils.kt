@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import me.szymanski.arch.log
+import me.szymanski.arch.di.log
 
 interface WithDisposables {
     var disposables: CompositeDisposable
