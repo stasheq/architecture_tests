@@ -1,7 +1,6 @@
 package me.szymanski.arch.widgets
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.textfield.TextInputEditText
@@ -14,9 +13,7 @@ class TextInputWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
 
     private val inputText: TextInputEditText
 
-    override val root: View = TextInputBinding.inflate(
-        LayoutInflater.from(ctx), parent, false
-    ).apply {
+    override val root: View = ctx.inflate(TextInputBinding::inflate, parent).apply {
         inputText = inputEditText
     }.root
 

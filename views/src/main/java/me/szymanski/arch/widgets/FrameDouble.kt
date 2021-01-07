@@ -2,7 +2,6 @@ package me.szymanski.arch.widgets
 
 import android.animation.Animator
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -10,15 +9,16 @@ import me.szymanski.arch.Animations.animate
 import me.szymanski.arch.Animations.animateAlpha
 import me.szymanski.arch.Animations.playTogether
 import me.szymanski.arch.ViewWidget
+import me.szymanski.arch.inflate
 import me.szymanski.arch.measure
 import me.szymanski.arch.widgets.databinding.FrameDoubleBinding
 
-class FrameDouble(ctx: Context) : ViewWidget {
+class FrameDouble(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     val rightColumn: ViewGroup
     val leftColumn: ViewGroup
     private val cover: View
 
-    override val root = FrameDoubleBinding.inflate(LayoutInflater.from(ctx)).apply {
+    override val root = ctx.inflate(FrameDoubleBinding::inflate, parent).apply {
         rightColumn = columnRight
         leftColumn = columnLeft
         cover = columnCover

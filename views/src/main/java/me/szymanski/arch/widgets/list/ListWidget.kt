@@ -1,7 +1,6 @@
 package me.szymanski.arch.widgets.list
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,9 +18,7 @@ class ListWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     private val adapter = ListAdapter()
     private val refreshLayout: SwipeRefreshLayout
 
-    override val root: View = ListBinding.inflate(
-        LayoutInflater.from(ctx), parent, false
-    ).apply {
+    override val root: View = ctx.inflate(ListBinding::inflate, parent).apply {
         reposRecycler.adapter = adapter
         val layoutManager = LinearLayoutManager(ctx, RecyclerView.VERTICAL, false)
         reposRecycler.layoutManager = layoutManager

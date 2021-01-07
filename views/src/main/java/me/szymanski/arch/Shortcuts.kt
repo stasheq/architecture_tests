@@ -1,8 +1,11 @@
 package me.szymanski.arch
 
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +16,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
+
+fun <T> Context.inflate(inflate: (LayoutInflater, ViewGroup?, Boolean) -> T, parent: ViewGroup? = null): T =
+    inflate(LayoutInflater.from(this), parent, false)
+
+fun <T> ViewGroup.inflate(inflate: (LayoutInflater, ViewGroup?, Boolean) -> T): T =
+    inflate(LayoutInflater.from(this.context), this, false)
 
 var SwipeRefreshLayout.refreshing: Boolean
     get() = this.isRefreshing

@@ -1,10 +1,10 @@
 package me.szymanski.arch.screens
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import me.szymanski.arch.ViewWidget
 import me.szymanski.arch.getValue
+import me.szymanski.arch.inflate
 import me.szymanski.arch.setValue
 import me.szymanski.arch.widgets.ErrorBar
 import me.szymanski.arch.widgets.TextInputWidget
@@ -17,9 +17,7 @@ class ListScreen(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
     private val listWidget: ListWidget
     private val userNameInput: TextInputWidget
 
-    override val root = ScreenReposListBinding.inflate(
-        LayoutInflater.from(ctx), parent, false
-    ).apply {
+    override val root = ctx.inflate(ScreenReposListBinding::inflate, parent).apply {
         userNameInput = TextInputWidget(ctx, reposLinearLayout)
         reposLinearLayout.addView(userNameInput.root)
         errorWidget = ErrorBar(ctx, reposLinearLayout)
