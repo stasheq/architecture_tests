@@ -55,6 +55,9 @@ object Deps {
     // https://github.com/square/leakcanary/releases
     const val leakCanary = "2.6"
 
+    // https://github.com/InsertKoinIO/koin/releases
+    const val koin = "3.0.1-alpha-3"
+
     // tests
     // https://github.com/kotest/kotest/releases
     const val kotest = "4.4.1"
