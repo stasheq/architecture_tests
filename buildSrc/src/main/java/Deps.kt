@@ -5,9 +5,6 @@ object Deps {
     // https://github.com/Kotlin/kotlinx.coroutines
     const val coroutines = "1.4.2"
 
-    // https://developer.android.com/jetpack/androidx/releases/lifecycle
-    const val androidLifecycle = "2.3.0"
-
     // https://developer.android.com/kotlin/ktx/extensions-list
     const val coreKtx = "1.3.2"
     // https://developer.android.com/kotlin/ktx/extensions-list#androidxactivity

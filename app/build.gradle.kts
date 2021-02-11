@@ -72,7 +72,6 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:${Deps.swipeRefreshLayout}")
     implementation("androidx.recyclerview:recyclerview:${Deps.recyclerView}")
     implementation("com.google.android.material:material:${Deps.material}")
-    implementation("androidx.lifecycle:lifecycle-extensions:${Deps.androidLifecycle}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Deps.viewModelKtx}")
     implementation("androidx.hilt:hilt-lifecycle-viewmodel:${Deps.hiltJetpack}")
     implementation("com.squareup.okhttp3:okhttp:${Deps.okhttp}")

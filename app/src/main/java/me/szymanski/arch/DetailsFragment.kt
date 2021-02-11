@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.hilt.lifecycle.ViewModelInject
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.di.LogicViewModel
 import me.szymanski.arch.logic.cases.DetailId
@@ -18,8 +18,10 @@ import me.szymanski.arch.logic.cases.DetailsLogic.LoadingState.*
 import me.szymanski.arch.logic.cases.DetailsLogicImpl
 import me.szymanski.arch.utils.AndroidScreen
 import me.szymanski.arch.widgets.list.ListItemData
+import javax.inject.Inject
 
-class DetailsViewModel @ViewModelInject constructor(logic: DetailsLogicImpl) : LogicViewModel<DetailsLogic>(logic)
+@HiltViewModel
+class DetailsViewModel @Inject constructor(logic: DetailsLogicImpl) : LogicViewModel<DetailsLogic>(logic)
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment(), AndroidScreen {
@@ -29,7 +31,11 @@ class DetailsFragment : Fragment(), AndroidScreen {
     override var disposables = CompositeDisposable()
     override val ctx: Context by lazy { requireContext() }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         view = DetailsScreen(inflater.context, container)
         return view.root
     }

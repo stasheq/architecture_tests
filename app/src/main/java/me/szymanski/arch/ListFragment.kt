@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.hilt.lifecycle.ViewModelInject
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.di.LogicViewModel
 import me.szymanski.arch.logic.cases.DetailsLogic
@@ -18,8 +18,10 @@ import me.szymanski.arch.screens.ListScreen
 import me.szymanski.arch.utils.AndroidScreen
 import me.szymanski.arch.widgets.list.ListItemData
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class ListViewModel @ViewModelInject constructor(logic: ListLogicImpl) : LogicViewModel<ListLogic>(logic)
+@HiltViewModel
+class ListViewModel @Inject constructor(logic: ListLogicImpl) : LogicViewModel<ListLogic>(logic)
 
 @AndroidEntryPoint
 class ListFragment : Fragment(), AndroidScreen {
