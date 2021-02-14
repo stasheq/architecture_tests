@@ -3,14 +3,18 @@ object Deps {
     const val kotlin = "1.4.30"
 
     // https://github.com/Kotlin/kotlinx.coroutines
-    const val coroutines = "1.4.2"
+    private const val coroutinesVersion = "1.4.2"
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
     // https://developer.android.com/kotlin/ktx/extensions-list
     const val coreKtx = "1.3.2"
+
     // https://developer.android.com/kotlin/ktx/extensions-list#androidxactivity
     const val activityKtx = "1.2.0"
+
     // https://developer.android.com/kotlin/ktx/extensions-list#androidxfragmentapp
     const val fragmentKtx = "1.2.5"
+
     // https://developer.android.com/kotlin/ktx/extensions-list#androidxlifecycle
     const val viewModelKtx = "2.2.0"
 
@@ -56,7 +60,8 @@ object Deps {
     const val leakCanary = "2.6"
 
     // https://github.com/InsertKoinIO/koin/releases
-    const val koin = "3.0.1-alpha-3"
+    private const val koinVersion = "3.0.1-alpha-3"
+    const val koin = "org.koin:koin-core:$koinVersion"
 
     // tests
     // https://github.com/kotest/kotest/releases

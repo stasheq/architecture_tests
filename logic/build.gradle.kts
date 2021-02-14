@@ -19,7 +19,7 @@ sourceSets {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Deps.coroutines}")
+    implementation(Deps.coroutines)
     implementation("com.squareup.retrofit2:retrofit:${Deps.retrofit}")
     implementation("com.squareup.retrofit2:converter-gson:${Deps.retrofit}")
     implementation("com.squareup.okhttp3:okhttp:${Deps.okhttp}")

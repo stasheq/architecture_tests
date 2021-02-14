@@ -12,7 +12,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation("org.koin:koin-core:${Deps.koin}")
+                implementation(Deps.koin)
+                implementation(Deps.coroutines)
             }
         }
     }
