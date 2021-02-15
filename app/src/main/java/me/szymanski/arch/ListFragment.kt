@@ -13,7 +13,6 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.di.LogicViewModel
 import me.szymanski.arch.logic.cases.DetailsLogic
 import me.szymanski.arch.logic.cases.ListLogic
-import me.szymanski.arch.logic.cases.ListLogicImpl
 import me.szymanski.arch.screens.ListScreen
 import me.szymanski.arch.utils.AndroidScreen
 import me.szymanski.arch.widgets.list.ListItemData
@@ -21,7 +20,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
-class ListViewModel @Inject constructor(logic: ListLogicImpl) : LogicViewModel<ListLogic>(logic)
+class ListViewModel @Inject constructor(logic: ListLogic) : LogicViewModel<ListLogic>(logic)
 
 @AndroidEntryPoint
 class ListFragment : Fragment(), AndroidScreen {

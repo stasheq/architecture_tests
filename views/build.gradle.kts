@@ -51,7 +51,7 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.Kotlin.version}")
     implementation("androidx.core:core-ktx:${Deps.coreKtx}")
     implementation("io.reactivex.rxjava3:rxandroid:${Deps.rxAndroid}")
     implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJava}")

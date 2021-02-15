@@ -8,7 +8,8 @@ import dagger.hilt.components.SingletonComponent
 import me.szymanski.arch.logic.Logger
 import me.szymanski.arch.logic.koin
 import me.szymanski.arch.logic.cases.ListLogic
-import me.szymanski.arch.logic.cases.Detailslogic
+import me.szymanski.arch.logic.cases.DetailsLogic
+import me.szymanski.arch.logic.rest.RestConfig
 import javax.inject.Singleton
 
 @Module
@@ -46,5 +47,5 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideDetailslogic(): Detailslogic = koin.get()
+    fun provideDetailslogic(): DetailsLogic = koin.get()
 }

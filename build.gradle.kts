@@ -6,8 +6,9 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.1.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Deps.kotlin}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Deps.hilt}")
+        classpath(kotlin("serialization", Deps.Kotlin.version))
+        classpath(kotlin("gradle-plugin", Deps.Kotlin.version))
     }
 }
 
@@ -15,6 +16,8 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
+        maven(url = "https://kotlin.bintray.com/kotlinx")
         maven(url = "https://dl.bintray.com/ekito/koin")
     }
 }

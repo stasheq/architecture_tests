@@ -1,6 +1,9 @@
 object Deps {
     // https://kotlinlang.org/
-    const val kotlin = "1.4.30"
+    object Kotlin {
+        const val version = "1.4.30"
+    }
+
 
     // https://github.com/Kotlin/kotlinx.coroutines
     private const val coroutinesVersion = "1.4.2"
@@ -60,13 +63,20 @@ object Deps {
     const val leakCanary = "2.6"
 
     // https://github.com/InsertKoinIO/koin/releases
-    const val koinVersion = "3.0.1-alpha-3"
+    private const val koinVersion = "3.0.1-alpha-3"
     const val koin = "org.koin:koin-core:$koinVersion"
 
     // https://github.com/ktorio/ktor/releases
-    private const val ktorVersion = "1.5.1"
-    const val ktorCore = "io.ktor:ktor-client-core:$ktorVersion"
-    const val ktorCio = "io.ktor:ktor-client-cio:$ktorVersion"
+    object Ktor {
+        private const val version = "1.5.1"
+        const val commonCore = "io.ktor:ktor-client-core:$version"
+        const val commonJson = "io.ktor:ktor-client-json:$version"
+        const val commonLogging = "io.ktor:ktor-client-logging:$version"
+        const val commonSerialization = "io.ktor:ktor-client-serialization:$version"
+        const val android = "io.ktor:ktor-client-okhttp:$version"
+        const val ios = "io.ktor:ktor-client-ios:$version"
+        const val js = "io.ktor:ktor-client-js:$version"
+    }
 
     // tests
     // https://github.com/kotest/kotest/releases
