@@ -6,9 +6,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.szymanski.arch.logic.Logger
-import me.szymanski.arch.logic.koin
 import me.szymanski.arch.logic.cases.ListLogic
 import me.szymanski.arch.logic.cases.DetailsLogic
+import me.szymanski.arch.logic.cases.DetailsLogicImpl
+import me.szymanski.arch.logic.cases.ListLogicImpl
+import me.szymanski.arch.logic.rest.RestApi
 import me.szymanski.arch.logic.rest.RestConfig
 import javax.inject.Singleton
 
@@ -43,9 +45,15 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideListLogic(): ListLogic = koin.get()
+    fun provideRestApi(restConfig: RestConfig, logger: Logger) = RestApi(restConfig, logger)
 
     @Provides
     @Singleton
-    fun provideDetailslogic(): DetailsLogic = koin.get()
+    fun provideListLogic(restApi: RestApi, restConfig: RestConfig, logger: Logger): ListLogic =
+        ListLogicImpl(restApi, restConfig, logger)
+
+    @Provides
+    @Singleton
+    fun provideDetailslogic(restApi: RestApi): DetailsLogic =
+        DetailsLogicImpl(restApi)
 }

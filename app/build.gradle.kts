@@ -78,7 +78,6 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxandroid:${Deps.rxAndroid}")
     implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJava}")
     implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelay}")
-    implementation(Deps.koin)
     implementation(Deps.coroutines)
     implementation("com.google.dagger:dagger:${Deps.dagger}")
     implementation("com.google.dagger:hilt-android:${Deps.hilt}")

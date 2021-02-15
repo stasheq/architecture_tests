@@ -62,10 +62,6 @@ object Deps {
     // https://github.com/square/leakcanary/releases
     const val leakCanary = "2.6"
 
-    // https://github.com/InsertKoinIO/koin/releases
-    private const val koinVersion = "3.0.1-alpha-3"
-    const val koin = "org.koin:koin-core:$koinVersion"
-
     // https://github.com/ktorio/ktor/releases
     object Ktor {
         private const val version = "1.5.1"

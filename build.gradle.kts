@@ -17,7 +17,5 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
-        maven(url = "https://kotlin.bintray.com/kotlinx")
-        maven(url = "https://dl.bintray.com/ekito/koin")
     }
 }

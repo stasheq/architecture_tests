@@ -24,11 +24,10 @@ kotlin {
     android()
     js().browser()
     iosArm64("ios")
-    iosX64("iosx64")
+    iosX64("iosX64")
 
     sourceSets {
         sourceSets["commonMain"].dependencies {
-            implementation(Deps.koin)
             implementation(Deps.coroutines)
             implementation(Deps.Ktor.commonCore)
             implementation(Deps.Ktor.commonJson)
@@ -46,7 +45,7 @@ kotlin {
             implementation(Deps.Ktor.ios)
         }
 
-        sourceSets["iosx64Main"].dependencies {
+        sourceSets["iosX64Main"].dependencies {
             implementation(Deps.Ktor.ios)
         }
 

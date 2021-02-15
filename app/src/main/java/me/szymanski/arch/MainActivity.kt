@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), AndroidScreen {
         var initiated = false
         logic.wideScreen = isWideScreen()
         logic.closeApp.observeOnUi { finish() }
-        logic.showViews.map {
+        logic.showViews.asObservable().map {
             when (it!!) {
                 ListLogic.ShowViews.LIST -> LEFT
                 ListLogic.ShowViews.DETAILS -> RIGHT

@@ -49,13 +49,13 @@ class ListFragment : Fragment(), AndroidScreen {
     private fun linkViewAndLogic(view: ListScreen, logic: ListLogic, detailsLogic: DetailsLogic) {
         logic.loading.observeChangedOnUi { view.refreshing = it }
         logic.error.observeChangedOnUi {
-            view.errorText = when (it.value) {
+            view.errorText = when (it) {
                 ListLogic.ErrorType.USER_DOESNT_EXIST -> getString(R.string.loading_error_doesnt_exist)
                 ListLogic.ErrorType.NO_CONNECTION, ListLogic.ErrorType.OTHER -> getString(R.string.loading_error_other)
                 null -> null
             }
         }
-        logic.list
+        logic.list.asObservable()
             .map { list -> list.map { ListItemData(it.name, it.name, it.description) } }
             .observeOnUi { result ->
                 view.lastItemMessage = if (result.isEmpty()) getString(R.string.empty_list) else null
