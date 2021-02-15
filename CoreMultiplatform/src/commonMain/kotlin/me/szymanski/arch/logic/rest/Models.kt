@@ -1,7 +1,5 @@
 package me.szymanski.arch.logic.rest
 
-import com.google.gson.annotations.SerializedName
-
 data class RestConfig(val baseUrl: String, val defaultUser: String, val pageLimit: Int, val callTimeout: Int)
 
 data class Repository(val id: String, val name: String, val description: String)
@@ -14,12 +12,10 @@ data class RepositoryDetails(
     val owner: Owner,
     val forks: Int,
     val language: String?,
-    @SerializedName("open_issues_count")
-    val openIssues: Int,
+    val openIssues: Int, //open_issues_count
     val license: License?,
     val watchers: Int,
-    @SerializedName("default_branch")
-    val defaultBranch: String
+    val defaultBranch: String //default_branch
 )
 
 data class Owner(val login: String)

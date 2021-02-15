@@ -6,11 +6,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.szymanski.arch.logic.Logger
-import me.szymanski.arch.logic.rest.RestConfig
-import me.szymanski.arch.logic.rest.RestModule
+import me.szymanski.arch.logic.koin
+import me.szymanski.arch.logic.cases.ListLogic
+import me.szymanski.arch.logic.cases.Detailslogic
 import javax.inject.Singleton
 
-@Module(includes = [RestModule::class])
+@Module
 @InstallIn(SingletonComponent::class)
 class ApplicationModule {
 
@@ -38,4 +39,12 @@ class ApplicationModule {
             Log.println(priority, tag ?: "ArchTest", text)
         }
     }
+
+    @Provides
+    @Singleton
+    fun provideListLogic(): ListLogic = koin.get()
+
+    @Provides
+    @Singleton
+    fun provideDetailslogic(): Detailslogic = koin.get()
 }

@@ -60,8 +60,13 @@ object Deps {
     const val leakCanary = "2.6"
 
     // https://github.com/InsertKoinIO/koin/releases
-    private const val koinVersion = "3.0.1-alpha-3"
+    const val koinVersion = "3.0.1-alpha-3"
     const val koin = "org.koin:koin-core:$koinVersion"
+
+    // https://github.com/ktorio/ktor/releases
+    private const val ktorVersion = "1.5.1"
+    const val ktorCore = "io.ktor:ktor-client-core:$ktorVersion"
+    const val ktorCio = "io.ktor:ktor-client-cio:$ktorVersion"
 
     // tests
     // https://github.com/kotest/kotest/releases

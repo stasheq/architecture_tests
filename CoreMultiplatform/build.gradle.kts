@@ -12,8 +12,10 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(Deps.koin)
+                implementation("org.koin:koin-core:${Deps.koinVersion}")
                 implementation(Deps.coroutines)
+                implementation(Deps.ktorCore)
+                implementation(Deps.ktorCio)
             }
         }
     }

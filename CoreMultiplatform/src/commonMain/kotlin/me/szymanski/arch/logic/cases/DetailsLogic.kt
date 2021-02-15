@@ -25,7 +25,7 @@ enum class DetailId { NAME, DESCRIPTION, PRIVATE, OWNER, FORKS, LANGUAGE, ISSUES
 
 data class RepositoryDetail(val type: DetailId, val value: String)
 
-class DetailsLogicImpl constructor(private val restApi: RestApi) : DetailsLogic {
+class DetailsLogicImpl(private val restApi: RestApi) : DetailsLogic {
     private val scope = instantiateCoroutineScope()
     override val state = replayFlow<DetailsLogic.LoadingState>()
     override val result = replayFlow<List<RepositoryDetail>>()
