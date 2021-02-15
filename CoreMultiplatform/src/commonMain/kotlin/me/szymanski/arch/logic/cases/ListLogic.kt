@@ -1,19 +1,14 @@
 package me.szymanski.arch.logic.cases
 
-import com.jakewharton.rxrelay3.BehaviorRelay
-import com.jakewharton.rxrelay3.PublishRelay
-import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import me.szymanski.arch.logic.Logger
-import me.szymanski.arch.logic.Logic
-import me.szymanski.arch.logic.Optional
+import me.szymanski.arch.logic.*
 import me.szymanski.arch.logic.rest.ApiError
 import me.szymanski.arch.logic.rest.Repository
 import me.szymanski.arch.logic.rest.RestApi
 import me.szymanski.arch.logic.rest.RestConfig
-import javax.inject.Inject
 import me.szymanski.arch.logic.cases.ListLogic.ShowViews.*
 
 interface ListLogic : Logic {
@@ -22,18 +17,18 @@ interface ListLogic : Logic {
     fun itemClick(detailsLogic: DetailsLogic, repositoryName: String?)
     var userName: String
     var wideScreen: Boolean
-    val list: Observable<List<Repository>>
-    val loading: Observable<Boolean>
-    val error: Observable<Optional<ErrorType>>
-    val closeApp: Observable<Unit>
-    val showViews: Observable<ShowViews>
-    val hasNextPage: Observable<Boolean>
+    val list: Flow<List<Repository>>
+    val loading: Flow<Boolean>
+    val error: Flow<ErrorType?>
+    val closeApp: Flow<Unit>
+    val showViews: Flow<ShowViews>
+    val hasNextPage: Flow<Boolean>
 
     enum class ErrorType { USER_DOESNT_EXIST, NO_CONNECTION, OTHER }
     enum class ShowViews { LIST, DETAILS, BOTH }
 }
 
-class ListLogicImpl @Inject constructor(
+class ListLogicImpl(
     private val restApi: RestApi,
     private val restConfig: RestConfig,
     private val logger: Logger
@@ -44,12 +39,12 @@ class ListLogicImpl @Inject constructor(
     private var currentPage = firstPage
     private var lastJob: Job? = null
     private var itemClicked = false
-    override val list: BehaviorRelay<List<Repository>> = BehaviorRelay.create()
-    override val loading: BehaviorRelay<Boolean> = BehaviorRelay.create()
-    override val error: BehaviorRelay<Optional<ListLogic.ErrorType>> = BehaviorRelay.create()
-    override val closeApp: PublishRelay<Unit> = PublishRelay.create()
-    override val showViews: BehaviorRelay<ListLogic.ShowViews> = BehaviorRelay.create()
-    override val hasNextPage: BehaviorRelay<Boolean> = BehaviorRelay.create()
+    override val list = replayFlow<List<Repository>>()
+    override val loading = replayFlow<Boolean>()
+    override val error = replayFlow<ListLogic.ErrorType?>()
+    override val closeApp = publishFlow<Unit>()
+    override val showViews = replayFlow<ListLogic.ShowViews>()
+    override val hasNextPage = replayFlow<Boolean>()
     override var userName = restConfig.defaultUser
         set(value) {
             if (field == value) return
@@ -59,10 +54,10 @@ class ListLogicImpl @Inject constructor(
     override var wideScreen: Boolean = false
         set(value) {
             if (value) {
-                showViews.accept(BOTH)
+                showViews.publish(BOTH)
             } else {
-                val lastValue: ListLogic.ShowViews? = showViews.value
-                showViews.accept(if (lastValue == null || lastValue == LIST || !itemClicked) LIST else DETAILS)
+                val lastValue: ListLogic.ShowViews? = showViews.lastValue
+                showViews.publish(if (lastValue == null || lastValue == LIST || !itemClicked) LIST else DETAILS)
             }
             field = value
         }
@@ -74,7 +69,7 @@ class ListLogicImpl @Inject constructor(
     private fun loadNextPage(fromFirstPage: Boolean = false) {
         if (fromFirstPage) {
             lastJob?.cancel()
-            loading.accept(true)
+            loading.publish(true)
             currentPage = firstPage
         }
         if (lastJob?.isActive == true) {
@@ -86,10 +81,10 @@ class ListLogicImpl @Inject constructor(
                 if (!isActive) return
                 if (fromFirstPage && errorType == null) loadedItems.clear()
                 loadedItems.addAll(items)
-                list.accept(loadedItems)
-                error.accept(Optional(errorType))
-                loading.accept(false)
-                hasNextPage.accept(items.size == restConfig.pageLimit)
+                list.publish(loadedItems)
+                error.publish(errorType)
+                loading.publish(false)
+                hasNextPage.publish(items.size == restConfig.pageLimit)
             }
 
             try {
@@ -112,15 +107,15 @@ class ListLogicImpl @Inject constructor(
         detailsLogic.userName = userName
         detailsLogic.reload()
         itemClicked = true
-        showViews.accept(if (wideScreen) BOTH else DETAILS)
+        showViews.publish(if (wideScreen) BOTH else DETAILS)
     }
 
     override fun onBackPressed(): Boolean {
         itemClicked = false
-        if (showViews.value == BOTH || showViews.value == LIST) {
-            closeApp.accept(Unit)
+        if (showViews.lastValue == BOTH || showViews.lastValue == LIST) {
+            closeApp.publish(Unit)
         } else {
-            showViews.accept(LIST)
+            showViews.publish(LIST)
         }
         return true
     }
