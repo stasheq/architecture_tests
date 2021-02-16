@@ -1,4 +1,5 @@
 include ':CoreMultiplatform'
 include ':views'
 include ':androidApp'
+include ':webApp'
 rootProject.name = "MultiMobileAppScheme"

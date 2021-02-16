@@ -22,7 +22,14 @@ android {
 
 kotlin {
     android()
-    js().browser()
+    js {
+        browser {
+            dceTask {
+                dceOptions.devMode = true
+            }
+        }
+        binaries.executable()
+    }
     iosArm64("ios")
     iosX64("iosX64")
 
