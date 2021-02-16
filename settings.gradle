@@ -1,4 +1,4 @@
 include ':CoreMultiplatform'
 include ':views'
-include ':app'
-rootProject.name = "App Scheme"
+include ':androidApp'
+rootProject.name = "MultiMobileAppScheme"
