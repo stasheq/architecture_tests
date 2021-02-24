@@ -1,8 +1,9 @@
 package me.szymanski.arch.logic.cases
 
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import me.szymanski.arch.logic.Logic
 import me.szymanski.arch.logic.replayFlow
 import me.szymanski.arch.logic.publish
@@ -26,7 +27,7 @@ enum class DetailId { NAME, DESCRIPTION, PRIVATE, OWNER, FORKS, LANGUAGE, ISSUES
 data class RepositoryDetail(val type: DetailId, val value: String)
 
 class DetailsLogicImpl(private val restApi: RestApi) : DetailsLogic {
-    private val scope = instantiateCoroutineScope()
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     override val state = replayFlow<DetailsLogic.LoadingState>()
     override val result = replayFlow<List<RepositoryDetail>>()
     override val title = replayFlow<String>()
@@ -55,6 +56,7 @@ class DetailsLogicImpl(private val restApi: RestApi) : DetailsLogic {
                 state.publish(DetailsLogic.LoadingState.ERROR)
             }
         }
+        state.collect {  }
     }
 
     private fun toDetailsItems(repo: RepositoryDetails): List<RepositoryDetail> = listOf(

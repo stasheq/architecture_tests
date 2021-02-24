@@ -1,9 +1,7 @@
 package me.szymanski.arch.logic.cases
 
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.*
 import me.szymanski.arch.logic.rest.ApiError
 import me.szymanski.arch.logic.rest.Repository
@@ -33,7 +31,7 @@ class ListLogicImpl(
     private val restConfig: RestConfig,
     private val logger: Logger
 ) : ListLogic {
-    private val scope = instantiateCoroutineScope()
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private val loadedItems = ArrayList<Repository>()
     private val firstPage = 1
     private var currentPage = firstPage

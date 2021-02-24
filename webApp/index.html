@@ -9,7 +9,9 @@
 <script src="build/CoreMultiplatform.js"></script>
 <script>
     const core = CoreMultiplatform.me.szymanski.arch.logic;
-    alert(core.JsTest.boo());
+    const restApi = core.rest.RestApi()
+    const detailsLogic = new core.cases.DetailsLogicImpl(restApi)
+    detailsLogic.state.collect(function(state){ alert(state) });
 </script>
 </body>
 </html>
