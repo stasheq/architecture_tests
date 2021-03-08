@@ -63,7 +63,6 @@ dependencies {
     debugImplementation("com.squareup.leakcanary:leakcanary-android:${Deps.leakCanary}")
     implementation(project(":logic"))
     implementation(project(":views"))
-    implementation(project(":CoreMultiplatform"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
     implementation("androidx.core:core-ktx:${Deps.coreKtx}")
     implementation("androidx.activity:activity-ktx:${Deps.activityKtx}")

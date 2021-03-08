@@ -3,20 +3,22 @@ object Deps {
     const val kotlin = "1.4.30"
 
     // https://github.com/Kotlin/kotlinx.coroutines
-    const val coroutines = "1.4.2"
+    const val coroutines = "1.4.3"
 
-    // https://developer.android.com/kotlin/ktx/extensions-list
+    // https://developer.android.com/jetpack/androidx/releases/core
     const val coreKtx = "1.3.2"
     // https://developer.android.com/kotlin/ktx/extensions-list#androidxactivity
     const val activityKtx = "1.2.0"
+
     // https://developer.android.com/kotlin/ktx/extensions-list#androidxfragmentapp
     const val fragmentKtx = "1.2.5"
+
     // https://developer.android.com/kotlin/ktx/extensions-list#androidxlifecycle
-    const val viewModelKtx = "2.2.0"
+    const val viewModelKtx = "2.3.0"
 
     // https://github.com/google/dagger
-    const val dagger = "2.32"
-    const val hilt = "$dagger-alpha"
+    const val dagger = "2.33"
+    const val hilt = "$dagger-beta"
 
     // https://developer.android.com/training/dependency-injection/hilt-jetpack
     // https://developer.android.com/jetpack/androidx/releases/hilt
@@ -44,7 +46,7 @@ object Deps {
     const val material = "1.3.0"
 
     // https://github.com/ReactiveX/RxJava/releases
-    const val rxJava = "3.0.10"
+    const val rxJava = "3.0.11"
 
     // https://github.com/JakeWharton/RxRelay/releases
     const val rxRelay = "3.0.0"
@@ -55,10 +57,7 @@ object Deps {
     // https://github.com/square/leakcanary/releases
     const val leakCanary = "2.6"
 
-    // https://github.com/InsertKoinIO/koin/releases
-    const val koin = "3.0.1-alpha-3"
-
     // tests
     // https://github.com/kotest/kotest/releases
-    const val kotest = "4.4.1"
+    const val kotest = "4.4.3"
 }
