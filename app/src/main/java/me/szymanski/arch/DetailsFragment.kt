@@ -17,6 +17,7 @@ import me.szymanski.arch.logic.cases.DetailsLogic
 import me.szymanski.arch.logic.cases.DetailsLogic.LoadingState.*
 import me.szymanski.arch.logic.cases.DetailsLogicImpl
 import me.szymanski.arch.utils.AndroidScreen
+import me.szymanski.arch.utils.isWideScreen
 import me.szymanski.arch.widgets.list.ListItemData
 import javax.inject.Inject
 

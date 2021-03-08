@@ -8,6 +8,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.logic.cases.ListLogic
 import me.szymanski.arch.utils.AndroidScreen
+import me.szymanski.arch.utils.changeFragment
+import me.szymanski.arch.utils.isWideScreen
 import me.szymanski.arch.widgets.FrameDouble
 import me.szymanski.arch.widgets.FrameDouble.State.*
 
