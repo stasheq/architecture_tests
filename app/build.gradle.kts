@@ -73,7 +73,6 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:${Deps.recyclerView}")
     implementation("com.google.android.material:material:${Deps.material}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Deps.viewModelKtx}")
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:${Deps.hiltJetpack}")
     implementation("com.squareup.okhttp3:okhttp:${Deps.okhttp}")
     implementation("io.reactivex.rxjava3:rxandroid:${Deps.rxAndroid}")
     implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJava}")
@@ -81,5 +80,4 @@ dependencies {
     implementation("com.google.dagger:dagger:${Deps.dagger}")
     implementation("com.google.dagger:hilt-android:${Deps.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Deps.hilt}")
-    kapt("androidx.hilt:hilt-compiler:${Deps.hiltJetpack}")
 }

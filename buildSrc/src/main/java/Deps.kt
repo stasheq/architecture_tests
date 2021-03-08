@@ -20,10 +20,6 @@ object Deps {
     const val dagger = "2.33"
     const val hilt = "$dagger-beta"
 
-    // https://developer.android.com/training/dependency-injection/hilt-jetpack
-    // https://developer.android.com/jetpack/androidx/releases/hilt
-    const val hiltJetpack = "1.0.0-alpha03"
-
     // https://github.com/square/retrofit/releases
     const val retrofit = "2.9.0"
 
