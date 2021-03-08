@@ -1,25 +1,27 @@
 package me.szymanski.arch.widgets
 
 import android.content.Context
-import android.view.ViewGroup
+import android.util.AttributeSet
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
-import me.szymanski.arch.ViewWidget
 import me.szymanski.arch.inflate
 import me.szymanski.arch.widgets.databinding.ErrorBarBinding
 
-class ErrorBar(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
+class ErrorBar @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : FrameLayout(ctx, attrs) {
     private val errorView: TextView
 
-    override val root = ctx.inflate(ErrorBarBinding::inflate, parent).apply {
-        errorView = reposErrorText
-    }.root.apply { isVisible = false }
+    init {
+        ctx.inflate(ErrorBarBinding::inflate, this).apply {
+            errorView = reposErrorText
+        }.root.apply { isVisible = false }
+    }
 
     var errorText: CharSequence? = errorView.text
         get() = errorView.text
         set(value) {
             errorView.text = value
-            root.isVisible = value != null
+            this.isVisible = value != null
             field = value
         }
 }

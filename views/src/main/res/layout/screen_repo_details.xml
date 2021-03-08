@@ -12,9 +12,26 @@
         android:layout_gravity="center" />
 
     <LinearLayout
-        android:id="@+id/detailsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" />
+        android:orientation="vertical">
+
+        <me.szymanski.arch.widgets.Toolbar
+            android:id="@+id/detailsToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+        <me.szymanski.arch.widgets.ErrorBar
+            android:id="@+id/detailsErrorBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <me.szymanski.arch.widgets.list.ListWidget
+            android:id="@+id/detailsList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
 </FrameLayout>

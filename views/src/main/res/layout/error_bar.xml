@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/listItemPadding">
+    android:padding="@dimen/listItemPadding"
+    tools:parentTag="android.widget.FrameLayout">
 
     <TextView
         android:id="@+id/reposErrorText"
@@ -17,4 +18,4 @@
         android:textStyle="bold"
         tools:text="Error text"
         tools:visibility="visible" />
-</FrameLayout>
+</merge>

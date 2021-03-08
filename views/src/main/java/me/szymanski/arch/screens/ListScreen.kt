@@ -2,28 +2,25 @@ package me.szymanski.arch.screens
 
 import android.content.Context
 import android.view.ViewGroup
-import me.szymanski.arch.ViewWidget
 import me.szymanski.arch.getValue
 import me.szymanski.arch.inflate
+import me.szymanski.arch.refreshing
 import me.szymanski.arch.setValue
 import me.szymanski.arch.widgets.ErrorBar
 import me.szymanski.arch.widgets.TextInputWidget
 import me.szymanski.arch.widgets.databinding.ScreenReposListBinding
 import me.szymanski.arch.widgets.list.ListWidget
 
-class ListScreen(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
+class ListScreen(ctx: Context, parent: ViewGroup? = null) {
 
     private val errorWidget: ErrorBar
     private val listWidget: ListWidget
     private val userNameInput: TextInputWidget
 
-    override val root = ctx.inflate(ScreenReposListBinding::inflate, parent).apply {
-        userNameInput = TextInputWidget(ctx, reposLinearLayout)
-        reposLinearLayout.addView(userNameInput.root)
-        errorWidget = ErrorBar(ctx, reposLinearLayout)
-        reposLinearLayout.addView(errorWidget.root)
-        listWidget = ListWidget(ctx, reposLinearLayout)
-        reposLinearLayout.addView(listWidget.root)
+    val root = ctx.inflate(ScreenReposListBinding::inflate, parent).apply {
+        userNameInput = listInput
+        errorWidget = listErrorBar
+        listWidget = listListWidget
     }.root
 
     var refreshing by listWidget::refreshing

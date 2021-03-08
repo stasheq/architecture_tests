@@ -1,21 +1,23 @@
 package me.szymanski.arch.widgets
 
 import android.content.Context
-import android.view.View
-import android.view.ViewGroup
+import android.util.AttributeSet
+import android.widget.FrameLayout
 import com.google.android.material.textfield.TextInputEditText
 import io.reactivex.rxjava3.core.Observable
 import me.szymanski.arch.*
 import me.szymanski.arch.widgets.databinding.TextInputBinding
 import java.util.concurrent.TimeUnit
 
-class TextInputWidget(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
+class TextInputWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : FrameLayout(ctx, attrs) {
 
     private val inputText: TextInputEditText
 
-    override val root: View = ctx.inflate(TextInputBinding::inflate, parent).apply {
-        inputText = inputEditText
-    }.root
+    init {
+        ctx.inflate(TextInputBinding::inflate, this).apply {
+            inputText = inputEditText
+        }
+    }
 
     var textValue by inputText::textValue
     val textValueChanges: Observable<String> =

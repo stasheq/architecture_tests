@@ -2,31 +2,33 @@ package me.szymanski.arch.widgets
 
 import android.animation.Animator
 import android.content.Context
+import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import me.szymanski.arch.Animations.animate
 import me.szymanski.arch.Animations.animateAlpha
 import me.szymanski.arch.Animations.playTogether
-import me.szymanski.arch.ViewWidget
 import me.szymanski.arch.inflate
 import me.szymanski.arch.measure
 import me.szymanski.arch.widgets.databinding.FrameDoubleBinding
 
-class FrameDouble(ctx: Context, parent: ViewGroup? = null) : ViewWidget {
+class FrameDouble @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : ConstraintLayout(ctx, attrs) {
     val rightColumn: ViewGroup
     val leftColumn: ViewGroup
     private val cover: View
 
-    override val root = ctx.inflate(FrameDoubleBinding::inflate, parent).apply {
-        rightColumn = columnRight
-        leftColumn = columnLeft
-        cover = columnCover
-    }.root
+    init {
+        ctx.inflate(FrameDoubleBinding::inflate, this).apply {
+            rightColumn = columnRight
+            leftColumn = columnLeft
+            cover = columnCover
+        }.root
+    }
 
     private fun View.animateTranslation(to: Float) = animate({ translationX }, to, { translationX = it })
     private fun View.setPWidth(value: Float) {
-        val lp = layoutParams as ConstraintLayout.LayoutParams
+        val lp = layoutParams as LayoutParams
         lp.matchConstraintPercentWidth = value
         layoutParams = lp
     }

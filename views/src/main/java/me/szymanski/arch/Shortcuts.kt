@@ -17,6 +17,9 @@ import androidx.viewbinding.ViewBinding
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
 
+fun <T> Context.inflate(inflate: (LayoutInflater, ViewGroup) -> T, parent: ViewGroup): T =
+    inflate(LayoutInflater.from(this), parent)
+
 fun <T> Context.inflate(inflate: (LayoutInflater, ViewGroup?, Boolean) -> T, parent: ViewGroup? = null): T =
     inflate(LayoutInflater.from(this), parent, false)
 
