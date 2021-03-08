@@ -1,4 +1,3 @@
-include ':CoreMultiplatform'
 include ':views'
 include ':logic'
 include ':app'
