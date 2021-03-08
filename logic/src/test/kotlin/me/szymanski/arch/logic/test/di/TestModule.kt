@@ -12,15 +12,14 @@ import me.szymanski.arch.logic.cases.ListLogicImpl
 class TestModule {
     @Provides
     fun logger(): Logger = object : Logger {
-        override fun log(message: String, tag: String?, level: Logger.Level) {
-            tag?.let { print("$it ") }
-            println(message)
-        }
 
-        override fun log(t: Throwable, tag: String?, level: Logger.Level) {
+        override fun log(message: String, t: Throwable?, tag: String?, level: Logger.Level) {
             tag?.let { print("$it ") }
-            print("${t::class.simpleName} ")
-            t.message?.let { println(it) }
+            t?.let {
+                print("${it::class.simpleName} ")
+                it.message?.let { msg -> println(msg) }
+            }
+            println(message)
         }
     }
 
