@@ -51,13 +51,13 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Deps.kotlin}")
-    implementation("androidx.core:core-ktx:${Deps.coreKtx}")
-    implementation("io.reactivex.rxjava3:rxandroid:${Deps.rxAndroid}")
-    implementation("io.reactivex.rxjava3:rxjava:${Deps.rxJava}")
-    implementation("com.jakewharton.rxrelay3:rxrelay:${Deps.rxRelay}")
-    implementation("androidx.constraintlayout:constraintlayout:${Deps.constraintLayout}")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:${Deps.swipeRefreshLayout}")
-    implementation("androidx.recyclerview:recyclerview:${Deps.recyclerView}")
-    implementation("com.google.android.material:material:${Deps.material}")
+    implementation(Deps.Kotlin.stdlib)
+    implementation(Deps.Jetpack.coreKotlin)
+    implementation(Deps.RxJava.lib)
+    implementation(Deps.RxJava.rxAndroid)
+    implementation(Deps.RxJava.rxRelay)
+    implementation(Deps.Jetpack.constraintLayout)
+    implementation(Deps.Jetpack.swipeRefreshLayout)
+    implementation(Deps.Jetpack.recyclerView)
+    implementation(Deps.MaterialComponents.lib)
 }
