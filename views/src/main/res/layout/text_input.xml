@@ -26,8 +26,8 @@
             android:inputType="text"
             android:lines="1"
             android:maxLines="1"
-            android:paddingVertical="6dp"
-            android:textColor="@color/barText"
+            android:paddingVertical="10dp"
+            android:textColor="@color/text"
             android:textSize="@dimen/inputTextSize"
             tools:ignore="UnusedAttribute"
             tools:text="Some input text" />
