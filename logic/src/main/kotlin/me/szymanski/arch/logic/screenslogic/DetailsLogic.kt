@@ -1,8 +1,9 @@
-package me.szymanski.arch.logic.cases
+package me.szymanski.arch.logic.screenslogic
 
 import com.jakewharton.rxrelay3.BehaviorRelay
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.Logic
 import me.szymanski.arch.logic.rest.ApiError
@@ -75,6 +76,6 @@ class DetailsLogicImpl @Inject constructor(private val restApi: RestApi) : Detai
     }
 
     override fun destroy() {
-        lastJob?.cancel()
+        scope.cancel()
     }
 }

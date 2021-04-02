@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import me.szymanski.arch.logic.cases.ListLogic
+import me.szymanski.arch.logic.screenslogic.ListLogic
 import me.szymanski.arch.utils.AndroidScreen
 import me.szymanski.arch.utils.changeFragment
 import me.szymanski.arch.utils.isWideScreen

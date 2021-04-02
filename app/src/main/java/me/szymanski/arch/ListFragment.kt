@@ -11,9 +11,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.di.LogicViewModel
-import me.szymanski.arch.logic.cases.DetailsLogic
-import me.szymanski.arch.logic.cases.ListLogic
-import me.szymanski.arch.logic.cases.ListLogicImpl
+import me.szymanski.arch.logic.screenslogic.DetailsLogic
+import me.szymanski.arch.logic.screenslogic.ListLogic
+import me.szymanski.arch.logic.screenslogic.ListLogicImpl
 import me.szymanski.arch.screens.ListScreen
 import me.szymanski.arch.utils.AndroidScreen
 import me.szymanski.arch.widgets.list.ListItemData

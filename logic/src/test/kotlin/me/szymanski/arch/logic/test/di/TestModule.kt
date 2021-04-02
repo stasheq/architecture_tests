@@ -3,10 +3,10 @@ package me.szymanski.arch.logic.test.di
 import dagger.Module
 import dagger.Provides
 import me.szymanski.arch.logic.Logger
-import me.szymanski.arch.logic.cases.DetailsLogic
-import me.szymanski.arch.logic.cases.DetailsLogicImpl
-import me.szymanski.arch.logic.cases.ListLogic
-import me.szymanski.arch.logic.cases.ListLogicImpl
+import me.szymanski.arch.logic.screenslogic.DetailsLogic
+import me.szymanski.arch.logic.screenslogic.DetailsLogicImpl
+import me.szymanski.arch.logic.screenslogic.ListLogic
+import me.szymanski.arch.logic.screenslogic.ListLogicImpl
 
 @Module
 class TestModule {

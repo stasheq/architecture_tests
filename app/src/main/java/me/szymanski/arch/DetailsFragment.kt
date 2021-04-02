@@ -11,11 +11,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.di.LogicViewModel
-import me.szymanski.arch.logic.cases.DetailId
+import me.szymanski.arch.logic.screenslogic.DetailId
 import me.szymanski.arch.screens.DetailsScreen
-import me.szymanski.arch.logic.cases.DetailsLogic
-import me.szymanski.arch.logic.cases.DetailsLogic.LoadingState.*
-import me.szymanski.arch.logic.cases.DetailsLogicImpl
+import me.szymanski.arch.logic.screenslogic.DetailsLogic
+import me.szymanski.arch.logic.screenslogic.DetailsLogic.LoadingState.*
+import me.szymanski.arch.logic.screenslogic.DetailsLogicImpl
 import me.szymanski.arch.utils.AndroidScreen
 import me.szymanski.arch.utils.isWideScreen
 import me.szymanski.arch.widgets.list.ListItemData
