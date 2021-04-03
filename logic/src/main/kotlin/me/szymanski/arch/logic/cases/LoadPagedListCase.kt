@@ -9,11 +9,15 @@ import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.Logger
 import me.szymanski.arch.logic.Optional
 import me.szymanski.arch.logic.rest.ApiError
+import javax.inject.Inject
 
-abstract class LoadPagedListCase<T, E>(
-    private val logger: Logger
-) {
+abstract class LoadPagedListCase<T, E> {
+    @Inject
+    lateinit var logger: Logger
+
+    @Inject
     lateinit var scope: CoroutineScope
+
     val error: Relay<Optional<E>> = BehaviorRelay.create()
     val list: Relay<List<T>> = BehaviorRelay.create()
     val loading: Relay<Boolean> = BehaviorRelay.create()

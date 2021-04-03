@@ -3,7 +3,6 @@ package me.szymanski.arch.logic.screenslogic
 import com.jakewharton.rxrelay3.BehaviorRelay
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
-import kotlinx.coroutines.cancel
 import me.szymanski.arch.logic.Logic
 import me.szymanski.arch.logic.Optional
 import me.szymanski.arch.logic.cases.GetReposListCase
@@ -31,7 +30,6 @@ interface ListLogic : Logic {
 class ListLogicImpl @Inject constructor(
     private val getReposListCase: GetReposListCase
 ) : ListLogic {
-    private val scope = instantiateCoroutineScope()
     private var itemClicked = false
     override val list = getReposListCase.list
     override val loading = getReposListCase.loading
@@ -50,10 +48,6 @@ class ListLogicImpl @Inject constructor(
             }
             field = value
         }
-
-    init {
-        getReposListCase.scope = scope
-    }
 
     override fun reload() = getReposListCase.loadNextPage(true)
 
@@ -80,6 +74,4 @@ class ListLogicImpl @Inject constructor(
     override fun create() {
         reload()
     }
-
-    override fun destroy() = scope.cancel()
 }

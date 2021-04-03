@@ -1,6 +1,5 @@
 package me.szymanski.arch.logic.cases
 
-import me.szymanski.arch.logic.Logger
 import me.szymanski.arch.logic.rest.ApiError
 import me.szymanski.arch.logic.rest.Repository
 import me.szymanski.arch.logic.rest.RestApi
@@ -10,9 +9,8 @@ import javax.inject.Inject
 
 class GetReposListCase @Inject constructor(
     private val restApi: RestApi,
-    private val restConfig: RestConfig,
-    logger: Logger
-) : LoadPagedListCase<Repository, ListLogic.ErrorType>(logger) {
+    private val restConfig: RestConfig
+) : LoadPagedListCase<Repository, ListLogic.ErrorType>() {
 
     var userName = restConfig.defaultUser
         set(value) {

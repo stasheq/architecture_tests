@@ -2,8 +2,8 @@ package me.szymanski.arch.logic.screenslogic
 
 import com.jakewharton.rxrelay3.BehaviorRelay
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.Logic
 import me.szymanski.arch.logic.rest.ApiError
@@ -26,8 +26,7 @@ enum class DetailId { NAME, DESCRIPTION, PRIVATE, OWNER, FORKS, LANGUAGE, ISSUES
 
 data class RepositoryDetail(val type: DetailId, val value: String)
 
-class DetailsLogicImpl @Inject constructor(private val restApi: RestApi) : DetailsLogic {
-    private val scope = instantiateCoroutineScope()
+class DetailsLogicImpl @Inject constructor(private val restApi: RestApi, private val scope: CoroutineScope) : DetailsLogic {
     override val state: BehaviorRelay<DetailsLogic.LoadingState> = BehaviorRelay.create()
     override val result: BehaviorRelay<List<RepositoryDetail>> = BehaviorRelay.create()
     override val title: BehaviorRelay<String> = BehaviorRelay.create()
@@ -73,9 +72,5 @@ class DetailsLogicImpl @Inject constructor(private val restApi: RestApi) : Detai
 
     override fun create() {
         reload()
-    }
-
-    override fun destroy() {
-        scope.cancel()
     }
 }
