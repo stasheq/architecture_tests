@@ -1,8 +1,11 @@
-# Android App schema proposal
+# Android App architecture schema proposal
+This example is created to demonstrate a custom architecture idea and usage of a multiple tools.\
+Main reason of view and logic separation is done to make logic testable on a pure JVM, without running an Android emulator.\
+
 This app is created to show the idea of the architecture scheme that is:
-- modular
 - easy to test automatically
-- easy to expand
+- modular
+- well divided to layers
 - cool
 
 Utils used:
@@ -40,14 +43,12 @@ Example: [ListLogic.kt](logic/src/main/kotlin/me/szymanski/arch/logic/cases/List
 ## Unit tests of logic
 Example: [ListLogic tests](logic/src/test/kotlin/me/szymanski/arch/logic/test/ListTest.kt)\
 It uses [kotest](https://github.com/kotest/kotest) framework that allows to write unit tests efficiently.\
-Setting `isolationMode = IsolationMode.InstancePerLeaf` allows to write tests `On download 2nd page` and
-`On error downloading 2nd page` without taking care of preparing previous steps like `On started and download 1st page`.\
+Setting `isolationMode = IsolationMode.InstancePerLeaf` allows to run whole separate flow for each leaf of a tests tree.\
+For example to write tests `On download 2nd page` and `On error downloading 2nd page` without taking care of preparing previous steps like `On started and download 1st page`.\
 Whole path is executed for every leaf.\
-Suggested method of running tests (because of nice UI output) is to run from Android Studio Gradle menu `logic/Tasks/verification/test`.
+Suggested method of running tests (because of nice UI output) is to run from Android Studio Gradle menu `logic/Tasks/verification/test`.\
 
 ## Views
 
-Specific parts of Views are created using xml layouts, but to make them more reusable they are composed
-in the code.\
-[ListScreen.kt](views/src/main/java/me/szymanski/arch/screens/ListScreen.kt) gives a good overview.
-It combines multiple "Widgets" that are used also in other screens.
+Example: [ListScreen.kt](views/src/main/java/me/szymanski/arch/screens/ListScreen.kt)\
+Views are built using reusable components and composed in xmls.
