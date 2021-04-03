@@ -14,7 +14,7 @@ class TextInputWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSe
     private val inputText: TextInputEditText
 
     init {
-        ctx.inflate(TextInputBinding::inflate, this).apply {
+        inflate(TextInputBinding::inflate, true).apply {
             inputText = inputEditText
         }
     }

@@ -12,16 +12,17 @@ class ErrorBar @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = nu
     private val errorView: TextView
 
     init {
-        ctx.inflate(ErrorBarBinding::inflate, this).apply {
+        inflate(ErrorBarBinding::inflate, true).apply {
             errorView = reposErrorText
-        }.root.apply { isVisible = false }
+            errorView.isVisible = false
+        }
     }
 
     var errorText: CharSequence? = errorView.text
         get() = errorView.text
         set(value) {
             errorView.text = value
-            this.isVisible = value != null
+            errorView.isVisible = value != null
             field = value
         }
 }

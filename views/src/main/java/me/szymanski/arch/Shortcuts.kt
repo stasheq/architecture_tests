@@ -17,14 +17,24 @@ import androidx.viewbinding.ViewBinding
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
 
-fun <T> Context.inflate(inflate: (LayoutInflater, ViewGroup) -> T, parent: ViewGroup): T =
+fun <T> Context.inflate(
+    inflate: (LayoutInflater, ViewGroup) -> T,
+    parent: ViewGroup
+): T =
     inflate(LayoutInflater.from(this), parent)
 
-fun <T> Context.inflate(inflate: (LayoutInflater, ViewGroup?, Boolean) -> T, parent: ViewGroup? = null): T =
-    inflate(LayoutInflater.from(this), parent, false)
+fun <T> Context.inflate(
+    inflate: (LayoutInflater, ViewGroup?, Boolean) -> T,
+    parent: ViewGroup? = null,
+    attach: Boolean = false
+): T =
+    inflate(LayoutInflater.from(this), parent, attach)
 
-fun <T> ViewGroup.inflate(inflate: (LayoutInflater, ViewGroup?, Boolean) -> T): T =
-    inflate(LayoutInflater.from(this.context), this, false)
+fun <T> ViewGroup.inflate(
+    inflate: (LayoutInflater, ViewGroup?, Boolean) -> T,
+    attach: Boolean = false
+): T =
+    context.inflate(inflate, this, attach)
 
 var SwipeRefreshLayout.refreshing: Boolean
     get() = this.isRefreshing

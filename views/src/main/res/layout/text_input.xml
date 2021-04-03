@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="@color/colorPrimary"
     android:paddingHorizontal="@dimen/listItemPadding"
-    android:paddingVertical="3dp"
-    tools:parentTag="android.widget.FrameLayout">
+    android:paddingVertical="3dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayout"
@@ -27,10 +26,10 @@
             android:lines="1"
             android:maxLines="1"
             android:paddingVertical="10dp"
-            android:textColor="@color/text"
+            android:textColor="@color/barText"
             android:textSize="@dimen/inputTextSize"
             tools:ignore="UnusedAttribute"
             tools:text="Some input text" />
 
     </com.google.android.material.textfield.TextInputLayout>
-</merge>
+</FrameLayout>
