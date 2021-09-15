@@ -32,8 +32,12 @@ object Deps {
         // https://developer.android.com/kotlin/ktx/extensions-list#androidxfragmentapp
         const val fragment = "androidx.fragment:fragment-ktx:1.3.6"
 
-        // https://developer.android.com/kotlin/ktx/extensions-list#androidxlifecycle
-        const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+        object Lifecycle {
+            // https://developer.android.com/kotlin/ktx/extensions-list#androidxlifecycle
+            private const val version = "2.4.0-alpha03"
+            const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
+            const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
+        }
     }
 
     object Dagger {
@@ -50,14 +54,14 @@ object Deps {
 
     object Retrofit {
         // https://github.com/square/retrofit/releases
-        const val version = "2.9.0"
+        private const val version = "2.9.0"
         const val lib = "com.squareup.retrofit2:retrofit:$version"
         const val gson = "com.squareup.retrofit2:converter-gson:$version"
     }
 
     object OkHttp {
         // https://square.github.io/okhttp/changelog/
-        const val version = "4.9.1"
+        private const val version = "4.9.1"
         const val lib = "com.squareup.okhttp3:okhttp:$version"
         const val logging = "com.squareup.okhttp3:logging-interceptor:$version"
         const val mockwebserver = "com.squareup.okhttp3:mockwebserver:$version"
@@ -68,28 +72,16 @@ object Deps {
         const val lib = "com.google.android.material:material:1.4.0"
     }
 
-    object RxJava {
-        // https://github.com/ReactiveX/RxJava/releases
-        const val version = "3.0.11"
-        const val lib = "io.reactivex.rxjava3:rxjava:$version"
-
-        // https://github.com/ReactiveX/RxAndroid/releases
-        const val rxAndroid = "io.reactivex.rxjava3:rxandroid:3.0.0"
-
-        // https://github.com/JakeWharton/RxRelay/releases
-        const val rxRelay = "com.jakewharton.rxrelay3:rxrelay:3.0.0"
-    }
-
     object LeakCanary {
         // https://github.com/square/leakcanary/releases
-        const val version = "2.7"
+        private const val version = "2.7"
         const val lib = "com.squareup.leakcanary:leakcanary-android:$version"
     }
 
     // tests
     object Kotest {
         // https://github.com/kotest/kotest/releases
-        const val version = "4.6.2"
+        private const val version = "4.6.2"
         const val lib = "io.kotest:kotest-runner-junit5:$version"
         const val assertions = "io.kotest:kotest-assertions-core:$version"
         const val property = "io.kotest:kotest-property:$version"

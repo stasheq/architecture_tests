@@ -1,36 +1,37 @@
 package me.szymanski.arch
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.szymanski.arch.di.LogicViewModel
 import me.szymanski.arch.logic.screenslogic.DetailId
 import me.szymanski.arch.screens.DetailsScreen
 import me.szymanski.arch.logic.screenslogic.DetailsLogic
 import me.szymanski.arch.logic.screenslogic.DetailsLogic.LoadingState.*
 import me.szymanski.arch.logic.screenslogic.DetailsLogicImpl
-import me.szymanski.arch.utils.AndroidScreen
 import me.szymanski.arch.utils.isWideScreen
 import me.szymanski.arch.widgets.list.ListItemData
 import javax.inject.Inject
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(logic: DetailsLogicImpl) : LogicViewModel<DetailsLogic>(logic)
 
 @AndroidEntryPoint
-class DetailsFragment : Fragment(), AndroidScreen {
+class DetailsFragment : Fragment() {
     private val viewModel: DetailsViewModel by activityViewModels()
     private val listViewModel: ListViewModel by activityViewModels()
     private lateinit var view: DetailsScreen
-    override var disposables = CompositeDisposable()
-    override val ctx: Context by lazy { requireContext() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,29 +42,32 @@ class DetailsFragment : Fragment(), AndroidScreen {
         return view.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        linkViewAndLogic(view, viewModel.logic)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                subscribeToLogic(view, viewModel.logic)
+            }
+        }
     }
 
-    override fun onStop() {
-        disposables.dispose()
-        disposables = CompositeDisposable()
-        super.onStop()
-    }
-
-    private fun linkViewAndLogic(view: DetailsScreen, logic: DetailsLogic) {
+    private suspend fun subscribeToLogic(view: DetailsScreen, logic: DetailsLogic) = coroutineScope {
         view.showBackIcon = !isWideScreen()
-        logic.state.observeOnUi { state ->
-            view.loading = state == LOADING
-            view.errorText = if (state == ERROR) getString(R.string.loading_details_error) else null
-            view.listVisible = state == SUCCESS
-        }
-        logic.result.observeOnUi { list ->
-            view.items = list.map { ListItemData(it.type.name, it.type.toTitle(), it.value) }
-        }
-        logic.title.observeOnUi { view.title = it }
         view.backClick = { listViewModel.logic.onBackPressed() }
+
+        launch {
+            logic.state.collect { state ->
+                view.loading = state == LOADING
+                view.errorText = if (state == ERROR) getString(R.string.loading_details_error) else null
+                view.listVisible = state == SUCCESS
+            }
+        }
+        launch {
+            logic.result.collect { list ->
+                view.items = list.map { ListItemData(it.type.name, it.type.toTitle(), it.value) }
+            }
+        }
+        launch { logic.title.collect { view.title = it } }
     }
 
     private fun DetailId.toTitle(): String = getString(

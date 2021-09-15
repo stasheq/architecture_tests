@@ -50,10 +50,8 @@ android {
 
 dependencies {
     implementation(Deps.Kotlin.stdlib)
+    implementation(Deps.Kotlin.coroutines)
     implementation(Deps.Jetpack.coreKotlin)
-    implementation(Deps.RxJava.lib)
-    implementation(Deps.RxJava.rxAndroid)
-    implementation(Deps.RxJava.rxRelay)
     implementation(Deps.Jetpack.constraintLayout)
     implementation(Deps.Jetpack.swipeRefreshLayout)
     implementation(Deps.Jetpack.recyclerView)

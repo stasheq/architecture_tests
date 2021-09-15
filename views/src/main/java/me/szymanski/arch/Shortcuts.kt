@@ -14,8 +14,9 @@ import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty0
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
-import com.jakewharton.rxrelay3.PublishRelay
-import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 fun <T> Context.inflate(
     inflate: (LayoutInflater, ViewGroup) -> T,
@@ -42,26 +43,22 @@ var SwipeRefreshLayout.refreshing: Boolean
         this.isRefreshing = value
     }
 
-fun SwipeRefreshLayout.refreshes(): Observable<Unit> {
-    val relay = PublishRelay.create<Unit>()
-    setOnRefreshListener { relay.accept(Unit) }
-    relay.doOnDispose { setOnRefreshListener(null) }
-    return relay
-}
-
-fun TextView.textChanges(): Observable<String> {
-    val relay = PublishRelay.create<String>()
-    val listener = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
-        override fun afterTextChanged(s: Editable) = Unit
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            relay.accept(s.toString())
-        }
+fun SwipeRefreshLayout.refreshes(): SharedFlow<Unit> =
+    MutableSharedFlow<Unit>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST).also {
+        setOnRefreshListener { it.tryEmit(Unit) }
     }
-    addTextChangedListener(listener)
-    relay.doOnDispose { removeTextChangedListener(listener) }
-    return relay
-}
+
+fun TextView.textChanges(): SharedFlow<String> =
+    MutableSharedFlow<String>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST).also {
+        val listener = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
+            override fun afterTextChanged(s: Editable) = Unit
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                it.tryEmit(s.toString())
+            }
+        }
+        addTextChangedListener(listener)
+    }
 
 var TextView.textValue: CharSequence?
     get() = this.text

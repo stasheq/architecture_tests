@@ -5,8 +5,8 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.jakewharton.rxrelay3.PublishRelay
-import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import me.szymanski.arch.*
 import me.szymanski.arch.widgets.databinding.ListBinding
 import me.szymanski.arch.getValue
@@ -24,7 +24,7 @@ class ListWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = 
             reposRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val lastPos = layoutManager.findLastVisibleItemPosition()
-                    if (adapter.getItemViewType(lastPos) == ListAdapter.typeLoading) loadNextPageAction.accept(Unit)
+                    if (adapter.getItemViewType(lastPos) == ListAdapter.typeLoading) loadNextPageAction.tryEmit(Unit)
                 }
             })
             selectingEnabled = true
@@ -39,11 +39,11 @@ class ListWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = 
     var selectingEnabled: Boolean = true
         set(value) {
             field = value
-            adapter.selectItemAction = if (value) { id -> selectAction.accept(id) } else null
+            adapter.selectItemAction = if (value) { id -> selectAction.tryEmit(id) } else null
         }
-    val refreshAction: Observable<Unit> = this.refreshes()
-    val selectAction: PublishRelay<String> = PublishRelay.create()
-    val loadNextPageAction: PublishRelay<Unit> = PublishRelay.create()
+    val refreshAction = this.refreshes()
+    val selectAction = MutableSharedFlow<String>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val loadNextPageAction = MutableSharedFlow<Unit>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     var loadingNextPageIndicator: Boolean by adapter::loadingNextPageIndicator
     var lastItemMessage: String? by adapter::lastItemMessage
     var items: List<ListItemData> by adapter::items

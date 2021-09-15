@@ -1,13 +1,11 @@
 package me.szymanski.arch.logic.cases
 
-import com.jakewharton.rxrelay3.BehaviorRelay
-import com.jakewharton.rxrelay3.Relay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.Logger
-import me.szymanski.arch.logic.Optional
 import me.szymanski.arch.logic.rest.ApiError
 import javax.inject.Inject
 
@@ -18,10 +16,10 @@ abstract class LoadPagedListCase<T, E> {
     @Inject
     lateinit var scope: CoroutineScope
 
-    val error: Relay<Optional<E>> = BehaviorRelay.create()
-    val list: Relay<List<T>> = BehaviorRelay.create()
-    val loading: Relay<Boolean> = BehaviorRelay.create()
-    val hasNextPage: Relay<Boolean> = BehaviorRelay.create()
+    val error = MutableStateFlow<E?>(null)
+    val list = MutableStateFlow(emptyList<T>())
+    val loading = MutableStateFlow(true)
+    val hasNextPage = MutableStateFlow(false)
     private val loadedItems = mutableListOf<T>()
     private val firstPage = 1
     private var currentPage = firstPage
@@ -34,7 +32,7 @@ abstract class LoadPagedListCase<T, E> {
     fun loadNextPage(fromFirstPage: Boolean = false) {
         if (fromFirstPage) {
             lastJob?.cancel()
-            loading.accept(true)
+            loading.value = true
             currentPage = firstPage
         }
         if (lastJob?.isActive == true) {
@@ -46,10 +44,10 @@ abstract class LoadPagedListCase<T, E> {
                 if (!isActive) return
                 if (fromFirstPage && errorType == null) loadedItems.clear()
                 loadedItems.addAll(results)
-                list.accept(loadedItems)
-                error.accept(Optional(errorType))
-                loading.accept(false)
-                hasNextPage.accept(hasNext)
+                list.value = ArrayList(loadedItems)
+                error.value = errorType
+                loading.value = false
+                hasNextPage.value = hasNext
             }
 
             try {

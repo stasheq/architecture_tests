@@ -1,9 +1,9 @@
 package me.szymanski.arch.logic.screenslogic
 
-import com.jakewharton.rxrelay3.BehaviorRelay
-import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.Logic
 import me.szymanski.arch.logic.rest.ApiError
@@ -15,9 +15,9 @@ interface DetailsLogic : Logic {
     var repositoryName: String?
     var userName: String?
     fun reload()
-    val result: Observable<List<RepositoryDetail>>
-    val title: Observable<String>
-    val state: Observable<LoadingState>
+    val result: SharedFlow<List<RepositoryDetail>>
+    val title: SharedFlow<String>
+    val state: SharedFlow<LoadingState>
 
     enum class LoadingState { LOADING, ERROR, SUCCESS }
 }
@@ -27,9 +27,9 @@ enum class DetailId { NAME, DESCRIPTION, PRIVATE, OWNER, FORKS, LANGUAGE, ISSUES
 data class RepositoryDetail(val type: DetailId, val value: String)
 
 class DetailsLogicImpl @Inject constructor(private val restApi: RestApi, private val scope: CoroutineScope) : DetailsLogic {
-    override val state: BehaviorRelay<DetailsLogic.LoadingState> = BehaviorRelay.create()
-    override val result: BehaviorRelay<List<RepositoryDetail>> = BehaviorRelay.create()
-    override val title: BehaviorRelay<String> = BehaviorRelay.create()
+    override val state = MutableStateFlow(DetailsLogic.LoadingState.LOADING)
+    override val result = MutableStateFlow(emptyList<RepositoryDetail>())
+    override val title = MutableStateFlow("")
     private var lastJob: Job? = null
     override var repositoryName: String? = null
     override var userName: String? = null
@@ -39,20 +39,20 @@ class DetailsLogicImpl @Inject constructor(private val restApi: RestApi, private
         val repositoryName = this.repositoryName
         val userName = this.userName
         if (repositoryName == null || userName == null) {
-            state.accept(DetailsLogic.LoadingState.SUCCESS)
+            state.value = DetailsLogic.LoadingState.SUCCESS
             return
         }
 
-        state.accept(DetailsLogic.LoadingState.LOADING)
-        title.accept("")
+        state.value = DetailsLogic.LoadingState.LOADING
+        title.value = ""
         lastJob = scope.launch {
             try {
                 val repository = restApi.getRepository(userName, repositoryName)
-                state.accept(DetailsLogic.LoadingState.SUCCESS)
-                result.accept(toDetailsItems(repository))
-                title.accept("${repository.owner.login} / ${repository.name}")
+                state.value = DetailsLogic.LoadingState.SUCCESS
+                result.value = toDetailsItems(repository)
+                title.value = "${repository.owner.login} / ${repository.name}"
             } catch (e: ApiError) {
-                state.accept(DetailsLogic.LoadingState.ERROR)
+                state.value = DetailsLogic.LoadingState.ERROR
             }
         }
     }
