@@ -1,36 +1,36 @@
 object Deps {
     object Kotlin {
         // https://kotlinlang.org/
-        const val version = "1.4.30"
+        const val version = "1.5.30"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$version"
 
         // https://github.com/Kotlin/kotlinx.coroutines
-        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3"
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
     }
 
     object Jetpack {
         // https://developer.android.com/jetpack/androidx/releases/core
-        const val coreKotlin = "androidx.core:core-ktx:1.3.2"
+        const val coreKotlin = "androidx.core:core-ktx:1.6.0"
 
         // https://developer.android.com/jetpack/androidx/releases/appcompat
-        const val appCompat = "androidx.appcompat:appcompat:1.2.0"
+        const val appCompat = "androidx.appcompat:appcompat:1.3.1"
 
         // https://developer.android.com/jetpack/androidx/releases/constraintlayout
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.4"
+        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.0"
 
         // https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
         const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
         // https://developer.android.com/jetpack/androidx/releases/recyclerview
-        const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
+        const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
     }
 
     object Ktx {
         // https://developer.android.com/kotlin/ktx/extensions-list#androidxactivity
-        const val activity = "androidx.activity:activity-ktx:1.2.2"
+        const val activity = "androidx.activity:activity-ktx:1.3.1"
 
         // https://developer.android.com/kotlin/ktx/extensions-list#androidxfragmentapp
-        const val fragment = "androidx.fragment:fragment-ktx:1.3.2"
+        const val fragment = "androidx.fragment:fragment-ktx:1.3.6"
 
         // https://developer.android.com/kotlin/ktx/extensions-list#androidxlifecycle
         const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
@@ -38,12 +38,11 @@ object Deps {
 
     object Dagger {
         // https://github.com/google/dagger
-        const val version = "2.33"
+        const val version = "2.38.1"
         const val lib = "com.google.dagger:dagger:$version"
         const val kapt = "com.google.dagger:dagger-compiler:$version"
 
         object Hilt {
-            const val version = "${Dagger.version}-beta"
             const val lib = "com.google.dagger:hilt-android:$version"
             const val kapt = "com.google.dagger:hilt-android-compiler:$version"
         }
@@ -66,7 +65,7 @@ object Deps {
 
     object MaterialComponents {
         // https://github.com/material-components/material-components-android/releases
-        const val lib = "com.google.android.material:material:1.3.0"
+        const val lib = "com.google.android.material:material:1.4.0"
     }
 
     object RxJava {
@@ -90,7 +89,7 @@ object Deps {
     // tests
     object Kotest {
         // https://github.com/kotest/kotest/releases
-        const val version = "4.4.3"
+        const val version = "4.6.2"
         const val lib = "io.kotest:kotest-runner-junit5:$version"
         const val assertions = "io.kotest:kotest-assertions-core:$version"
         const val property = "io.kotest:kotest-property:$version"

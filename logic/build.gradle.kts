@@ -35,3 +35,8 @@ dependencies {
     testImplementation(Deps.Kotest.assertions)
     testImplementation(Deps.Kotest.property)
 }
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}

@@ -6,13 +6,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion(Config.targetSDK)
-    buildToolsVersion(Config.buildTools)
+    compileSdk = Config.targetSDK
+    buildToolsVersion = Config.buildTools
 
     defaultConfig {
         applicationId = "me.szymanski.arch"
-        minSdkVersion(Config.minSDK)
-        targetSdkVersion(Config.targetSDK)
+        minSdk = Config.minSDK
+        targetSdk = Config.targetSDK
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
