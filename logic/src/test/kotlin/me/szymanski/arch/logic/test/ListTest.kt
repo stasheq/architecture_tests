@@ -5,7 +5,6 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldBeIn
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import me.szymanski.arch.logic.Optional
 import me.szymanski.arch.logic.screenslogic.ListLogic
 import me.szymanski.arch.logic.rest.RestConfig
 import me.szymanski.arch.logic.test.di.DaggerTestComponent
@@ -43,77 +42,81 @@ class ListTest : FreeSpec({
         val columnsState = logic.showViews.test()
         val hasNextPage = logic.hasNextPage.test()
 
-        "loading not started"  { loading.assertNoValues() }
-        "has no items yet" { list.assertNoValues() }
-        "no error" { error.assertNoValues() }
+        "loading not started"  { loading.last shouldBe true }
+        "has no items yet" { list.last?.isEmpty() shouldBe true }
+        "no error" { error.last shouldBe null }
         "app alive" { close.assertNoValues() }
-        "list shown" { columnsState.last() shouldBe ListLogic.ShowViews.LIST }
-        "next page not known" { hasNextPage.assertNoValues() }
+        "list shown" { columnsState.last shouldBe ListLogic.ShowViews.LIST }
+        "next page not known" { hasNextPage.last shouldBe false }
 
         "On started with unsupported response" - {
             server.dispatch(reposPath to "Unsupported Format Response")
             logic.create()
-            error.awaitCount(1)
-            "finished loading" { true shouldBeIn loading.values(); loading.last() shouldBe false }
-            "received error" { error.last() shouldBe Optional(ListLogic.ErrorType.OTHER) }
+            error.awaitValue(ListLogic.ErrorType.OTHER)
+            "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
+            "received error" { error.last shouldBe ListLogic.ErrorType.OTHER }
         }
 
         "On started with not found response" - {
             server.dispatch(reposPath to 404)
             logic.create()
-            error.awaitCount(1)
-            "finished loading" { true shouldBeIn loading.values(); loading.last() shouldBe false }
-            "received error" { error.last() shouldBe Optional(ListLogic.ErrorType.USER_DOESNT_EXIST) }
+            error.awaitValue(ListLogic.ErrorType.USER_DOESNT_EXIST)
+            "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
+            "received error" { error.last shouldBe ListLogic.ErrorType.USER_DOESNT_EXIST }
         }
 
         "On started with no connection" - {
             server.noConnection()
             logic.create()
-            error.awaitCount(1)
-            "finished loading" { true shouldBeIn loading.values(); loading.last() shouldBe false }
-            "received error" { error.last() shouldBe Optional(ListLogic.ErrorType.NO_CONNECTION) }
+            error.awaitValue(ListLogic.ErrorType.NO_CONNECTION)
+            "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
+            "received error" { error.last shouldBe ListLogic.ErrorType.NO_CONNECTION }
         }
 
         "On started and download 1st page" - {
             server.dispatch(reposPath to FileReader.readText(firstPageFile))
             logic.create()
-            list.awaitCount(1)
-            "finished loading" { true shouldBeIn loading.values(); loading.last() shouldBe false }
-            "no error" { error.last() shouldBe Optional<ListLogic.ErrorType>(null) }
-            "received list of 2 items" { list.last().size shouldBe 2 }
-            "has 2nd page" { hasNextPage.last() shouldBe true }
+            list.awaitCondition { it.last().isNotEmpty() }
+            "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
+            "no error" { error.last shouldBe null }
+            "received list of 2 items" { list.last?.size shouldBe 2 }
+            "has 2nd page" { hasNextPage.last shouldBe true }
 
             "On download 2nd page" - {
                 server.dispatch(reposPath to FileReader.readText(secondPageFile))
                 logic.loadNextPage()
-                list.awaitCount(2)
-                "finished loading" { loading.last() shouldBe false }
-                "no error" { error.last() shouldBe Optional<ListLogic.ErrorType>(null) }
-                "received list of 3 items" { list.last().size shouldBe 3 }
-                "no 3rd page" { hasNextPage.last() shouldBe false }
+                list.awaitCondition { it.last().size > 2 }
+                "finished loading" { loading.last shouldBe false }
+                "no error" { error.last shouldBe null }
+                "received list of 3 items" { list.last?.size shouldBe 3 }
+                "no 3rd page" { hasNextPage.last shouldBe false }
             }
 
             "On error downloading 2nd page" - {
                 server.noConnection()
                 logic.loadNextPage()
-                list.awaitCount(2)
-                "finished loading" { loading.last() shouldBe false }
-                "received error" { error.last() shouldBe Optional(ListLogic.ErrorType.NO_CONNECTION) }
-                "received list of prevoius 2 items" { list.last().size shouldBe 2 }
-                "no next page" { hasNextPage.last() shouldBe false }
+                error.awaitValue(ListLogic.ErrorType.NO_CONNECTION)
+                "finished loading" { loading.last shouldBe false }
+                "received error" { error.last shouldBe ListLogic.ErrorType.NO_CONNECTION }
+                "received list of prevoius 2 items" { list.last?.size shouldBe 2 }
+                "no next page" { hasNextPage.last shouldBe false }
             }
 
-            "On Click item" - {
-                logic.itemClick(detailsLogic, list.last()[0].name)
-                "details are shown" { columnsState.last() shouldBe ListLogic.ShowViews.DETAILS }
+            "On Click first item" - {
+                val name = list.last?.get(0)?.name
+                "it has no empty name" { name.isNullOrBlank() shouldBe false }
+                logic.itemClick(detailsLogic, name)
+                "details are shown" { columnsState.last shouldBe ListLogic.ShowViews.DETAILS }
             }
 
             "On big screen" - {
                 logic.wideScreen = true
-                "both columns are shown" { columnsState.last() shouldBe ListLogic.ShowViews.BOTH }
+                "both columns are shown" { columnsState.last shouldBe ListLogic.ShowViews.BOTH }
                 "On Click item" - {
-                    logic.itemClick(detailsLogic, list.last()[0].name)
-                    "details are shown" { columnsState.last() shouldBe ListLogic.ShowViews.BOTH }
+                    val name = list.last?.get(0)?.name
+                    "it has no empty name" { name.isNullOrBlank() shouldBe false }
+                    logic.itemClick(detailsLogic, name)
+                    "details are shown" { columnsState.last shouldBe ListLogic.ShowViews.BOTH }
                 }
             }
         }

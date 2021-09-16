@@ -1,9 +1,11 @@
 package me.szymanski.arch.logic.test.utils
 
-import io.reactivex.rxjava3.observers.TestObserver
-import okhttp3.mockwebserver.*
+import okhttp3.mockwebserver.Dispatcher
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.RecordedRequest
+import okhttp3.mockwebserver.SocketPolicy
 
-fun <T> TestObserver<T>.last(): T = values().last()
 
 fun MockWebServer.dispatch(vararg pairs: Pair<String, Any>) {
     val map = hashMapOf(*pairs)

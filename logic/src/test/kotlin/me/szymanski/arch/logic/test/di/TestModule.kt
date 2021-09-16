@@ -2,6 +2,9 @@ package me.szymanski.arch.logic.test.di
 
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import me.szymanski.arch.logic.Logger
 import me.szymanski.arch.logic.screenslogic.DetailsLogic
 import me.szymanski.arch.logic.screenslogic.DetailsLogicImpl
@@ -28,4 +31,7 @@ class TestModule {
 
     @Provides
     fun detailsLogic(logic: DetailsLogicImpl): DetailsLogic = logic
+
+    @Provides
+    fun coroutineScope() = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 }
