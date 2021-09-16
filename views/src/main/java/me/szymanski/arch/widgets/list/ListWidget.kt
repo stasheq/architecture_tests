@@ -22,9 +22,10 @@ class ListWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = 
             val layoutManager = LinearLayoutManager(ctx, RecyclerView.VERTICAL, false)
             reposRecycler.layoutManager = layoutManager
             reposRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                val action = Runnable { loadNextPageAction.tryEmit(Unit) }
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val lastPos = layoutManager.findLastVisibleItemPosition()
-                    if (adapter.getItemViewType(lastPos) == ListAdapter.typeLoading) loadNextPageAction.tryEmit(Unit)
+                    if (adapter.getItemViewType(lastPos) == ListAdapter.typeLoading) debounce(500, action)
                 }
             })
             selectingEnabled = true

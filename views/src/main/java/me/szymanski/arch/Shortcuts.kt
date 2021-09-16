@@ -50,12 +50,12 @@ fun SwipeRefreshLayout.refreshes(): SharedFlow<Unit> =
 
 fun TextView.textChanges(): SharedFlow<String> =
     MutableSharedFlow<String>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST).also {
+        val action = Runnable { it.tryEmit(text.toString()) }
         val listener = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
             override fun afterTextChanged(s: Editable) = Unit
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                it.tryEmit(s.toString())
-            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) =
+                debounce(1000, action)
         }
         addTextChangedListener(listener)
     }
@@ -80,6 +80,11 @@ fun View.doOnLayout(callback: () -> Unit) {
                 callback()
             }
         })
+}
+
+fun View.debounce(delay: Long, action: Runnable) {
+    removeCallbacks(action)
+    postDelayed(action, delay)
 }
 
 operator fun <R, T> KProperty0<T>.getValue(thisRef: R, property: KProperty<*>) = get()
