@@ -14,15 +14,15 @@ class ErrorBar @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = nu
     init {
         inflate(ErrorBarBinding::inflate, true).apply {
             errorView = reposErrorText
-            errorView.isVisible = false
         }
+        isVisible = false
     }
 
     var errorText: CharSequence? = errorView.text
         get() = errorView.text
         set(value) {
             errorView.text = value
-            errorView.isVisible = value != null
+            isVisible = value != null
             field = value
         }
 }
