@@ -1,5 +1,7 @@
 package me.szymanski.arch.logic.test.utils
 
+import io.kotest.assertions.fail
+import kotlin.math.min
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -10,8 +12,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
-import java.util.concurrent.TimeoutException
-import kotlin.math.min
 
 fun <T> Flow<T>.test(): TestObserver<T> {
     return TestObserver(CoroutineScope(SupervisorJob() + Dispatchers.Default), this)
@@ -47,7 +47,9 @@ class TestObserver<T>(
         val start = System.currentTimeMillis()
         while (!condition(values)) {
             delay(100)
-            if (System.currentTimeMillis() > start + timeout) throw TimeoutException("awaitCount timeout")
+            if (System.currentTimeMillis() > start + timeout) {
+                fail("awaitCondition timeout")
+            }
         }
     }
 

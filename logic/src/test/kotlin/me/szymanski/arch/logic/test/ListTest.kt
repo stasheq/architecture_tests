@@ -7,6 +7,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import me.szymanski.arch.logic.screenslogic.ListLogic
 import me.szymanski.arch.logic.rest.RestConfig
+import me.szymanski.arch.logic.screenslogic.NavigationLogic
 import me.szymanski.arch.logic.test.di.DaggerTestComponent
 import me.szymanski.arch.logic.test.utils.*
 import okhttp3.mockwebserver.MockWebServer
@@ -29,29 +30,32 @@ class ListTest : FreeSpec({
         val reposPath = "/users/$user/repos"
 
         val component = DaggerTestComponent.builder().restConfig(restConfig).build()
-        val logic = component.getListLogic()
+        val listLogic = component.getListLogic()
         val detailsLogic = component.getDetailsLogic()
-        logic.wideScreen = false
-        logic shouldNotBe null
-        detailsLogic shouldNotBe null
+        val navigationLogic = component.getNavigationLogic()
 
-        val loading = logic.loading.test()
-        val list = logic.list.test()
-        val error = logic.error.test()
-        val close = logic.closeApp.test()
-        val columnsState = logic.showViews.test()
-        val hasNextPage = logic.hasNextPage.test()
+        navigationLogic.wideScreen = false
+        listLogic shouldNotBe null
+        detailsLogic shouldNotBe null
+        navigationLogic shouldNotBe null
+
+        val loading = listLogic.loading.test()
+        val list = listLogic.list.test()
+        val error = listLogic.error.test()
+        val hasNextPage = listLogic.hasNextPage.test()
+        val close = navigationLogic.closeApp.test()
+        val columnsState = navigationLogic.currentScreen.test()
 
         "loading not started"  { loading.last shouldBe true }
         "has no items yet" { list.last?.isEmpty() shouldBe true }
         "no error" { error.last shouldBe null }
         "app alive" { close.assertNoValues() }
-        "list shown" { columnsState.last shouldBe ListLogic.ShowViews.LIST }
+        "list shown" { columnsState.last shouldBe NavigationLogic.Screen.LIST }
         "next page not known" { hasNextPage.last shouldBe false }
 
         "On started with unsupported response" - {
             server.dispatch(reposPath to "Unsupported Format Response")
-            logic.create()
+            listLogic.reload()
             error.awaitValue(ListLogic.ErrorType.OTHER)
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
             "received error" { error.last shouldBe ListLogic.ErrorType.OTHER }
@@ -59,7 +63,7 @@ class ListTest : FreeSpec({
 
         "On started with not found response" - {
             server.dispatch(reposPath to 404)
-            logic.create()
+            listLogic.reload()
             error.awaitValue(ListLogic.ErrorType.USER_DOESNT_EXIST)
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
             "received error" { error.last shouldBe ListLogic.ErrorType.USER_DOESNT_EXIST }
@@ -67,7 +71,7 @@ class ListTest : FreeSpec({
 
         "On started with no connection" - {
             server.noConnection()
-            logic.create()
+            listLogic.reload()
             error.awaitValue(ListLogic.ErrorType.NO_CONNECTION)
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
             "received error" { error.last shouldBe ListLogic.ErrorType.NO_CONNECTION }
@@ -75,7 +79,7 @@ class ListTest : FreeSpec({
 
         "On started and download 1st page" - {
             server.dispatch(reposPath to FileReader.readText(firstPageFile))
-            logic.create()
+            listLogic.reload()
             list.awaitCondition { it.last().isNotEmpty() }
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
             "no error" { error.last shouldBe null }
@@ -84,7 +88,7 @@ class ListTest : FreeSpec({
 
             "On download 2nd page" - {
                 server.dispatch(reposPath to FileReader.readText(secondPageFile))
-                logic.loadNextPage()
+                listLogic.loadNextPage()
                 list.awaitCondition { it.last().size > 2 }
                 "finished loading" { loading.last shouldBe false }
                 "no error" { error.last shouldBe null }
@@ -94,7 +98,7 @@ class ListTest : FreeSpec({
 
             "On error downloading 2nd page" - {
                 server.noConnection()
-                logic.loadNextPage()
+                listLogic.loadNextPage()
                 error.awaitValue(ListLogic.ErrorType.NO_CONNECTION)
                 "finished loading" { loading.last shouldBe false }
                 "received error" { error.last shouldBe ListLogic.ErrorType.NO_CONNECTION }
@@ -105,18 +109,18 @@ class ListTest : FreeSpec({
             "On Click first item" - {
                 val name = list.last?.get(0)?.name
                 "it has no empty name" { name.isNullOrBlank() shouldBe false }
-                logic.itemClick(detailsLogic, name)
-                "details are shown" { columnsState.last shouldBe ListLogic.ShowViews.DETAILS }
+                listLogic.itemClick(name!!)
+                "details are shown" { columnsState.last shouldBe NavigationLogic.Screen.DETAILS }
             }
 
             "On big screen" - {
-                logic.wideScreen = true
-                "both columns are shown" { columnsState.last shouldBe ListLogic.ShowViews.BOTH }
+                navigationLogic.wideScreen = true
+                "both columns are shown" { columnsState.last shouldBe NavigationLogic.Screen.LIST_AND_DETAILS }
                 "On Click item" - {
                     val name = list.last?.get(0)?.name
                     "it has no empty name" { name.isNullOrBlank() shouldBe false }
-                    logic.itemClick(detailsLogic, name)
-                    "details are shown" { columnsState.last shouldBe ListLogic.ShowViews.BOTH }
+                    listLogic.itemClick(name!!)
+                    "details are shown" { columnsState.last shouldBe NavigationLogic.Screen.LIST_AND_DETAILS }
                 }
             }
         }

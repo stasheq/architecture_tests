@@ -5,32 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
-import me.szymanski.arch.di.LogicViewModel
-import me.szymanski.arch.logic.screenslogic.DetailId
-import me.szymanski.arch.screens.DetailsScreen
-import me.szymanski.arch.logic.screenslogic.DetailsLogic
-import me.szymanski.arch.logic.screenslogic.DetailsLogic.LoadingState.*
-import me.szymanski.arch.logic.screenslogic.DetailsLogicImpl
-import me.szymanski.arch.utils.isWideScreen
-import me.szymanski.arch.widgets.list.ListItemData
 import javax.inject.Inject
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-
-@HiltViewModel
-class DetailsViewModel @Inject constructor(logic: DetailsLogicImpl) : LogicViewModel<DetailsLogic>(logic)
+import me.szymanski.arch.logic.screenslogic.DetailId
+import me.szymanski.arch.logic.screenslogic.DetailsLogic
+import me.szymanski.arch.logic.screenslogic.DetailsLogic.LoadingState.*
+import me.szymanski.arch.screens.DetailsScreen
+import me.szymanski.arch.utils.isWideScreen
+import me.szymanski.arch.widgets.list.ListItemData
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
-    private val viewModel: DetailsViewModel by activityViewModels()
-    private val listViewModel: ListViewModel by activityViewModels()
+    @Inject
+    lateinit var logic: DetailsLogic
     private lateinit var view: DetailsScreen
 
     override fun onCreateView(
@@ -46,14 +39,14 @@ class DetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                subscribeToLogic(view, viewModel.logic)
+                subscribeToLogic(view, logic)
             }
         }
     }
 
     private suspend fun subscribeToLogic(view: DetailsScreen, logic: DetailsLogic) = coroutineScope {
         view.showBackIcon = !isWideScreen()
-        view.backClick = { listViewModel.logic.onBackPressed() }
+        view.backClick = { logic.onBackPressed() }
 
         launch {
             logic.state.collect { state ->

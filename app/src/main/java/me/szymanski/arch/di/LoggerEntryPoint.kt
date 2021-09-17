@@ -6,9 +6,11 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.EntryPoints
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import me.szymanski.arch.logic.Logger
 
 @EntryPoint
+@Singleton
 @InstallIn(SingletonComponent::class)
 interface LoggerEntryPoint {
     fun get(): Logger

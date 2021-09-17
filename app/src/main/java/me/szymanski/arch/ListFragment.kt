@@ -5,31 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import me.szymanski.arch.di.LogicViewModel
-import me.szymanski.arch.logic.screenslogic.DetailsLogic
 import me.szymanski.arch.logic.screenslogic.ListLogic
-import me.szymanski.arch.logic.screenslogic.ListLogicImpl
 import me.szymanski.arch.screens.ListScreen
 import me.szymanski.arch.widgets.list.ListItemData
 
-@HiltViewModel
-class ListViewModel @Inject constructor(logic: ListLogicImpl) : LogicViewModel<ListLogic>(logic)
-
 @AndroidEntryPoint
 class ListFragment : Fragment() {
-    private val listModel: ListViewModel by activityViewModels()
-    private val detailsModel: DetailsViewModel by activityViewModels()
+    @Inject
+    lateinit var logic: ListLogic
     private lateinit var view: ListScreen
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
@@ -39,12 +31,12 @@ class ListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                subscribeToLogic(view, listModel.logic, detailsModel.logic)
+                subscribeToLogic(view, logic)
             }
         }
     }
 
-    private suspend fun subscribeToLogic(view: ListScreen, logic: ListLogic, detailsLogic: DetailsLogic) = coroutineScope {
+    private suspend fun subscribeToLogic(view: ListScreen, logic: ListLogic) = coroutineScope {
         view.userName = logic.userName
         launch { logic.loading.collect { view.refreshing = it } }
         launch {
@@ -67,7 +59,7 @@ class ListFragment : Fragment() {
         launch { logic.hasNextPage.collect { view.hasNextPage = it } }
         launch { view.refreshAction.collect { logic.reload() } }
         launch { view.userNameChanges.collect { logic.userName = it } }
-        launch { view.selectAction.collect { logic.itemClick(detailsLogic, it) } }
+        launch { view.selectAction.collect { logic.itemClick(it) } }
         launch { view.loadNextPageAction.collect { logic.loadNextPage() } }
     }
 }
