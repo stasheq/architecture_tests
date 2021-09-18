@@ -81,7 +81,6 @@ dependencies {
     implementation(Deps.MaterialComponents.lib)
     implementation(Deps.Ktx.activity)
     implementation(Deps.Ktx.fragment)
-    implementation(Deps.Ktx.Lifecycle.viewModel)
     implementation(Deps.Ktx.Lifecycle.runtime)
     implementation(Deps.OkHttp.lib)
     implementation(Deps.Dagger.lib)

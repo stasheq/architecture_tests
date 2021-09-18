@@ -42,7 +42,6 @@ object Deps {
         object Lifecycle {
             // https://developer.android.com/kotlin/ktx/extensions-list#androidxlifecycle
             private const val version = "2.4.0-alpha03"
-            const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
         }
     }
