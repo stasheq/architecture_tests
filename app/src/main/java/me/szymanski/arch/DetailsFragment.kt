@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.screenslogic.DetailId
@@ -44,7 +44,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private suspend fun subscribeToLogic(view: DetailsScreen, logic: DetailsLogic) = coroutineScope {
+    private fun CoroutineScope.subscribeToLogic(view: DetailsScreen, logic: DetailsLogic) {
         view.showBackIcon = !isWideScreen()
         view.backClick = { logic.onBackPressed() }
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -40,7 +40,7 @@ class NavigationActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun subscribeToLogic(view: FrameDouble, logic: NavigationLogic) = coroutineScope {
+    private fun CoroutineScope.subscribeToLogic(view: FrameDouble, logic: NavigationLogic) {
         var initiated = false
         logic.wideScreen = isWideScreen()
         launch { logic.closeApp.collect { finish() } }

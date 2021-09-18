@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -36,7 +36,7 @@ class ListFragment : Fragment() {
         }
     }
 
-    private suspend fun subscribeToLogic(view: ListScreen, logic: ListLogic) = coroutineScope {
+    private fun CoroutineScope.subscribeToLogic(view: ListScreen, logic: ListLogic) {
         view.userName = logic.userName
         launch { logic.loading.collect { view.refreshing = it } }
         launch {
