@@ -1,3 +1,5 @@
+// TODO logic models separated from rest models
+
 # Android App architecture schema proposal
 This example is created to demonstrate a custom architecture idea and usage of a multiple tools.\
 Main reason of view and logic separation is done to make logic testable on a pure JVM, without running an Android emulator.\

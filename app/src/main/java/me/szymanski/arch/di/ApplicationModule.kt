@@ -21,7 +21,8 @@ class ApplicationModule {
         baseUrl = BuildConfig.CONF_ENVIRONMENT,
         defaultUser = BuildConfig.CONF_USER,
         pageLimit = BuildConfig.CONF_PAGE_LIMIT,
-        callTimeout = BuildConfig.CONF_REST_TIMEOUT
+        callTimeout = BuildConfig.CONF_REST_TIMEOUT,
+        logEnabled = BuildConfig.CONF_API_LOG
     )
 
     @Provides

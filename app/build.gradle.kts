@@ -37,6 +37,7 @@ android {
             buildConfigField("String", "CONF_USER", "\"${config.defaultUser}\"")
             buildConfigField("int", "CONF_PAGE_LIMIT", "${config.listPageLimit}")
             buildConfigField("int", "CONF_REST_TIMEOUT", "${config.restCallTimeout}")
+            buildConfigField("boolean", "CONF_API_LOG", "${config.apiLogEnabled}")
         }
 
         buildType(
@@ -46,13 +47,13 @@ android {
             appNameRes = "@string/app_name_debug",
             idSuffix = "debug",
             versionSuffix = "debug",
-            config = DefaultVariantConfig
+            config = DebugVariantConfig
         )
 
         buildType(
             name = "release",
             appNameRes = "@string/app_name_release",
-            config = DefaultVariantConfig
+            config = ReleaseVariantConfig
         )
     }
 
@@ -90,11 +91,18 @@ dependencies {
 
 abstract class VariantConfig {
     abstract val environment: String
+    abstract val apiLogEnabled: Boolean
     open val defaultUser = "google"
     open val listPageLimit = 20
     open val restCallTimeout = 5000
 }
 
-object DefaultVariantConfig : VariantConfig() {
+object DebugVariantConfig : VariantConfig() {
     override val environment = "https://api.github.com/"
+    override val apiLogEnabled: Boolean = true
+}
+
+object ReleaseVariantConfig : VariantConfig() {
+    override val environment = "https://api.github.com/"
+    override val apiLogEnabled: Boolean = false
 }

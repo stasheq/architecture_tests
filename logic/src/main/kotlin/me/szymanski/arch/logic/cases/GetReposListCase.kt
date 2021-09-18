@@ -10,7 +10,7 @@ import javax.inject.Inject
 class GetReposListCase @Inject constructor(
     private val restApi: RestApi,
     private val restConfig: RestConfig
-) : LoadPagedListCase<Repository, ListLogic.ErrorType>() {
+) : LoadPagedListCase<Repository, Int, ListLogic.ErrorType>(1) {
 
     var userName = restConfig.defaultUser
         set(value) {
@@ -29,4 +29,6 @@ class GetReposListCase @Inject constructor(
         e is ApiError.NoConnection -> ListLogic.ErrorType.NO_CONNECTION
         else -> ListLogic.ErrorType.OTHER
     }
+
+    override fun nextPageInfo(page: Int): Int = page + 1
 }

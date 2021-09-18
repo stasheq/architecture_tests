@@ -2,8 +2,6 @@ package me.szymanski.arch.rest
 
 import com.google.gson.annotations.SerializedName
 
-data class RestConfig(val baseUrl: String, val defaultUser: String, val pageLimit: Int, val callTimeout: Int)
-
 data class Repository(val id: String, val name: String, val description: String)
 
 data class RepositoryDetails(

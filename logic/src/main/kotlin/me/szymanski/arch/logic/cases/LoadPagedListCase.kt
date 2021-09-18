@@ -9,38 +9,39 @@ import me.szymanski.arch.Logger
 import me.szymanski.arch.rest.ApiError
 import javax.inject.Inject
 
-abstract class LoadPagedListCase<T, E> {
+abstract class LoadPagedListCase<Item, Page, Error>(private val firstPageInfo: Page) {
     @Inject
     lateinit var logger: Logger
 
     @Inject
     lateinit var scope: CoroutineScope
 
-    val error = MutableStateFlow<E?>(null)
-    val list = MutableStateFlow(emptyList<T>())
+    val error = MutableStateFlow<Error?>(null)
+    val list = MutableStateFlow(emptyList<Item>())
     val loading = MutableStateFlow(true)
     val hasNextPage = MutableStateFlow(false)
-    private val loadedItems = mutableListOf<T>()
-    private val firstPage = 1
-    private var currentPage = firstPage
+    private val loadedItems = mutableListOf<Item>()
+    private var currentPage = firstPageInfo
     private var lastJob: Job? = null
 
-    abstract suspend fun getPage(page: Int): LoadingResult<T>
+    abstract fun nextPageInfo(page: Page): Page
 
-    abstract fun mapError(e: ApiError): E
+    abstract suspend fun getPage(page: Page): LoadingResult<Item>
+
+    abstract fun mapError(e: ApiError): Error
 
     fun loadNextPage(fromFirstPage: Boolean = false) {
         if (fromFirstPage) {
             lastJob?.cancel()
             loading.value = true
-            currentPage = firstPage
+            currentPage = firstPageInfo
         }
         if (lastJob?.isActive == true) {
             logger.log("Not loading next page because previous loading is not finished")
             return
         }
         lastJob = scope.launch {
-            fun loadingFinished(results: List<T>, errorType: E?, hasNext: Boolean) {
+            fun loadingFinished(results: List<Item>, errorType: Error?, hasNext: Boolean) {
                 if (!isActive) return
                 if (fromFirstPage && errorType == null) loadedItems.clear()
                 loadedItems.addAll(results)
@@ -52,7 +53,7 @@ abstract class LoadPagedListCase<T, E> {
 
             try {
                 val result = getPage(currentPage)
-                currentPage++
+                currentPage = nextPageInfo(currentPage)
                 loadingFinished(result.results, null, result.hasNext)
             } catch (e: ApiError) {
                 logger.log("Loading page failed", e)

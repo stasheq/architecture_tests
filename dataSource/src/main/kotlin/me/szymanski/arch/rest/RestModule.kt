@@ -26,11 +26,13 @@ open class RestModule {
     @Provides
     @Singleton
     fun getHttpClient(config: RestConfig, logger: Logger): OkHttpClient {
-        val loggingInterceptor = HttpLoggingInterceptor { message -> logger.log(message) }
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         val httpClient = OkHttpClient.Builder()
         httpClient.callTimeout(config.callTimeout.toLong(), TimeUnit.MILLISECONDS)
-        httpClient.addInterceptor(loggingInterceptor)
+        if (config.logEnabled) {
+            val loggingInterceptor = HttpLoggingInterceptor { message -> logger.log(message) }
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            httpClient.addInterceptor(loggingInterceptor)
+        }
         return httpClient.build()
     }
 }
