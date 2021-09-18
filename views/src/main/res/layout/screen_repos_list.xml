@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <me.szymanski.arch.widgets.ErrorBar
+    <me.szymanski.arch.widgets.ErrorBarWidget
         android:id="@+id/listErrorBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

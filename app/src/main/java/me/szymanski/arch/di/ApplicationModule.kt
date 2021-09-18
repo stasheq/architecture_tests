@@ -5,10 +5,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.szymanski.arch.logic.Logger
-import me.szymanski.arch.logic.rest.RestConfig
-import me.szymanski.arch.logic.rest.RestModule
+import me.szymanski.arch.Logger
+import me.szymanski.arch.rest.RestConfig
+import me.szymanski.arch.rest.RestModule
 import javax.inject.Singleton
+import me.szymanski.arch.BuildConfig
 
 @Module(includes = [RestModule::class])
 @InstallIn(SingletonComponent::class)
@@ -17,10 +18,10 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideRestConfig(): RestConfig = RestConfig(
-        baseUrl = "https://api.github.com/",
-        defaultUser = "google",
-        pageLimit = 20,
-        callTimeout = 5000
+        baseUrl = BuildConfig.CONF_ENVIRONMENT,
+        defaultUser = BuildConfig.CONF_USER,
+        pageLimit = BuildConfig.CONF_PAGE_LIMIT,
+        callTimeout = BuildConfig.CONF_REST_TIMEOUT
     )
 
     @Provides

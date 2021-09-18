@@ -1,8 +1,8 @@
-package me.szymanski.arch.logic.rest
+package me.szymanski.arch.rest
 
 import dagger.Module
 import dagger.Provides
-import me.szymanski.arch.logic.Logger
+import me.szymanski.arch.Logger
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

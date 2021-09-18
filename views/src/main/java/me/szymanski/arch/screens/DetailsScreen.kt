@@ -7,15 +7,15 @@ import androidx.core.view.isVisible
 import me.szymanski.arch.getValue
 import me.szymanski.arch.inflate
 import me.szymanski.arch.setValue
-import me.szymanski.arch.widgets.ErrorBar
-import me.szymanski.arch.widgets.Toolbar
+import me.szymanski.arch.widgets.ErrorBarWidget
+import me.szymanski.arch.widgets.ToolbarWidget
 import me.szymanski.arch.widgets.databinding.ScreenRepoDetailsBinding
 import me.szymanski.arch.widgets.list.ListWidget
 
 class DetailsScreen(ctx: Context, parent: ViewGroup? = null) {
-    private val errorBar: ErrorBar
+    private val errorBar: ErrorBarWidget
     private val loadingView: View
-    private val toolbar: Toolbar
+    private val toolbar: ToolbarWidget
     private val list: ListWidget
 
     val root = ctx.inflate(ScreenRepoDetailsBinding::inflate, parent).apply {

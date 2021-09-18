@@ -1,4 +1,4 @@
-package me.szymanski.arch.logic.rest
+package me.szymanski.arch.rest
 
 import retrofit2.http.GET
 import retrofit2.http.Path

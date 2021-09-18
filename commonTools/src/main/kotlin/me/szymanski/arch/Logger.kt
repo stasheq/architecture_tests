@@ -1,4 +1,4 @@
-package me.szymanski.arch.logic
+package me.szymanski.arch
 
 interface Logger {
     fun log(message: String, t: Throwable? = null, tag: String? = null, level: Level = Level.DEBUG)

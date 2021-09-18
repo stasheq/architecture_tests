@@ -1,4 +1,4 @@
-package me.szymanski.arch.widgets
+package me.szymanski.arch.screens
 
 import android.animation.Animator
 import android.content.Context
@@ -6,20 +6,20 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import me.szymanski.arch.Animations
 import me.szymanski.arch.Animations.animate
 import me.szymanski.arch.Animations.animateAlpha
-import me.szymanski.arch.Animations.playTogether
 import me.szymanski.arch.inflate
 import me.szymanski.arch.measure
-import me.szymanski.arch.widgets.databinding.FrameDoubleBinding
+import me.szymanski.arch.widgets.databinding.ScreenNavigationBinding
 
-class FrameDouble @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : ConstraintLayout(ctx, attrs) {
+class NavigationScreen @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : ConstraintLayout(ctx, attrs) {
     val rightColumn: ViewGroup
     val leftColumn: ViewGroup
     private val cover: View
 
     init {
-        ctx.inflate(FrameDoubleBinding::inflate, this).apply {
+        ctx.inflate(ScreenNavigationBinding::inflate, this).apply {
             rightColumn = columnRight
             leftColumn = columnLeft
             cover = columnCover
@@ -46,7 +46,7 @@ class FrameDouble @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? =
                 leftColumn.setPWidth(1f)
                 rightColumn.setPWidth(1f)
                 if (animationEnabled) {
-                    animator = playTogether(
+                    animator = Animations.playTogether(
                         rightColumn.animateTranslation(rightColumn.width.toFloat()),
                         cover.animateAlpha(0f)
                     )
@@ -59,7 +59,7 @@ class FrameDouble @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? =
                 leftColumn.setPWidth(1f)
                 rightColumn.setPWidth(1f)
                 if (animationEnabled) {
-                    animator = playTogether(rightColumn.animateTranslation(0f), cover.animateAlpha(1f))
+                    animator = Animations.playTogether(rightColumn.animateTranslation(0f), cover.animateAlpha(1f))
                 } else {
                     cover.alpha = 1f
                     rightColumn.translationX = 0f

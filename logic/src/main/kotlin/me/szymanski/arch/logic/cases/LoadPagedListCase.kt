@@ -5,8 +5,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import me.szymanski.arch.logic.Logger
-import me.szymanski.arch.logic.rest.ApiError
+import me.szymanski.arch.Logger
+import me.szymanski.arch.rest.ApiError
 import javax.inject.Inject
 
 abstract class LoadPagedListCase<T, E> {

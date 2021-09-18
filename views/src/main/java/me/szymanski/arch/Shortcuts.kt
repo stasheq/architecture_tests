@@ -68,19 +68,16 @@ var TextView.textValue: CharSequence?
 
 open class ViewHolder<T : ViewBinding>(val binding: T) : RecyclerView.ViewHolder(binding.root)
 
-fun View.measure(callback: (width: Int, height: Int) -> Unit) {
-    doOnLayout { callback(width, height) }
-}
+fun View.measure(callback: (width: Int, height: Int) -> Unit) =
+    doOnShown { callback(width, height) }
 
-fun View.doOnLayout(callback: () -> Unit) {
-    viewTreeObserver.addOnGlobalLayoutListener(
-        object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                viewTreeObserver.removeOnGlobalLayoutListener(this)
-                callback()
-            }
-        })
-}
+fun View.doOnShown(callback: () -> Unit) = viewTreeObserver.addOnGlobalLayoutListener(
+    object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            viewTreeObserver.removeOnGlobalLayoutListener(this)
+            callback()
+        }
+    })
 
 fun View.debounce(delay: Long, action: Runnable) {
     removeCallbacks(action)

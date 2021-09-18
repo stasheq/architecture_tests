@@ -14,20 +14,20 @@ import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.screenslogic.NavigationLogic
 import me.szymanski.arch.utils.changeFragment
 import me.szymanski.arch.utils.isWideScreen
-import me.szymanski.arch.widgets.FrameDouble
-import me.szymanski.arch.widgets.FrameDouble.State.BOTH
-import me.szymanski.arch.widgets.FrameDouble.State.LEFT
-import me.szymanski.arch.widgets.FrameDouble.State.RIGHT
+import me.szymanski.arch.screens.NavigationScreen
+import me.szymanski.arch.screens.NavigationScreen.State.BOTH
+import me.szymanski.arch.screens.NavigationScreen.State.LEFT
+import me.szymanski.arch.screens.NavigationScreen.State.RIGHT
 
 @AndroidEntryPoint
 class NavigationActivity : AppCompatActivity() {
     @Inject
     lateinit var logic: NavigationLogic
-    lateinit var view: FrameDouble
+    lateinit var view: NavigationScreen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        view = FrameDouble(this)
+        view = NavigationScreen(this)
         setContentView(view)
         if (savedInstanceState == null) view.apply {
             changeFragment(leftColumn.id, ListFragment())
@@ -40,7 +40,7 @@ class NavigationActivity : AppCompatActivity() {
         }
     }
 
-    private fun CoroutineScope.subscribeToLogic(view: FrameDouble, logic: NavigationLogic) {
+    private fun CoroutineScope.subscribeToLogic(view: NavigationScreen, logic: NavigationLogic) {
         var initiated = false
         logic.wideScreen = isWideScreen()
         launch { logic.closeApp.collect { finish() } }

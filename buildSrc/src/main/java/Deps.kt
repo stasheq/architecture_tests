@@ -1,4 +1,11 @@
 object Deps {
+    object Module {
+        const val logic = ":logic"
+        const val views = ":views"
+        const val commonTools = ":commonTools"
+        const val dataSource = ":dataSource"
+    }
+
     object Kotlin {
         // https://kotlinlang.org/
         const val version = "1.5.30"

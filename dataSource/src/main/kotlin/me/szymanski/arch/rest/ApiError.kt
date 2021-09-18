@@ -1,4 +1,4 @@
-package me.szymanski.arch.logic.rest
+package me.szymanski.arch.rest
 
 sealed class ApiError(override val cause: Throwable? = null) : Throwable() {
     data class HttpErrorResponse(override val cause: Throwable, val code: Int) : ApiError(cause)

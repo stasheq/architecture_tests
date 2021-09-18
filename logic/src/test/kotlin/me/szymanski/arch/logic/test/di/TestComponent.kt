@@ -4,8 +4,8 @@ import dagger.BindsInstance
 import dagger.Component
 import me.szymanski.arch.logic.screenslogic.DetailsLogic
 import me.szymanski.arch.logic.screenslogic.ListLogic
-import me.szymanski.arch.logic.rest.RestConfig
-import me.szymanski.arch.logic.rest.RestModule
+import me.szymanski.arch.rest.RestConfig
+import me.szymanski.arch.rest.RestModule
 import javax.inject.Singleton
 import me.szymanski.arch.logic.screenslogic.NavigationLogic
 

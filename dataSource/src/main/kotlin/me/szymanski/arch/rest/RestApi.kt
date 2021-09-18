@@ -1,6 +1,6 @@
-package me.szymanski.arch.logic.rest
+package me.szymanski.arch.rest
 
-import me.szymanski.arch.logic.Logger
+import me.szymanski.arch.Logger
 import retrofit2.HttpException
 import java.io.InterruptedIOException
 import java.net.UnknownHostException

@@ -1,9 +1,9 @@
 package me.szymanski.arch.logic.cases
 
-import me.szymanski.arch.logic.rest.ApiError
-import me.szymanski.arch.logic.rest.Repository
-import me.szymanski.arch.logic.rest.RestApi
-import me.szymanski.arch.logic.rest.RestConfig
+import me.szymanski.arch.rest.ApiError
+import me.szymanski.arch.rest.Repository
+import me.szymanski.arch.rest.RestApi
+import me.szymanski.arch.rest.RestConfig
 import me.szymanski.arch.logic.screenslogic.ListLogic
 import javax.inject.Inject
 

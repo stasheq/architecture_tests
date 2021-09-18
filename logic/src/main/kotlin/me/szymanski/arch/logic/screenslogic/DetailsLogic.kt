@@ -5,9 +5,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import me.szymanski.arch.logic.rest.ApiError
-import me.szymanski.arch.logic.rest.RepositoryDetails
-import me.szymanski.arch.logic.rest.RestApi
+import me.szymanski.arch.rest.ApiError
+import me.szymanski.arch.rest.RepositoryDetails
+import me.szymanski.arch.rest.RestApi
 import javax.inject.Inject
 
 interface DetailsLogic {

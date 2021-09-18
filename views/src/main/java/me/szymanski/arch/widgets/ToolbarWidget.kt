@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import me.szymanski.arch.inflate
 import me.szymanski.arch.widgets.databinding.ToolbarBinding
 
-class Toolbar @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : FrameLayout(ctx, attrs) {
+class ToolbarWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : FrameLayout(ctx, attrs) {
     private val button: ImageView
     private val titleView: TextView
 

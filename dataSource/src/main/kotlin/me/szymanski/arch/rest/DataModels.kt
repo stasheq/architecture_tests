@@ -1,4 +1,4 @@
-package me.szymanski.arch.logic.rest
+package me.szymanski.arch.rest
 
 import com.google.gson.annotations.SerializedName
 

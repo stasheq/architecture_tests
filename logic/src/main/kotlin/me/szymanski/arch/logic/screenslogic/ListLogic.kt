@@ -3,7 +3,7 @@ package me.szymanski.arch.logic.screenslogic
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharedFlow
 import me.szymanski.arch.logic.cases.GetReposListCase
-import me.szymanski.arch.logic.rest.Repository
+import me.szymanski.arch.rest.Repository
 
 interface ListLogic {
     fun reload()

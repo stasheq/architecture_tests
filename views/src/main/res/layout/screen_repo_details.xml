@@ -16,12 +16,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <me.szymanski.arch.widgets.Toolbar
+        <me.szymanski.arch.widgets.ToolbarWidget
             android:id="@+id/detailsToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize" />
 
-        <me.szymanski.arch.widgets.ErrorBar
+        <me.szymanski.arch.widgets.ErrorBarWidget
             android:id="@+id/detailsErrorBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

@@ -6,14 +6,14 @@ import me.szymanski.arch.getValue
 import me.szymanski.arch.inflate
 import me.szymanski.arch.refreshing
 import me.szymanski.arch.setValue
-import me.szymanski.arch.widgets.ErrorBar
+import me.szymanski.arch.widgets.ErrorBarWidget
 import me.szymanski.arch.widgets.TextInputWidget
 import me.szymanski.arch.widgets.databinding.ScreenReposListBinding
 import me.szymanski.arch.widgets.list.ListWidget
 
 class ListScreen(ctx: Context, parent: ViewGroup? = null) {
 
-    private val errorWidget: ErrorBar
+    private val errorWidget: ErrorBarWidget
     private val listWidget: ListWidget
     private val userNameInput: TextInputWidget
 

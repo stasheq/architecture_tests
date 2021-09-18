@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import me.szymanski.arch.inflate
 import me.szymanski.arch.widgets.databinding.ErrorBarBinding
 
-class ErrorBar @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : FrameLayout(ctx, attrs) {
+class ErrorBarWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : FrameLayout(ctx, attrs) {
     private val errorView: TextView
 
     init {

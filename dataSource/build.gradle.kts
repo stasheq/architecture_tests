@@ -4,22 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-    testLogging { showStandardStreams = true }
-}
-
-sourceSets {
-    test {
-        java {
-            srcDir("build/generated/source/kapt/test")
-        }
-    }
-}
-
 dependencies {
     implementation(project(Deps.Module.commonTools))
-    implementation(project(Deps.Module.dataSource))
     implementation(Deps.Kotlin.stdlib)
     implementation(Deps.Kotlin.coroutines)
     implementation(Deps.Retrofit.lib)
@@ -28,12 +14,6 @@ dependencies {
     implementation(Deps.OkHttp.logging)
     implementation(Deps.Dagger.lib)
     kapt(Deps.Dagger.kapt)
-    // unit tests
-    kaptTest(Deps.Dagger.kapt)
-    testImplementation(Deps.OkHttp.mockwebserver)
-    testImplementation(Deps.Kotest.lib)
-    testImplementation(Deps.Kotest.assertions)
-    testImplementation(Deps.Kotest.property)
 }
 
 java {

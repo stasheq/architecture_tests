@@ -25,13 +25,18 @@ android {
             proguard: Boolean = true,
             appNameRes: String,
             idSuffix: String? = null,
-            versionSuffix: String? = null
+            versionSuffix: String? = null,
+            config: VariantConfig
         ) = maybeCreate(name).apply {
             isMinifyEnabled = minify
             if (proguard) proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             resValue("string", "app_name", appNameRes)
             if (idSuffix != null) applicationIdSuffix = ".$idSuffix"
             if (versionSuffix != null) versionNameSuffix = " $versionSuffix"
+            buildConfigField("String", "CONF_ENVIRONMENT", "\"${config.environment}\"")
+            buildConfigField("String", "CONF_USER", "\"${config.defaultUser}\"")
+            buildConfigField("int", "CONF_PAGE_LIMIT", "${config.listPageLimit}")
+            buildConfigField("int", "CONF_REST_TIMEOUT", "${config.restCallTimeout}")
         }
 
         buildType(
@@ -40,12 +45,14 @@ android {
             proguard = false,
             appNameRes = "@string/app_name_debug",
             idSuffix = "debug",
-            versionSuffix = "debug"
+            versionSuffix = "debug",
+            config = DefaultVariantConfig
         )
 
         buildType(
             name = "release",
-            appNameRes = "@string/app_name_release"
+            appNameRes = "@string/app_name_release",
+            config = DefaultVariantConfig
         )
     }
 
@@ -61,8 +68,10 @@ android {
 
 dependencies {
     debugImplementation(Deps.LeakCanary.lib)
-    implementation(project(":logic"))
-    implementation(project(":views"))
+    implementation(project(Deps.Module.commonTools))
+    implementation(project(Deps.Module.dataSource))
+    implementation(project(Deps.Module.logic))
+    implementation(project(Deps.Module.views))
     implementation(Deps.Kotlin.stdlib)
     implementation(Deps.Jetpack.coreKotlin)
     implementation(Deps.Jetpack.appCompat)
@@ -78,4 +87,15 @@ dependencies {
     implementation(Deps.Dagger.lib)
     implementation(Deps.Dagger.Hilt.lib)
     kapt(Deps.Dagger.Hilt.kapt)
+}
+
+abstract class VariantConfig {
+    abstract val environment: String
+    open val defaultUser = "google"
+    open val listPageLimit = 20
+    open val restCallTimeout = 5000
+}
+
+object DefaultVariantConfig : VariantConfig() {
+    override val environment = "https://api.github.com/"
 }

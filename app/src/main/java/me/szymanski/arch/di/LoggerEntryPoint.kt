@@ -7,7 +7,7 @@ import dagger.hilt.EntryPoints
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import me.szymanski.arch.logic.Logger
+import me.szymanski.arch.Logger
 
 @EntryPoint
 @Singleton
