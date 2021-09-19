@@ -22,10 +22,6 @@ dependencies {
     implementation(project(Deps.Module.dataSource))
     implementation(Deps.Kotlin.stdlib)
     implementation(Deps.Kotlin.coroutines)
-    implementation(Deps.Retrofit.lib)
-    implementation(Deps.Retrofit.gson)
-    implementation(Deps.OkHttp.lib)
-    implementation(Deps.OkHttp.logging)
     implementation(Deps.Dagger.lib)
     kapt(Deps.Dagger.kapt)
     // unit tests
