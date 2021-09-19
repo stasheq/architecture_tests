@@ -8,7 +8,7 @@ import me.szymanski.arch.rest.Repository
 interface ListLogic {
     fun reload()
     fun loadNextPage()
-    fun itemClick(repositoryName: String)
+    fun itemClick(repository: Repository)
     var userName: String
     val list: SharedFlow<List<Repository>>
     val loading: SharedFlow<Boolean>
@@ -37,8 +37,8 @@ class ListLogicImpl @Inject constructor(
 
     override fun loadNextPage() = getReposListCase.loadNextPage(false)
 
-    override fun itemClick(repositoryName: String) {
-        detailsLogic.repositoryId = RepositoryId(userName, repositoryName)
+    override fun itemClick(repository: Repository) {
+        detailsLogic.repositoryId = RepositoryId(userName, repository.name)
         navigationLogic.openDetails()
     }
 }

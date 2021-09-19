@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import me.szymanski.arch.*
-import me.szymanski.arch.widgets.databinding.ListBinding
+import me.szymanski.arch.debounce
 import me.szymanski.arch.getValue
+import me.szymanski.arch.inflate
+import me.szymanski.arch.refreshes
 import me.szymanski.arch.setValue
+import me.szymanski.arch.widgets.databinding.ListBinding
 
 class ListWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : SwipeRefreshLayout(ctx, attrs) {
 
@@ -40,10 +42,10 @@ class ListWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = 
     var selectingEnabled: Boolean = true
         set(value) {
             field = value
-            adapter.selectItemAction = if (value) { id -> selectAction.tryEmit(id) } else null
+            adapter.selectItemAction = if (value) { item -> selectAction.tryEmit(item) } else null
         }
     val refreshAction = this.refreshes()
-    val selectAction = MutableSharedFlow<String>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val selectAction = MutableSharedFlow<Any>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     val loadNextPageAction = MutableSharedFlow<Unit>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     var loadingNextPageIndicator: Boolean by adapter::loadingNextPageIndicator
     var lastItemMessage: String? by adapter::lastItemMessage

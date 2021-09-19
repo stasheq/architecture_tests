@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.screenslogic.ListLogic
+import me.szymanski.arch.rest.Repository
 import me.szymanski.arch.screens.ListScreen
 import me.szymanski.arch.widgets.list.ListItemData
 
@@ -49,17 +50,17 @@ class ListFragment : Fragment() {
             }
         }
         launch {
-            logic.list
-                .map { list -> list.map { ListItemData(it.name, it.name, it.description) } }
-                .collect { result ->
-                    view.lastItemMessage = if (result.isEmpty()) getString(R.string.empty_list) else null
-                    view.items = result
-                }
+            logic.list.map { it.mapToUI() }.collect { result ->
+                view.lastItemMessage = if (result.isEmpty()) getString(R.string.empty_list) else null
+                view.items = result
+            }
         }
         launch { logic.hasNextPage.collect { view.hasNextPage = it } }
         launch { view.refreshAction.collect { logic.reload() } }
         launch { view.userNameChanges.collect { logic.userName = it } }
-        launch { view.selectAction.collect { logic.itemClick(it) } }
+        launch { view.selectAction.collect { logic.itemClick(it as Repository) } }
         launch { view.loadNextPageAction.collect { logic.loadNextPage() } }
     }
+
+    private fun List<Repository>.mapToUI() = map { ListItemData(it.name, it.name, it.description, it) }
 }

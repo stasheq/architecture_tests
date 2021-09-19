@@ -57,7 +57,7 @@ class DetailsFragment : Fragment() {
         }
         launch {
             logic.result.collect { list ->
-                view.items = list.map { ListItemData(it.type.name, it.type.toTitle(), it.value) }
+                view.items = list.map { ListItemData(it.type.name, it.type.toTitle(), it.value, it) }
             }
         }
         launch { logic.title.collect { view.title = it } }

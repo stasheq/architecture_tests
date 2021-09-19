@@ -28,7 +28,7 @@ class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             if (removed) notifyItemRemoved(items.size)
             if (changed) notifyItemChanged(items.size)
         }
-    var selectItemAction: ((id: String) -> Unit)? = null
+    var selectItemAction: ((item: Any) -> Unit)? = null
 
     init {
         setHasStableIds(true)
