@@ -1,4 +1,8 @@
-// TODO logic models separated from rest models
+// TODO zrobic listanddetailsfragment
+// TODO zrobic przyjmowanie argsow na fragmentach z detalami
+
+// TODO separate logic models from rest models
+// TODO onsaveinstancestate na logikach, savedstatehandle? i przesunac na fragment zamiast activityretained
 
 # Android App architecture schema proposal
 This example is created to demonstrate a custom architecture idea and usage of a multiple tools.\

@@ -5,9 +5,9 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldBeIn
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import me.szymanski.arch.logic.screenslogic.ListLogic
+import me.szymanski.arch.logic.list.ListLogic
 import me.szymanski.arch.rest.RestConfig
-import me.szymanski.arch.logic.screenslogic.NavigationLogic
+import me.szymanski.arch.logic.navigation.NavigationLogic
 import me.szymanski.arch.logic.test.di.DaggerTestComponent
 import me.szymanski.arch.logic.test.utils.*
 import okhttp3.mockwebserver.MockWebServer

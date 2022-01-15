@@ -5,17 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.whenStarted
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import me.szymanski.arch.logic.screenslogic.DetailId
-import me.szymanski.arch.logic.screenslogic.DetailsLogic
-import me.szymanski.arch.logic.screenslogic.DetailsLogic.LoadingState.*
+import me.szymanski.arch.logic.details.DetailId
+import me.szymanski.arch.logic.details.DetailsLogic
+import me.szymanski.arch.logic.details.DetailsLogic.LoadingState.*
 import me.szymanski.arch.screens.DetailsScreen
 import me.szymanski.arch.utils.isWideScreen
 import me.szymanski.arch.widgets.list.ListItemData
@@ -38,9 +37,7 @@ class DetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                subscribeToLogic(view, logic)
-            }
+            whenStarted { subscribeToLogic(view, logic) }
         }
     }
 

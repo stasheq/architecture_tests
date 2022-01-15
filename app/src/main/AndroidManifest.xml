@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="me.szymanski.arch.NavigationActivity"
+            android:name="me.szymanski.arch.navigation.NavigationActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>

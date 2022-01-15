@@ -1,4 +1,4 @@
-package me.szymanski.arch.logic.screenslogic
+package me.szymanski.arch.logic.details
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -9,6 +9,7 @@ import me.szymanski.arch.rest.ApiError
 import me.szymanski.arch.rest.RepositoryDetails
 import me.szymanski.arch.rest.RestApi
 import javax.inject.Inject
+import me.szymanski.arch.logic.navigation.NavigationLogic
 
 interface DetailsLogic {
     var repositoryId: RepositoryId?

@@ -7,12 +7,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import me.szymanski.arch.Logger
-import me.szymanski.arch.logic.screenslogic.DetailsLogic
-import me.szymanski.arch.logic.screenslogic.DetailsLogicImpl
-import me.szymanski.arch.logic.screenslogic.ListLogic
-import me.szymanski.arch.logic.screenslogic.ListLogicImpl
-import me.szymanski.arch.logic.screenslogic.NavigationLogic
-import me.szymanski.arch.logic.screenslogic.NavigationLogicImpl
+import me.szymanski.arch.logic.details.DetailsLogic
+import me.szymanski.arch.logic.details.DetailsLogicImpl
+import me.szymanski.arch.logic.list.ListLogic
+import me.szymanski.arch.logic.list.ListLogicImpl
+import me.szymanski.arch.logic.navigation.NavigationLogic
+import me.szymanski.arch.logic.navigation.NavigationLogicImpl
 
 @Module
 class TestModule {

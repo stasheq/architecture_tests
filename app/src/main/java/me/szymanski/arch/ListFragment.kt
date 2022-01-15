@@ -5,16 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.whenStarted
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import me.szymanski.arch.logic.screenslogic.ListLogic
+import me.szymanski.arch.logic.list.ListLogic
 import me.szymanski.arch.rest.Repository
 import me.szymanski.arch.screens.ListScreen
 import me.szymanski.arch.widgets.list.ListItemData
@@ -31,9 +30,7 @@ class ListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                subscribeToLogic(view, logic)
-            }
+            whenStarted { subscribeToLogic(view, logic) }
         }
     }
 

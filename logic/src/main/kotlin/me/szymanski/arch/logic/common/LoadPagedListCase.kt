@@ -1,4 +1,4 @@
-package me.szymanski.arch.logic.cases
+package me.szymanski.arch.logic.common
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

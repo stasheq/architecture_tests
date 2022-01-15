@@ -1,11 +1,12 @@
-package me.szymanski.arch.logic.cases
+package me.szymanski.arch.logic.list.cases
 
+import javax.inject.Inject
+import me.szymanski.arch.logic.common.LoadPagedListCase
+import me.szymanski.arch.logic.list.ListLogic
 import me.szymanski.arch.rest.ApiError
 import me.szymanski.arch.rest.Repository
 import me.szymanski.arch.rest.RestApi
 import me.szymanski.arch.rest.RestConfig
-import me.szymanski.arch.logic.screenslogic.ListLogic
-import javax.inject.Inject
 
 class GetReposListCase @Inject constructor(
     private val restApi: RestApi,

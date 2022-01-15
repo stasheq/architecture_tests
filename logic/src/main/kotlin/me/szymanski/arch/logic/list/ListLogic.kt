@@ -1,8 +1,10 @@
-package me.szymanski.arch.logic.screenslogic
+package me.szymanski.arch.logic.list
 
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharedFlow
-import me.szymanski.arch.logic.cases.GetReposListCase
+import me.szymanski.arch.logic.list.cases.GetReposListCase
+import me.szymanski.arch.logic.navigation.NavigationLogic
+import me.szymanski.arch.logic.details.RepositoryId
 import me.szymanski.arch.rest.Repository
 
 interface ListLogic {
@@ -20,8 +22,7 @@ interface ListLogic {
 
 class ListLogicImpl @Inject constructor(
     private val getReposListCase: GetReposListCase,
-    private val navigationLogic: NavigationLogic,
-    private val detailsLogic: DetailsLogic,
+    private val navigationLogic: NavigationLogic
 ) : ListLogic {
     override val list = getReposListCase.list
     override val loading = getReposListCase.loading
@@ -38,7 +39,6 @@ class ListLogicImpl @Inject constructor(
     override fun loadNextPage() = getReposListCase.loadNextPage(false)
 
     override fun itemClick(repository: Repository) {
-        detailsLogic.repositoryId = RepositoryId(userName, repository.name)
-        navigationLogic.openDetails()
+        navigationLogic.openDetails(RepositoryId(userName, repository.name))
     }
 }
