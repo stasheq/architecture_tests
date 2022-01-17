@@ -60,4 +60,8 @@ class ListFragment : Fragment() {
     }
 
     private fun List<Repository>.mapToUI() = map { ListItemData(it.name, it.name, it.description, it) }
+
+    companion object {
+        fun instantiate() = ListFragment()
+    }
 }

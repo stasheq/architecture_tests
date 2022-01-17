@@ -1,5 +1,6 @@
 package me.szymanski.arch.logic.details
 
+import java.io.Serializable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,7 @@ interface DetailsLogic {
 
 enum class DetailId { NAME, DESCRIPTION, PRIVATE, OWNER, FORKS, LANGUAGE, ISSUES, LICENSE, WATCHERS, BRANCH }
 
-data class RepositoryId(val userName: String, val repositoryName: String)
+data class RepositoryId(val userName: String, val repositoryName: String): Serializable
 
 data class RepositoryDetail(val type: DetailId, val value: String)
 

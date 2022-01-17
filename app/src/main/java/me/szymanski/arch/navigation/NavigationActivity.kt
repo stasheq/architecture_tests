@@ -41,9 +41,9 @@ class NavigationActivity : AppCompatActivity() {
 
     private fun NavigationDirection.updateFragments() {
         when (this) {
-            is NavigationDirection.Details -> changeFragment { DetailsFragment() }
-            NavigationDirection.List -> changeFragment { ListFragment() }
-            is NavigationDirection.ListAndDetails -> changeFragment { ListAndDetailsFragment() }
+            is NavigationDirection.Details -> changeFragment(DetailsFragment.instantiate(repositoryId))
+            NavigationDirection.List -> changeFragment(ListFragment.instantiate())
+            is NavigationDirection.ListAndDetails -> changeFragment(ListAndDetailsFragment.instantiate(repositoryId))
         }
     }
 }

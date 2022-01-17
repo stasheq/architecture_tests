@@ -1,6 +1,7 @@
 package me.szymanski.arch
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +13,20 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 import me.szymanski.arch.logic.details.DetailId
 import me.szymanski.arch.logic.details.DetailsLogic
 import me.szymanski.arch.logic.details.DetailsLogic.LoadingState.*
+import me.szymanski.arch.logic.details.RepositoryId
 import me.szymanski.arch.screens.DetailsScreen
+import me.szymanski.arch.utils.fragmentArgs
 import me.szymanski.arch.utils.isWideScreen
 import me.szymanski.arch.widgets.list.ListItemData
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
+    private var args by fragmentArgs<Args>()
+
     @Inject
     lateinit var logic: DetailsLogic
     private lateinit var view: DetailsScreen
@@ -44,6 +50,7 @@ class DetailsFragment : Fragment() {
     private fun CoroutineScope.subscribeToLogic(view: DetailsScreen, logic: DetailsLogic) {
         view.showBackIcon = !isWideScreen()
         view.backClick = { logic.onBackPressed() }
+        logic.repositoryId = args.repositoryId
 
         launch {
             logic.state.collect { state ->
@@ -74,4 +81,11 @@ class DetailsFragment : Fragment() {
             DetailId.BRANCH -> R.string.detail_branch
         }
     )
+
+    companion object {
+        @Parcelize
+        private data class Args(val repositoryId: RepositoryId?) : Parcelable
+
+        fun instantiate(repositoryId: RepositoryId?) = DetailsFragment().apply { args = Args(repositoryId) }
+    }
 }

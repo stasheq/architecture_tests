@@ -1,6 +1,5 @@
-// TODO zrobic listanddetailsfragment
-// TODO zrobic przyjmowanie argsow na fragmentach z detalami
-
+// TODO issues on 7inch tablet
+// TODO notifydatasetchanged remove
 // TODO separate logic models from rest models
 // TODO onsaveinstancestate na logikach, savedstatehandle? i przesunac na fragment zamiast activityretained
 

@@ -6,31 +6,21 @@ import me.szymanski.arch.getValue
 import me.szymanski.arch.inflate
 import me.szymanski.arch.refreshing
 import me.szymanski.arch.setValue
-import me.szymanski.arch.widgets.ErrorBarWidget
-import me.szymanski.arch.widgets.TextInputWidget
 import me.szymanski.arch.widgets.databinding.ScreenReposListBinding
-import me.szymanski.arch.widgets.list.ListWidget
 
-class ListScreen(ctx: Context, parent: ViewGroup? = null) {
+class ListScreen(ctx: Context, parent: ViewGroup? = null) : Screen {
 
-    private val errorWidget: ErrorBarWidget
-    private val listWidget: ListWidget
-    private val userNameInput: TextInputWidget
+    private val binding = ctx.inflate(ScreenReposListBinding::inflate, parent)
+    override val root = binding.root
 
-    val root = ctx.inflate(ScreenReposListBinding::inflate, parent).apply {
-        userNameInput = listInput
-        errorWidget = listErrorBar
-        listWidget = listListWidget
-    }.root
-
-    var refreshing by listWidget::refreshing
-    var errorText by errorWidget::errorText
-    var items by listWidget::items
-    var userName by userNameInput::textValue
-    val refreshAction = listWidget.refreshAction
-    val selectAction = listWidget.selectAction
-    val userNameChanges = userNameInput.textValueChanges
-    var hasNextPage by listWidget::loadingNextPageIndicator
-    val loadNextPageAction = listWidget.loadNextPageAction
-    var lastItemMessage by listWidget::lastItemMessage
+    var refreshing by binding.listListWidget::refreshing
+    var errorText by binding.listErrorBar::errorText
+    var items by binding.listListWidget::items
+    var userName by binding.listInput::textValue
+    val refreshAction = binding.listListWidget.refreshAction
+    val selectAction = binding.listListWidget.selectAction
+    val userNameChanges = binding.listInput.textValueChanges
+    var hasNextPage by binding.listListWidget::loadingNextPageIndicator
+    val loadNextPageAction = binding.listListWidget.loadNextPageAction
+    var lastItemMessage by binding.listListWidget::lastItemMessage
 }
