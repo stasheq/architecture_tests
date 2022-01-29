@@ -1,4 +1,4 @@
-// TODO issues on 7inch tablet
+// TODO logic dies at rotation so can't store open details id
 // TODO notifydatasetchanged remove
 // TODO separate logic models from rest models
 // TODO onsaveinstancestate na logikach, savedstatehandle? i przesunac na fragment zamiast activityretained

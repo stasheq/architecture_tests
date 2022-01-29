@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import me.szymanski.arch.logic.details.RepositoryId
@@ -19,6 +20,11 @@ class ListAndDetailsFragment : Fragment() {
 
     private lateinit var view: ColumnsScreen
 
+    override fun setArguments(args: Bundle?) {
+        super.setArguments(args)
+        if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) updateDetails()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,8 +34,11 @@ class ListAndDetailsFragment : Fragment() {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         changeFragment(ListFragment.instantiate(), view.leftColumnId)
-        changeFragment(DetailsFragment.instantiate(args.repositoryId), view.rightColumnId)
+        updateDetails()
     }
+
+    private fun updateDetails() =
+        changeFragment(DetailsFragment.instantiate(args.repositoryId), view.rightColumnId)
 
     companion object {
         @Parcelize

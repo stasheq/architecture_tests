@@ -31,6 +31,11 @@ class DetailsFragment : Fragment() {
     lateinit var logic: DetailsLogic
     private lateinit var view: DetailsScreen
 
+    override fun setArguments(args: Bundle?) {
+        super.setArguments(args)
+        if (::logic.isInitialized) logic.repositoryId = this.args.repositoryId
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

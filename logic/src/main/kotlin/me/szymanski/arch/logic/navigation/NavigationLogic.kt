@@ -21,17 +21,18 @@ interface NavigationLogic {
 
 class NavigationLogicImpl @Inject constructor() : NavigationLogic {
     override val currentScreen = MutableStateFlow<NavigationDirection>(List)
-    override val closeApp = MutableSharedFlow<Unit>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    override val closeApp =
+        MutableSharedFlow<Unit>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
     override var wideScreen: Boolean = false
         set(value) {
-            if (value) {
-                currentScreen.value = ListAndDetails(null)
-            } else {
-                val lastValue = currentScreen.value
-                currentScreen.value = (lastValue as? ListAndDetails)?.repositoryId?.let { Details(it) } ?: lastValue
-            }
             field = value
+            val lastValue = currentScreen.value
+            if (value) {
+                currentScreen.value = ListAndDetails((lastValue as? Details)?.repositoryId)
+            } else {
+                currentScreen.value = (lastValue as? ListAndDetails)?.repositoryId?.let { Details(it) } ?: List
+            }
         }
 
     override fun openDetails(repositoryId: RepositoryId) {
