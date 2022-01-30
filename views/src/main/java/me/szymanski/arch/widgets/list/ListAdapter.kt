@@ -3,11 +3,13 @@ package me.szymanski.arch.widgets.list
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ListAdapter : androidx.recyclerview.widget.ListAdapter<ListItemData, RecyclerView.ViewHolder>(
+    ListDiffUtilCallback()
+) {
     var items: List<ListItemData> = ArrayList()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            submitList(value)
         }
     var loadingNextPageIndicator: Boolean = false
         set(value) {
