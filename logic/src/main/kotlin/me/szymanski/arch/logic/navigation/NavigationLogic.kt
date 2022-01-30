@@ -1,10 +1,9 @@
 package me.szymanski.arch.logic.navigation
 
 import javax.inject.Inject
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import me.szymanski.arch.mutableEventFlow
 import me.szymanski.arch.logic.details.RepositoryId
 import me.szymanski.arch.logic.navigation.NavigationDirection.Details
 import me.szymanski.arch.logic.navigation.NavigationDirection.List
@@ -21,8 +20,7 @@ interface NavigationLogic {
 
 class NavigationLogicImpl @Inject constructor() : NavigationLogic {
     override val currentScreen = MutableStateFlow<NavigationDirection>(List)
-    override val closeApp =
-        MutableSharedFlow<Unit>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    override val closeApp = mutableEventFlow<Unit>()
 
     override var wideScreen: Boolean = false
         set(value) {

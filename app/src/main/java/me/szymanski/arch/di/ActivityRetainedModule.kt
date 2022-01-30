@@ -3,20 +3,20 @@ package me.szymanski.arch.di
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.scopes.ActivityScoped
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import me.szymanski.arch.logic.navigation.NavigationLogic
 import me.szymanski.arch.logic.navigation.NavigationLogicImpl
 
 @Module
-@InstallIn(ActivityComponent::class)
-class ActivityModule
+@InstallIn(ActivityRetainedComponent::class)
+class ActivityRetainedModule
 
 @Module
-@InstallIn(ActivityComponent::class)
-abstract class ActivityModuleBindings {
+@InstallIn(ActivityRetainedComponent::class)
+abstract class ActivityRetainedModuleBindings {
 
     @Binds
-    @ActivityScoped
+    @ActivityRetainedScoped
     abstract fun navigationLogic(navigationLogicImpl: NavigationLogicImpl): NavigationLogic
 }

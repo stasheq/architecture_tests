@@ -5,11 +5,10 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import me.szymanski.arch.debounce
 import me.szymanski.arch.getValue
 import me.szymanski.arch.inflate
+import me.szymanski.arch.mutableEventFlow
 import me.szymanski.arch.refreshes
 import me.szymanski.arch.setValue
 import me.szymanski.arch.widgets.databinding.ListBinding
@@ -45,8 +44,8 @@ class ListWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = 
             adapter.selectItemAction = if (value) { item -> selectAction.tryEmit(item) } else null
         }
     val refreshAction = this.refreshes()
-    val selectAction = MutableSharedFlow<Any>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-    val loadNextPageAction = MutableSharedFlow<Unit>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val selectAction = mutableEventFlow<Any>()
+    val loadNextPageAction = mutableEventFlow<Unit>()
     var loadingNextPageIndicator: Boolean by adapter::loadingNextPageIndicator
     var lastItemMessage: String? by adapter::lastItemMessage
     var items: List<ListItemData> by adapter::items
