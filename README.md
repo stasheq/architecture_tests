@@ -1,4 +1,3 @@
-// TODO add loading items etc to list normally
 // TODO separate logic models from rest models
 
 # Android App architecture schema proposal

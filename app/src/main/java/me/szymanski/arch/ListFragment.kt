@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.list.ListLogic
 import me.szymanski.arch.rest.Repository
 import me.szymanski.arch.screens.ListScreen
-import me.szymanski.arch.widgets.list.ListItemData
+import me.szymanski.arch.widgets.list.ListItemType.ListItem
 
 @AndroidEntryPoint
 class ListFragment : Fragment() {
@@ -41,7 +41,9 @@ class ListFragment : Fragment() {
             logic.error.collect {
                 view.errorText = when (it) {
                     ListLogic.ErrorType.USER_DOESNT_EXIST -> getString(R.string.loading_error_doesnt_exist)
-                    ListLogic.ErrorType.NO_CONNECTION, ListLogic.ErrorType.OTHER -> getString(R.string.loading_error_other)
+                    ListLogic.ErrorType.NO_CONNECTION, ListLogic.ErrorType.OTHER -> getString(
+                        R.string.loading_error_other
+                    )
                     null -> null
                 }
             }
@@ -59,7 +61,7 @@ class ListFragment : Fragment() {
         launch { view.loadNextPageAction.collect { logic.loadNextPage() } }
     }
 
-    private fun List<Repository>.mapToUI() = map { ListItemData(it.name, it.name, it.description, it) }
+    private fun List<Repository>.mapToUI() = map { ListItem(it.name, it.name, it.description, it) }
 
     companion object {
         fun instantiate() = ListFragment()

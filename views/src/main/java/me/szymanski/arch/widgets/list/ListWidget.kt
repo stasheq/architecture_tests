@@ -12,6 +12,8 @@ import me.szymanski.arch.mutableEventFlow
 import me.szymanski.arch.refreshes
 import me.szymanski.arch.setValue
 import me.szymanski.arch.widgets.databinding.ListBinding
+import me.szymanski.arch.widgets.list.ListItemType.ListItem
+import me.szymanski.arch.widgets.list.ListItemType.LoadingItem
 
 class ListWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = null) : SwipeRefreshLayout(ctx, attrs) {
 
@@ -26,7 +28,7 @@ class ListWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = 
                 val action = Runnable { loadNextPageAction.tryEmit(Unit) }
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val lastPos = layoutManager.findLastVisibleItemPosition()
-                    if (adapter.getItemViewType(lastPos) == ListAdapter.typeLoading) debounce(500, action)
+                    if (adapter.getItemViewType(lastPos) == LoadingItem.type) debounce(500, action)
                 }
             })
             selectingEnabled = true
@@ -48,5 +50,5 @@ class ListWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = 
     val loadNextPageAction = mutableEventFlow<Unit>()
     var loadingNextPageIndicator: Boolean by adapter::loadingNextPageIndicator
     var lastItemMessage: String? by adapter::lastItemMessage
-    var items: List<ListItemData> by adapter::items
+    var items: List<ListItem> by adapter::items
 }

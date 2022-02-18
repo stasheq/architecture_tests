@@ -21,7 +21,7 @@ import me.szymanski.arch.logic.details.RepositoryId
 import me.szymanski.arch.screens.DetailsScreen
 import me.szymanski.arch.utils.fragmentArgs
 import me.szymanski.arch.utils.isWideScreen
-import me.szymanski.arch.widgets.list.ListItemData
+import me.szymanski.arch.widgets.list.ListItemType.ListItem
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
@@ -66,7 +66,7 @@ class DetailsFragment : Fragment() {
         }
         launch {
             logic.result.collect { list ->
-                view.items = list.map { ListItemData(it.type.name, it.type.toTitle(), it.value, it) }
+                view.items = list.map { ListItem(it.type.name, it.type.toTitle(), it.value, it) }
             }
         }
         launch { logic.title.collect { view.title = it } }
