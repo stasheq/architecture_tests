@@ -11,13 +11,12 @@ This app is created to show the idea of the architecture scheme that is:
 - cool
 
 Utils used:
-- RxJava3 - for communication between modules
+- Kotlin Flows - for communication between modules
 - Kotlin Coroutines - for doing time consuming jobs in logic
 - Kotest - for unit tests of logic module
 - Retrofit & okhttp - for network communication
 - Hilt & Dagger - for dependency injection
 - Leak Canary - for memory leaks detection
-- ViewModel from androidx - to provide Logic injection into views and to avoid Logic rebuilding when view is being rebuilt
 - Android view binding, because Kotlin synthetics got deprecated [Info](https://developer.android.com/topic/libraries/view-binding/migration)
 
 Good class to get an overall overview is [ListFragment.kt](app/src/main/java/me/szymanski/arch/ListFragment.kt)
@@ -38,7 +37,7 @@ Communication from the app to the logic module:
 - via method calls and setting its variables. `logic.loadNextPage()`
 
 Communication from the logic module to the app:
-- via exposed Observables `val list: Observable<List<Repository>>`
+- via exposed Flows `val list: SharedFlow<List<Repository>>`
 
 Example: [ListLogic.kt](logic/src/main/kotlin/me/szymanski/arch/logic/cases/ListLogic.kt)
 
