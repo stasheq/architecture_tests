@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import me.szymanski.arch.rest.ApiError
-import me.szymanski.arch.rest.RepositoryDetails
 import me.szymanski.arch.rest.RestApi
 import javax.inject.Inject
 import me.szymanski.arch.logic.navigation.NavigationLogic
+import me.szymanski.arch.rest.models.RepositoryDetails
 
 interface DetailsLogic {
     var repositoryId: RepositoryId?

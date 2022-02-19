@@ -19,7 +19,7 @@ sourceSets {
 
 dependencies {
     implementation(project(Deps.Module.commonTools))
-    implementation(project(Deps.Module.dataSource))
+    implementation(project(Deps.Module.restApi))
     implementation(Deps.Kotlin.stdlib)
     implementation(Deps.Kotlin.coroutines)
     implementation(Deps.Dagger.lib)

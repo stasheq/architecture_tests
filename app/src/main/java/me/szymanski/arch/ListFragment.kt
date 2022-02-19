@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import me.szymanski.arch.logic.list.ListLogic
-import me.szymanski.arch.rest.Repository
+import me.szymanski.arch.rest.models.Repository
 import me.szymanski.arch.screens.ListScreen
 import me.szymanski.arch.widgets.list.ListItemType.ListItem
 

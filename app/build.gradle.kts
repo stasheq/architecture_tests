@@ -71,7 +71,7 @@ android {
 dependencies {
     debugImplementation(Deps.LeakCanary.lib)
     implementation(project(Deps.Module.commonTools))
-    implementation(project(Deps.Module.dataSource))
+    implementation(project(Deps.Module.restApi))
     implementation(project(Deps.Module.logic))
     implementation(project(Deps.Module.views))
     implementation(Deps.Kotlin.stdlib)

@@ -1,4 +1,4 @@
-// TODO separate logic models from rest models
+// TODO back navigation issues
 
 # Android App architecture schema proposal
 This example is created to demonstrate a custom architecture idea and usage of a multiple tools.\

@@ -7,16 +7,17 @@ import java.net.UnknownHostException
 import java.util.concurrent.CancellationException
 import javax.inject.Inject
 
-class RestApi @Inject constructor(
-    private val service: GitHubService,
+class RestApi @Inject internal constructor(
+    private val restApiService: GitHubRestApiService,
     private val restConfig: RestConfig,
     private val logger: Logger
 ) {
 
     suspend fun getRepositories(user: String, page: Int) =
-        call { service.getRepositoriesList(user, restConfig.pageLimit, page) }
+        call { restApiService.getRepositoriesList(user, restConfig.pageLimit, page) }.map { it.toDomain() }
 
-    suspend fun getRepository(user: String, repoName: String) = call { service.getRepositoryDetails(user, repoName) }
+    suspend fun getRepository(user: String, repoName: String) =
+        call { restApiService.getRepositoryDetails(user, repoName) }.toDomain()
 
     private suspend fun <T> call(request: suspend () -> T): T {
         try {

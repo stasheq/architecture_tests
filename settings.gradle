@@ -1,6 +1,6 @@
 include ':views'
 include ':logic'
 include ':app'
-include ':dataSource'
+include ':restApi'
 include ':commonTools'
 rootProject.name = "App Scheme"

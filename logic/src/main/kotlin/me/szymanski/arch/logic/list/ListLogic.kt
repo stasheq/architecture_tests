@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import me.szymanski.arch.logic.list.cases.GetReposListCase
 import me.szymanski.arch.logic.navigation.NavigationLogic
 import me.szymanski.arch.logic.details.RepositoryId
-import me.szymanski.arch.rest.Repository
+import me.szymanski.arch.rest.models.Repository
 
 interface ListLogic {
     fun reload()

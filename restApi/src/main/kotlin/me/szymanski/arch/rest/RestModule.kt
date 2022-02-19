@@ -15,17 +15,17 @@ open class RestModule {
 
     @Provides
     @Singleton
-    fun getApiService(config: RestConfig, okHttpClient: OkHttpClient): GitHubService =
+    internal fun getApiService(config: RestConfig, okHttpClient: OkHttpClient): GitHubRestApiService =
         Retrofit.Builder()
             .baseUrl(config.baseUrl)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(GitHubService::class.java)
+            .create(GitHubRestApiService::class.java)
 
     @Provides
     @Singleton
-    fun getHttpClient(config: RestConfig, logger: Logger): OkHttpClient {
+    internal fun getHttpClient(config: RestConfig, logger: Logger): OkHttpClient {
         val httpClient = OkHttpClient.Builder()
         httpClient.callTimeout(config.callTimeout.toLong(), TimeUnit.MILLISECONDS)
         if (config.logEnabled) {

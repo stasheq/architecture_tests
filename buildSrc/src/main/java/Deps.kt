@@ -3,7 +3,7 @@ object Deps {
         const val logic = ":logic"
         const val views = ":views"
         const val commonTools = ":commonTools"
-        const val dataSource = ":dataSource"
+        const val restApi = ":restApi"
     }
 
     object Kotlin {
