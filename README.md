@@ -2,7 +2,7 @@
 
 # Android App architecture schema proposal
 This example is created to demonstrate a custom architecture idea and usage of a multiple tools.\
-Main reason of view and logic separation is done to make logic testable on a pure JVM, without running an Android emulator.\
+Main reason of view and logic separation is done to make logic testable on a pure JVM, without running an Android emulator.
 
 This app is created to show the idea of the architecture scheme that is:
 - easy to test automatically
@@ -39,7 +39,7 @@ Communication from the app to the logic module:
 Communication from the logic module to the app:
 - via exposed Flows `val list: SharedFlow<List<Repository>>`
 
-Example: [ListLogic.kt](logic/src/main/kotlin/me/szymanski/arch/logic/cases/ListLogic.kt)
+Example: [ListLogic.kt](logic/src/main/kotlin/me/szymanski/arch/logic/list/ListLogic.kt)
 
 ## Unit tests of logic
 Example: [ListLogic tests](logic/src/test/kotlin/me/szymanski/arch/logic/test/ListTest.kt)\
@@ -47,7 +47,7 @@ It uses [kotest](https://github.com/kotest/kotest) framework that allows to writ
 Setting `isolationMode = IsolationMode.InstancePerLeaf` allows to run whole separate flow for each leaf of a tests tree.\
 For example to write tests `On download 2nd page` and `On error downloading 2nd page` without taking care of preparing previous steps like `On started and download 1st page`.\
 Whole path is executed for every leaf.\
-Suggested method of running tests (because of nice UI output) is to run from Android Studio Gradle menu `logic/Tasks/verification/test`.\
+Suggested method of running tests (because of nice UI output) is to run from Android Studio Gradle menu `logic/Tasks/verification/test`.
 
 ## Views
 
