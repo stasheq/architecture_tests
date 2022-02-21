@@ -4,19 +4,54 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import me.szymanski.arch.R
+import me.szymanski.arch.logic.navigation.StackBehavior
+import me.szymanski.arch.logic.navigation.StackBehavior.Add
+import me.szymanski.arch.logic.navigation.StackBehavior.AddIfDifferent
+import me.szymanski.arch.logic.navigation.StackBehavior.Clear
+import me.szymanski.arch.logic.navigation.StackBehavior.Retrieve
 
-inline fun <reified T : Fragment> AppCompatActivity.changeFragment(fragment: T, frameId: Int = R.id.app_frame) =
-    supportFragmentManager.changeFragment(fragment, frameId)
+inline fun <reified T : Fragment> AppCompatActivity.changeFragment(
+    fragment: T, stackBehavior: StackBehavior, frameId: Int = R.id.app_frame
+) = supportFragmentManager.changeFragment(fragment, stackBehavior, frameId)
 
-inline fun <reified T : Fragment> Fragment.changeFragment(fragment: T, frameId: Int = R.id.app_frame) =
-    childFragmentManager.changeFragment(fragment, frameId)
+inline fun <reified T : Fragment> Fragment.changeFragment(
+    fragment: T, stackBehavior: StackBehavior, frameId: Int = R.id.app_frame
+) = childFragmentManager.changeFragment(fragment, stackBehavior, frameId)
 
-inline fun <reified T : Fragment> FragmentManager.changeFragment(fragment: T, frameId: Int = R.id.app_frame) {
-    val oldFragment = findFragmentById(frameId)
-    if (oldFragment != null && oldFragment is T) {
+fun FragmentManager.changeFragment(
+    fragment: Fragment, stackBehavior: StackBehavior, frameId: Int = R.id.app_frame
+) {
+    when (stackBehavior) {
+        Add ->
+            add(fragment, frameId)
+        AddIfDifferent ->
+            addIfDifferent(fragment, findFragmentById(frameId), frameId)
+        Clear -> {
+            popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            add(fragment, frameId)
+        }
+        Retrieve -> {
+            popBackStackImmediate(fragment.javaClass.name, 0)
+            addIfDifferent(fragment, findFragmentById(frameId), frameId)
+        }
+    }
+}
+
+private fun FragmentManager.add(
+    fragment: Fragment, frameId: Int = R.id.app_frame
+) {
+    beginTransaction().replace(frameId, fragment)
+        .addToBackStack(fragment.javaClass.name)
+        .commit()
+}
+
+private fun FragmentManager.addIfDifferent(
+    fragment: Fragment, oldFragment: Fragment?, frameId: Int = R.id.app_frame
+) {
+    if (oldFragment != null && oldFragment.javaClass == fragment.javaClass) {
         if (oldFragment.arguments != fragment.arguments)
             oldFragment.arguments = fragment.arguments
-        return
+    } else {
+        add(fragment, frameId)
     }
-    beginTransaction().replace(frameId, fragment).commit()
 }

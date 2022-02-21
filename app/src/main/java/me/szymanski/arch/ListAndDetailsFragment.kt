@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import me.szymanski.arch.logic.details.RepositoryId
+import me.szymanski.arch.logic.navigation.StackBehavior.Retrieve
 import me.szymanski.arch.screens.ColumnsScreen
 import me.szymanski.arch.utils.changeFragment
 import me.szymanski.arch.utils.fragmentArgs
@@ -33,12 +34,12 @@ class ListAndDetailsFragment : Fragment() {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        changeFragment(ListFragment.instantiate(), view.leftColumnId)
+        changeFragment(ListFragment.instantiate(), Retrieve, view.leftColumnId)
         updateDetails()
     }
 
     private fun updateDetails() =
-        changeFragment(DetailsFragment.instantiate(args.repositoryId), view.rightColumnId)
+        changeFragment(DetailsFragment.instantiate(args.repositoryId), Retrieve, view.rightColumnId)
 
     companion object {
         @Parcelize

@@ -27,8 +27,8 @@ class ListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         ListScreen(inflater.context, container).also { view = it }.root
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         lifecycleScope.launch {
             whenStarted { subscribeToLogic(view, logic) }
         }

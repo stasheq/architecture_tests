@@ -1,25 +1,26 @@
 package me.szymanski.arch.logic.navigation
 
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import me.szymanski.arch.mutableEventFlow
 import me.szymanski.arch.logic.details.RepositoryId
-import me.szymanski.arch.logic.navigation.NavigationDirection.Details
-import me.szymanski.arch.logic.navigation.NavigationDirection.List
-import me.szymanski.arch.logic.navigation.NavigationDirection.ListAndDetails
+import me.szymanski.arch.logic.navigation.NavigationScreen.Details
+import me.szymanski.arch.logic.navigation.NavigationScreen.List
+import me.szymanski.arch.logic.navigation.NavigationScreen.ListAndDetails
+import me.szymanski.arch.logic.navigation.StackBehavior.Retrieve
+import me.szymanski.arch.mutableEventFlow
+import javax.inject.Inject
 
 interface NavigationLogic {
     fun openDetails(repositoryId: RepositoryId)
     fun onBackPressed()
     var wideScreen: Boolean
 
-    val currentScreen: SharedFlow<NavigationDirection>
+    val currentScreen: SharedFlow<NavigationScreen>
     val closeApp: SharedFlow<Unit>
 }
 
 class NavigationLogicImpl @Inject constructor() : NavigationLogic {
-    override val currentScreen = MutableStateFlow<NavigationDirection>(List)
+    override val currentScreen = MutableStateFlow<NavigationScreen>(List())
     override val closeApp = mutableEventFlow<Unit>()
 
     override var wideScreen: Boolean = false
@@ -29,7 +30,7 @@ class NavigationLogicImpl @Inject constructor() : NavigationLogic {
             if (value) {
                 currentScreen.value = ListAndDetails((lastValue as? Details)?.repositoryId)
             } else {
-                currentScreen.value = (lastValue as? ListAndDetails)?.repositoryId?.let { Details(it) } ?: List
+                currentScreen.value = (lastValue as? ListAndDetails)?.repositoryId?.let { Details(it) } ?: List()
             }
         }
 
@@ -41,7 +42,7 @@ class NavigationLogicImpl @Inject constructor() : NavigationLogic {
         if (currentScreen.value is ListAndDetails || currentScreen.value is List) {
             closeApp.tryEmit(Unit)
         } else {
-            currentScreen.value = List
+            currentScreen.value = List(Retrieve)
         }
     }
 }
