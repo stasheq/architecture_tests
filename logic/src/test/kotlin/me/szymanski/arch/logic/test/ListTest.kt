@@ -7,7 +7,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import me.szymanski.arch.logic.list.ListLogic
 import me.szymanski.arch.rest.RestConfig
-import me.szymanski.arch.logic.navigation.NavigationLogic
+import me.szymanski.arch.logic.navigation.NavigationScreen
 import me.szymanski.arch.logic.test.di.DaggerTestComponent
 import me.szymanski.arch.logic.test.utils.*
 import okhttp3.mockwebserver.MockWebServer
@@ -25,7 +25,8 @@ class ListTest : FreeSpec({
             baseUrl = server.url("").toString(),
             defaultUser = user,
             pageLimit = 2,
-            callTimeout = 500
+            callTimeout = 500,
+            logEnabled = true
         )
         val reposPath = "/users/$user/repos"
 
@@ -44,13 +45,13 @@ class ListTest : FreeSpec({
         val error = listLogic.error.test()
         val hasNextPage = listLogic.hasNextPage.test()
         val close = navigationLogic.closeApp.test()
-        val columnsState = navigationLogic.currentScreen.test()
+        val currentScreen = navigationLogic.currentScreen.test()
 
         "loading not started"  { loading.last shouldBe true }
-        "has no items yet" { list.last?.isEmpty() shouldBe true }
+        "has no items yet" { list.last shouldBe null }
         "no error" { error.last shouldBe null }
         "app alive" { close.assertNoValues() }
-        "list shown" { columnsState.last shouldBe NavigationLogic.Screen.LIST }
+        "list shown" { currentScreen.last?.javaClass shouldBe NavigationScreen.List::class.java }
         "next page not known" { hasNextPage.last shouldBe false }
 
         "On started with unsupported response" - {
@@ -80,7 +81,7 @@ class ListTest : FreeSpec({
         "On started and download 1st page" - {
             server.dispatch(reposPath to FileReader.readText(firstPageFile))
             listLogic.reload()
-            list.awaitCondition { it.last().isNotEmpty() }
+            list.awaitCondition { !it.last().isNullOrEmpty() }
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
             "no error" { error.last shouldBe null }
             "received list of 2 items" { list.last?.size shouldBe 2 }
@@ -89,7 +90,10 @@ class ListTest : FreeSpec({
             "On download 2nd page" - {
                 server.dispatch(reposPath to FileReader.readText(secondPageFile))
                 listLogic.loadNextPage()
-                list.awaitCondition { it.last().size > 2 }
+                list.awaitCondition {
+                    val size = it.last()?.size
+                    size != null && size > 2
+                }
                 "finished loading" { loading.last shouldBe false }
                 "no error" { error.last shouldBe null }
                 "received list of 3 items" { list.last?.size shouldBe 3 }
@@ -107,20 +111,26 @@ class ListTest : FreeSpec({
             }
 
             "On Click first item" - {
-                val name = list.last?.get(0)?.name
-                "it has no empty name" { name.isNullOrBlank() shouldBe false }
-                listLogic.itemClick(name!!)
-                "details are shown" { columnsState.last shouldBe NavigationLogic.Screen.DETAILS }
+                val item = list.last?.get(0)
+                "it has no empty name" { item?.name.isNullOrBlank() shouldBe false }
+                listLogic.itemClick(item!!)
+                "details are shown" {
+                    val screen = currentScreen.last as? NavigationScreen.Details
+                    screen?.repositoryId?.repositoryName shouldBe item.name
+                }
             }
 
             "On big screen" - {
                 navigationLogic.wideScreen = true
-                "both columns are shown" { columnsState.last shouldBe NavigationLogic.Screen.LIST_AND_DETAILS }
+                "both columns are shown" { currentScreen.last?.javaClass shouldBe NavigationScreen.ListAndDetails::class.java }
                 "On Click item" - {
-                    val name = list.last?.get(0)?.name
-                    "it has no empty name" { name.isNullOrBlank() shouldBe false }
-                    listLogic.itemClick(name!!)
-                    "details are shown" { columnsState.last shouldBe NavigationLogic.Screen.LIST_AND_DETAILS }
+                    val item = list.last?.get(0)
+                    "it has no empty name" { item?.name.isNullOrBlank() shouldBe false }
+                    listLogic.itemClick(item!!)
+                    "details are shown" {
+                        val screen = currentScreen.last as? NavigationScreen.ListAndDetails
+                        screen?.repositoryId?.repositoryName shouldBe item.name
+                    }
                 }
             }
         }
