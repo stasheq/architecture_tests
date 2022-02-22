@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.whenStarted
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -22,16 +22,17 @@ import me.szymanski.arch.widgets.list.ListItemType.ListItem
 class ListFragment : Fragment() {
     @Inject
     lateinit var logic: ListLogic
-    private lateinit var view: ListScreen
+    private var viewUpdateJob: Job? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        ListScreen(inflater.context, container).also { view = it }.root
+        ListScreen(inflater.context, container).apply {
+            viewUpdateJob = lifecycleScope.launch { subscribeToLogic(this@apply, logic) }
+        }.root
 
-    override fun onStart() {
-        super.onStart()
-        lifecycleScope.launch {
-            whenStarted { subscribeToLogic(view, logic) }
-        }
+    override fun onDestroyView() {
+        viewUpdateJob?.cancel()
+        viewUpdateJob = null
+        super.onDestroyView()
     }
 
     private fun CoroutineScope.subscribeToLogic(view: ListScreen, logic: ListLogic) {
@@ -49,7 +50,8 @@ class ListFragment : Fragment() {
             }
         }
         launch {
-            logic.list.map { it.mapToUI() }.collect { result ->
+            logic.list.map { it?.mapToUI() }.collect { result ->
+                if (result == null) return@collect
                 view.lastItemMessage = if (result.isEmpty()) getString(R.string.empty_list) else null
                 view.items = result
             }

@@ -12,7 +12,7 @@ interface ListLogic {
     fun loadNextPage()
     fun itemClick(repository: Repository)
     var userName: String
-    val list: SharedFlow<List<Repository>>
+    val list: SharedFlow<List<Repository>?>
     val loading: SharedFlow<Boolean>
     val error: SharedFlow<ErrorType?>
     val hasNextPage: SharedFlow<Boolean>

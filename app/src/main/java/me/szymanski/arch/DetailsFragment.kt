@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.whenStarted
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -25,31 +25,26 @@ import me.szymanski.arch.widgets.list.ListItemType.ListItem
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
-    private var args by fragmentArgs<Args>()
 
     @Inject
     lateinit var logic: DetailsLogic
-    private lateinit var view: DetailsScreen
+    private var args by fragmentArgs<Args>()
+    private var viewUpdateJob: Job? = null
 
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         if (::logic.isInitialized) logic.repositoryId = this.args.repositoryId
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        view = DetailsScreen(inflater.context, container)
-        return view.root
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        DetailsScreen(inflater.context, container).apply {
+            viewUpdateJob = lifecycleScope.launch { subscribeToLogic(this@apply, logic) }
+        }.root
 
-    override fun onStart() {
-        super.onStart()
-        lifecycleScope.launch {
-            whenStarted { subscribeToLogic(view, logic) }
-        }
+    override fun onDestroyView() {
+        viewUpdateJob?.cancel()
+        viewUpdateJob = null
+        super.onDestroyView()
     }
 
     private fun CoroutineScope.subscribeToLogic(view: DetailsScreen, logic: DetailsLogic) {

@@ -14,16 +14,19 @@ class ListAdapter : androidx.recyclerview.widget.ListAdapter<ListItemType, Recyc
 ) {
     var items: List<ListItem> = emptyList()
         set(value) {
+            if (field == value) return
             field = value
             updateList()
         }
     var loadingNextPageIndicator: Boolean = false
         set(value) {
+            if (field == value) return
             field = value
             updateList()
         }
     var lastItemMessage: String? = null
         set(value) {
+            if (field == value) return
             field = value
             updateList()
         }

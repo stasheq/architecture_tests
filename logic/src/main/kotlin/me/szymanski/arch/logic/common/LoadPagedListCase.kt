@@ -17,7 +17,7 @@ abstract class LoadPagedListCase<Item, Page, Error>(private val firstPageInfo: P
     lateinit var scope: CoroutineScope
 
     val error = MutableStateFlow<Error?>(null)
-    val list = MutableStateFlow(emptyList<Item>())
+    val list = MutableStateFlow<List<Item>?>(null)
     val loading = MutableStateFlow(true)
     val hasNextPage = MutableStateFlow(false)
     private val loadedItems = mutableListOf<Item>()

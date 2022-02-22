@@ -19,27 +19,22 @@ import me.szymanski.arch.utils.fragmentArgs
 class ListAndDetailsFragment : Fragment() {
     private var args by fragmentArgs<Args>()
 
-    private lateinit var view: ColumnsScreen
-
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) updateDetails()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = ColumnsScreen(inflater.context, container).apply { view = this }.root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        ColumnsScreen(inflater.context, container).root
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        changeFragment(ListFragment.instantiate(), Retrieve, view.leftColumnId)
+        changeFragment(ListFragment.instantiate(), Retrieve, ColumnsScreen.leftColumnId)
         updateDetails()
     }
 
     private fun updateDetails() =
-        changeFragment(DetailsFragment.instantiate(args.repositoryId), Retrieve, view.rightColumnId)
+        changeFragment(DetailsFragment.instantiate(args.repositoryId), Retrieve, ColumnsScreen.rightColumnId)
 
     companion object {
         @Parcelize
