@@ -46,6 +46,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    namespace = "me.szymanski.arch.widgets"
 }
 
 dependencies {

@@ -9,14 +9,6 @@ tasks.withType<Test> {
     testLogging { showStandardStreams = true }
 }
 
-sourceSets {
-    test {
-        java {
-            srcDir("build/generated/source/kapt/test")
-        }
-    }
-}
-
 dependencies {
     implementation(project(Deps.Module.commonTools))
     implementation(project(Deps.Module.restApi))
