@@ -33,19 +33,19 @@ class ListTest : FreeSpec({
         val component = DaggerTestComponent.builder().restConfig(restConfig).build()
         val listLogic = component.getListLogic()
         val detailsLogic = component.getDetailsLogic()
-        val navigationLogic = component.getNavigationLogic()
+        val navigationCoordinator = component.getNavigationCoordinator()
 
-        navigationLogic.wideScreen = false
+        navigationCoordinator.wideScreen = false
         listLogic shouldNotBe null
         detailsLogic shouldNotBe null
-        navigationLogic shouldNotBe null
+        navigationCoordinator shouldNotBe null
 
         val loading = listLogic.loading.test()
         val list = listLogic.list.test()
         val error = listLogic.error.test()
         val hasNextPage = listLogic.hasNextPage.test()
-        val close = navigationLogic.closeApp.test()
-        val currentScreen = navigationLogic.currentScreen.test()
+        val close = navigationCoordinator.closeApp.test()
+        val currentScreen = navigationCoordinator.currentScreen.test()
 
         "loading not started"  { loading.last shouldBe true }
         "has no items yet" { list.last shouldBe null }
@@ -121,7 +121,7 @@ class ListTest : FreeSpec({
             }
 
             "On big screen" - {
-                navigationLogic.wideScreen = true
+                navigationCoordinator.wideScreen = true
                 "both columns are shown" { currentScreen.last?.javaClass shouldBe NavigationScreen.ListAndDetails::class.java }
                 "On Click item" - {
                     val item = list.last?.get(0)

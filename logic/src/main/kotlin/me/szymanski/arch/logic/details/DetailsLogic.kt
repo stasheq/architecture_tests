@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import me.szymanski.arch.rest.ApiError
 import me.szymanski.arch.rest.RestApi
 import javax.inject.Inject
-import me.szymanski.arch.logic.navigation.NavigationLogic
+import me.szymanski.arch.logic.navigation.NavigationCoordinator
 import me.szymanski.arch.rest.models.RepositoryDetails
 
 interface DetailsLogic {
@@ -26,14 +26,14 @@ interface DetailsLogic {
 
 enum class DetailId { NAME, DESCRIPTION, PRIVATE, OWNER, FORKS, LANGUAGE, ISSUES, LICENSE, WATCHERS, BRANCH }
 
-data class RepositoryId(val userName: String, val repositoryName: String): Serializable
+data class RepositoryId(val userName: String, val repositoryName: String) : Serializable
 
 data class RepositoryDetail(val type: DetailId, val value: String)
 
 class DetailsLogicImpl @Inject constructor(
     private val restApi: RestApi,
     private val scope: CoroutineScope,
-    private val navigationLogic: NavigationLogic
+    private val navigationCoordinator: NavigationCoordinator
 ) : DetailsLogic {
     override val state = MutableStateFlow(DetailsLogic.LoadingState.LOADING)
     override val result = MutableStateFlow(emptyList<RepositoryDetail>())
@@ -67,7 +67,7 @@ class DetailsLogicImpl @Inject constructor(
         }
     }
 
-    override fun onBackPressed() = navigationLogic.onBackPressed()
+    override fun onBackPressed() = navigationCoordinator.onBackPressed()
 
     private fun toDetailsItems(repo: RepositoryDetails): List<RepositoryDetail> = listOf(
         RepositoryDetail(DetailId.NAME, repo.name),

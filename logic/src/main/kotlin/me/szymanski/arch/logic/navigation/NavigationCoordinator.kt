@@ -10,7 +10,7 @@ import me.szymanski.arch.logic.navigation.StackBehavior.Retrieve
 import me.szymanski.arch.mutableEventFlow
 import javax.inject.Inject
 
-interface NavigationLogic {
+interface NavigationCoordinator {
     fun openDetails(repositoryId: RepositoryId)
     fun onBackPressed()
     var wideScreen: Boolean
@@ -19,7 +19,7 @@ interface NavigationLogic {
     val closeApp: SharedFlow<Unit>
 }
 
-class NavigationLogicImpl @Inject constructor() : NavigationLogic {
+class NavigationCoordinatorImpl @Inject constructor() : NavigationCoordinator {
     override val currentScreen = MutableStateFlow<NavigationScreen>(List())
     override val closeApp = mutableEventFlow<Unit>()
 

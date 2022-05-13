@@ -5,8 +5,8 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.scopes.ActivityRetainedScoped
-import me.szymanski.arch.logic.navigation.NavigationLogic
-import me.szymanski.arch.logic.navigation.NavigationLogicImpl
+import me.szymanski.arch.logic.navigation.NavigationCoordinator
+import me.szymanski.arch.logic.navigation.NavigationCoordinatorImpl
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
@@ -18,5 +18,5 @@ abstract class ActivityRetainedModuleBindings {
 
     @Binds
     @ActivityRetainedScoped
-    abstract fun navigationLogic(navigationLogicImpl: NavigationLogicImpl): NavigationLogic
+    abstract fun navigationCoordinator(navigationCoordinatorImpl: NavigationCoordinatorImpl): NavigationCoordinator
 }

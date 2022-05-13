@@ -11,8 +11,8 @@ import me.szymanski.arch.logic.details.DetailsLogic
 import me.szymanski.arch.logic.details.DetailsLogicImpl
 import me.szymanski.arch.logic.list.ListLogic
 import me.szymanski.arch.logic.list.ListLogicImpl
-import me.szymanski.arch.logic.navigation.NavigationLogic
-import me.szymanski.arch.logic.navigation.NavigationLogicImpl
+import me.szymanski.arch.logic.navigation.NavigationCoordinator
+import me.szymanski.arch.logic.navigation.NavigationCoordinatorImpl
 
 @Module
 class TestModule {
@@ -44,5 +44,5 @@ class TestModule {
 
     @Singleton
     @Provides
-    fun navigationLogic(logic: NavigationLogicImpl): NavigationLogic = logic
+    fun navigationCoordinator(logic: NavigationCoordinatorImpl): NavigationCoordinator = logic
 }

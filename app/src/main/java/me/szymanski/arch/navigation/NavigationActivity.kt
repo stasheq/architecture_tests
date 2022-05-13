@@ -5,23 +5,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenStarted
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import me.szymanski.arch.DetailsFragment
-import me.szymanski.arch.ListAndDetailsFragment
-import me.szymanski.arch.ListFragment
 import me.szymanski.arch.R
-import me.szymanski.arch.logic.navigation.NavigationLogic
-import me.szymanski.arch.logic.navigation.NavigationScreen
+import me.szymanski.arch.logic.navigation.NavigationCoordinator
 import me.szymanski.arch.utils.changeFragment
 import me.szymanski.arch.utils.isWideScreen
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class NavigationActivity : AppCompatActivity() {
     @Inject
-    lateinit var logic: NavigationLogic
+    lateinit var navigationCoordinator: NavigationCoordinator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,26 +27,21 @@ class NavigationActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         lifecycleScope.launch {
-            whenStarted { subscribeToLogic(logic) }
+            whenStarted { subscribeToNavigationCoordinator(navigationCoordinator) }
         }
     }
 
-    private fun CoroutineScope.subscribeToLogic(logic: NavigationLogic) {
+    private fun CoroutineScope.subscribeToNavigationCoordinator(logic: NavigationCoordinator) {
         logic.wideScreen = isWideScreen()
-        launch { logic.closeApp.collect { finish() } }
-        launch { logic.currentScreen.collect { it.updateFragments() } }
+        launch {
+            logic.closeApp.collect { finish() }
+        }
+        launch {
+            logic.currentScreen.collect {
+                changeFragment(it.mapToFragment(), it.stackBehavior, R.id.app_frame)
+            }
+        }
     }
 
-    override fun onBackPressed() = logic.onBackPressed()
-
-    private fun NavigationScreen.updateFragments() {
-        changeFragment(
-            fragment = when (this) {
-                is NavigationScreen.Details -> DetailsFragment.instantiate(repositoryId)
-                is NavigationScreen.List -> ListFragment.instantiate()
-                is NavigationScreen.ListAndDetails -> ListAndDetailsFragment.instantiate(repositoryId)
-            },
-            stackBehavior = stackBehavior
-        )
-    }
+    override fun onBackPressed() = navigationCoordinator.onBackPressed()
 }

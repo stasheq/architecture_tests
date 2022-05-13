@@ -3,7 +3,7 @@ package me.szymanski.arch.logic.list
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharedFlow
 import me.szymanski.arch.logic.list.cases.GetReposListCase
-import me.szymanski.arch.logic.navigation.NavigationLogic
+import me.szymanski.arch.logic.navigation.NavigationCoordinator
 import me.szymanski.arch.logic.details.RepositoryId
 import me.szymanski.arch.rest.models.Repository
 
@@ -22,7 +22,7 @@ interface ListLogic {
 
 class ListLogicImpl @Inject constructor(
     private val getReposListCase: GetReposListCase,
-    private val navigationLogic: NavigationLogic
+    private val navigationCoordinator: NavigationCoordinator
 ) : ListLogic {
     override val list = getReposListCase.list
     override val loading = getReposListCase.loading
@@ -39,6 +39,6 @@ class ListLogicImpl @Inject constructor(
     override fun loadNextPage() = getReposListCase.loadNextPage(false)
 
     override fun itemClick(repository: Repository) {
-        navigationLogic.openDetails(RepositoryId(userName, repository.name))
+        navigationCoordinator.openDetails(RepositoryId(userName, repository.name))
     }
 }

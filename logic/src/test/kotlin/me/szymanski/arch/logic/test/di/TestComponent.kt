@@ -7,7 +7,7 @@ import me.szymanski.arch.logic.list.ListLogic
 import me.szymanski.arch.rest.RestConfig
 import me.szymanski.arch.rest.RestModule
 import javax.inject.Singleton
-import me.szymanski.arch.logic.navigation.NavigationLogic
+import me.szymanski.arch.logic.navigation.NavigationCoordinator
 
 @Singleton
 @Component(modules = [RestModule::class, TestModule::class])
@@ -25,5 +25,5 @@ interface TestComponent {
 
     fun getDetailsLogic(): DetailsLogic
 
-    fun getNavigationLogic(): NavigationLogic
+    fun getNavigationCoordinator(): NavigationCoordinator
 }
