@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
-import me.szymanski.arch.logic.details.RepositoryId
-import me.szymanski.arch.logic.navigation.StackBehavior.Retrieve
+import me.szymanski.arch.domain.data.RepositoryId
+import me.szymanski.arch.domain.navigation.StackBehavior.Retrieve
 import me.szymanski.arch.screens.ColumnsScreen
 import me.szymanski.arch.utils.changeFragment
 import me.szymanski.arch.utils.fragmentArgs

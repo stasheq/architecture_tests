@@ -7,10 +7,9 @@ import androidx.lifecycle.whenStarted
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import me.szymanski.arch.R
-import me.szymanski.arch.logic.navigation.NavigationCoordinator
+import me.szymanski.arch.domain.navigation.NavigationCoordinator
 import me.szymanski.arch.utils.changeFragment
 import me.szymanski.arch.utils.isWideScreen
 
@@ -21,7 +20,7 @@ class NavigationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.frame)
+        setContentView(R.layout.navigation_frame)
     }
 
     override fun onStart() {

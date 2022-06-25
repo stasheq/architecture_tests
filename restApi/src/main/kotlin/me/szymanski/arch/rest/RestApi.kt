@@ -14,10 +14,10 @@ class RestApi @Inject internal constructor(
 ) {
 
     suspend fun getRepositories(user: String, page: Int) =
-        call { restApiService.getRepositoriesList(user, restConfig.pageLimit, page) }.map { it.toDomain() }
+        call { restApiService.getRepositoriesList(user, restConfig.pageLimit, page) }
 
     suspend fun getRepository(user: String, repoName: String) =
-        call { restApiService.getRepositoryDetails(user, repoName) }.toDomain()
+        call { restApiService.getRepositoryDetails(user, repoName) }
 
     private suspend fun <T> call(request: suspend () -> T): T {
         try {

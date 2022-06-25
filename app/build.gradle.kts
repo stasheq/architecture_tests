@@ -9,9 +9,10 @@ plugins {
 android {
     compileSdk = Config.targetSDK
     buildToolsVersion = Config.buildTools
+    namespace = Config.appId
 
     defaultConfig {
-        applicationId = "me.szymanski.arch"
+        applicationId = Config.appId
         minSdk = Config.minSDK
         targetSdk = Config.targetSDK
         versionCode = 1
@@ -66,14 +67,13 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    namespace = "me.szymanski.arch"
 }
 
 dependencies {
     debugImplementation(Deps.LeakCanary.lib)
     implementation(project(Deps.Module.commonTools))
     implementation(project(Deps.Module.restApi))
-    implementation(project(Deps.Module.logic))
+    implementation(project(Deps.Module.domain))
     implementation(project(Deps.Module.views))
     implementation(Deps.Kotlin.stdlib)
     implementation(Deps.Jetpack.coreKotlin)

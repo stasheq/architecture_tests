@@ -6,6 +6,7 @@ plugins {
 android {
     compileSdk = Config.targetSDK
     buildToolsVersion = Config.buildTools
+    namespace = "${Config.appId}.widgets"
 
     defaultConfig {
         minSdk = Config.minSDK
@@ -46,7 +47,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    namespace = "me.szymanski.arch.widgets"
 }
 
 dependencies {

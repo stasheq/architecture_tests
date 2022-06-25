@@ -11,13 +11,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
-import me.szymanski.arch.logic.details.DetailId
-import me.szymanski.arch.logic.details.DetailsLogic
-import me.szymanski.arch.logic.details.DetailsLogic.LoadingState.*
-import me.szymanski.arch.logic.details.RepositoryId
+import me.szymanski.arch.domain.data.DetailId
+import me.szymanski.arch.domain.data.LoadingState
+import me.szymanski.arch.domain.data.RepositoryId
+import me.szymanski.arch.domain.details.DetailsLogic
 import me.szymanski.arch.screens.DetailsScreen
 import me.szymanski.arch.utils.fragmentArgs
 import me.szymanski.arch.utils.isWideScreen
@@ -54,9 +53,9 @@ class DetailsFragment : Fragment() {
 
         launch {
             logic.state.collect { state ->
-                view.loading = state == LOADING
-                view.errorText = if (state == ERROR) getString(R.string.loading_details_error) else null
-                view.listVisible = state == SUCCESS
+                view.loading = state == LoadingState.LOADING
+                view.errorText = if (state == LoadingState.ERROR) getString(R.string.loading_details_error) else null
+                view.listVisible = state == LoadingState.SUCCESS
             }
         }
         launch {

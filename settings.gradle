@@ -1,5 +1,5 @@
 include ':views'
-include ':logic'
+include ':domain'
 include ':app'
 include ':restApi'
 include ':commonTools'

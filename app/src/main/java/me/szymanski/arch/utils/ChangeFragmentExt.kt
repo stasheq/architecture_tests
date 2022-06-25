@@ -3,11 +3,11 @@ package me.szymanski.arch.utils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import me.szymanski.arch.logic.navigation.StackBehavior
-import me.szymanski.arch.logic.navigation.StackBehavior.Add
-import me.szymanski.arch.logic.navigation.StackBehavior.AddIfDifferent
-import me.szymanski.arch.logic.navigation.StackBehavior.Clear
-import me.szymanski.arch.logic.navigation.StackBehavior.Retrieve
+import me.szymanski.arch.domain.navigation.StackBehavior
+import me.szymanski.arch.domain.navigation.StackBehavior.Add
+import me.szymanski.arch.domain.navigation.StackBehavior.AddIfDifferent
+import me.szymanski.arch.domain.navigation.StackBehavior.Clear
+import me.szymanski.arch.domain.navigation.StackBehavior.Retrieve
 
 inline fun <reified T : Fragment> AppCompatActivity.changeFragment(
     fragment: T, stackBehavior: StackBehavior, frameId: Int

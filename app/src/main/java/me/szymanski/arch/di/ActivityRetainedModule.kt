@@ -5,8 +5,8 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.scopes.ActivityRetainedScoped
-import me.szymanski.arch.logic.navigation.NavigationCoordinator
-import me.szymanski.arch.logic.navigation.NavigationCoordinatorImpl
+import me.szymanski.arch.domain.navigation.NavigationCoordinator
+import me.szymanski.arch.domain.navigation.NavigationCoordinatorImpl
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)

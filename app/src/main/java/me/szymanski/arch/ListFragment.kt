@@ -10,11 +10,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import me.szymanski.arch.logic.list.ListLogic
-import me.szymanski.arch.rest.models.Repository
+import me.szymanski.arch.domain.data.Repository
+import me.szymanski.arch.domain.list.ListLogic
+import me.szymanski.arch.domain.list.data.ErrorType
 import me.szymanski.arch.screens.ListScreen
 import me.szymanski.arch.widgets.list.ListItemType.ListItem
 
@@ -41,8 +41,8 @@ class ListFragment : Fragment() {
         launch {
             logic.error.collect {
                 view.errorText = when (it) {
-                    ListLogic.ErrorType.USER_DOESNT_EXIST -> getString(R.string.loading_error_doesnt_exist)
-                    ListLogic.ErrorType.NO_CONNECTION, ListLogic.ErrorType.OTHER -> getString(
+                    ErrorType.USER_DOESNT_EXIST -> getString(R.string.loading_error_doesnt_exist)
+                    ErrorType.NO_CONNECTION, ErrorType.OTHER -> getString(
                         R.string.loading_error_other
                     )
                     null -> null

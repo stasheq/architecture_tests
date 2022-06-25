@@ -12,10 +12,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.job
-import me.szymanski.arch.logic.details.DetailsLogic
-import me.szymanski.arch.logic.details.DetailsLogicImpl
-import me.szymanski.arch.logic.list.ListLogic
-import me.szymanski.arch.logic.list.ListLogicImpl
+import me.szymanski.arch.domain.details.DetailsLogic
+import me.szymanski.arch.domain.details.DetailsLogicImpl
+import me.szymanski.arch.domain.list.ListLogic
+import me.szymanski.arch.domain.list.ListLogicImpl
 
 @Module
 @InstallIn(FragmentComponent::class)
