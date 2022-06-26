@@ -5,11 +5,14 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldBeIn
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import me.szymanski.arch.domain.list.ListLogic
-import me.szymanski.arch.rest.RestConfig
+import me.szymanski.arch.domain.list.data.ErrorType
 import me.szymanski.arch.domain.navigation.NavigationScreen
 import me.szymanski.arch.domain.test.di.DaggerTestComponent
-import me.szymanski.arch.domain.test.utils.*
+import me.szymanski.arch.domain.test.utils.FileReader
+import me.szymanski.arch.domain.test.utils.dispatch
+import me.szymanski.arch.domain.test.utils.noConnection
+import me.szymanski.arch.domain.test.utils.test
+import me.szymanski.arch.rest.RestConfig
 import okhttp3.mockwebserver.MockWebServer
 
 class ListTest : FreeSpec({
@@ -57,25 +60,25 @@ class ListTest : FreeSpec({
         "On started with unsupported response" - {
             server.dispatch(reposPath to "Unsupported Format Response")
             listLogic.reload()
-            error.awaitValue(ListLogic.ErrorType.OTHER)
+            error.awaitValue(ErrorType.OTHER)
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
-            "received error" { error.last shouldBe ListLogic.ErrorType.OTHER }
+            "received error" { error.last shouldBe ErrorType.OTHER }
         }
 
         "On started with not found response" - {
             server.dispatch(reposPath to 404)
             listLogic.reload()
-            error.awaitValue(ListLogic.ErrorType.USER_DOESNT_EXIST)
+            error.awaitValue(ErrorType.USER_DOESNT_EXIST)
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
-            "received error" { error.last shouldBe ListLogic.ErrorType.USER_DOESNT_EXIST }
+            "received error" { error.last shouldBe ErrorType.USER_DOESNT_EXIST }
         }
 
         "On started with no connection" - {
             server.noConnection()
             listLogic.reload()
-            error.awaitValue(ListLogic.ErrorType.NO_CONNECTION)
+            error.awaitValue(ErrorType.NO_CONNECTION)
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
-            "received error" { error.last shouldBe ListLogic.ErrorType.NO_CONNECTION }
+            "received error" { error.last shouldBe ErrorType.NO_CONNECTION }
         }
 
         "On started and download 1st page" - {
@@ -103,9 +106,9 @@ class ListTest : FreeSpec({
             "On error downloading 2nd page" - {
                 server.noConnection()
                 listLogic.loadNextPage()
-                error.awaitValue(ListLogic.ErrorType.NO_CONNECTION)
+                error.awaitValue(ErrorType.NO_CONNECTION)
                 "finished loading" { loading.last shouldBe false }
-                "received error" { error.last shouldBe ListLogic.ErrorType.NO_CONNECTION }
+                "received error" { error.last shouldBe ErrorType.NO_CONNECTION }
                 "received list of prevoius 2 items" { list.last?.size shouldBe 2 }
                 "no next page" { hasNextPage.last shouldBe false }
             }
