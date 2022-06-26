@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import me.szymanski.arch.domain.navigation.NavigationScreen.Details
 import me.szymanski.arch.domain.navigation.NavigationScreen.List
 import me.szymanski.arch.domain.navigation.NavigationScreen.ListAndDetails
-import me.szymanski.arch.domain.navigation.StackBehavior.Retrieve
+import me.szymanski.arch.domain.navigation.NavigationStackBehavior.Retrieve
 import me.szymanski.arch.mutableEventFlow
 import javax.inject.Inject
 import me.szymanski.arch.domain.data.RepositoryId
@@ -39,10 +39,10 @@ class NavigationCoordinatorImpl @Inject constructor() : NavigationCoordinator {
     }
 
     override fun onBackPressed() {
-        if (currentScreen.value is ListAndDetails || currentScreen.value is List) {
-            closeApp.tryEmit(Unit)
-        } else {
-            currentScreen.value = List(Retrieve)
+        when (currentScreen.value) {
+            is Details -> List(Retrieve)
+            is List -> closeApp.tryEmit(Unit)
+            is ListAndDetails -> closeApp.tryEmit(Unit)
         }
     }
 }

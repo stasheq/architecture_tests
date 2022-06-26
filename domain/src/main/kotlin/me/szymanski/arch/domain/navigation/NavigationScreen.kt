@@ -1,47 +1,23 @@
 package me.szymanski.arch.domain.navigation
 
 import me.szymanski.arch.domain.data.RepositoryId
-import me.szymanski.arch.domain.navigation.StackBehavior.AddIfDifferent
-import me.szymanski.arch.domain.navigation.StackBehavior.Retrieve
+import me.szymanski.arch.domain.navigation.NavigationStackBehavior.AddIfDifferent
+import me.szymanski.arch.domain.navigation.NavigationStackBehavior.Retrieve
 
 sealed interface NavigationScreen {
-    val stackBehavior: StackBehavior
+    val stackBehavior: NavigationStackBehavior
 
     data class List(
-        override val stackBehavior: StackBehavior = Retrieve
+        override val stackBehavior: NavigationStackBehavior = Retrieve
     ) : NavigationScreen
 
     data class Details(
         val repositoryId: RepositoryId,
-        override val stackBehavior: StackBehavior = AddIfDifferent
+        override val stackBehavior: NavigationStackBehavior = AddIfDifferent
     ) : NavigationScreen
 
     data class ListAndDetails(
         val repositoryId: RepositoryId?,
-        override val stackBehavior: StackBehavior = Retrieve
+        override val stackBehavior: NavigationStackBehavior = Retrieve
     ) : NavigationScreen
-}
-
-enum class StackBehavior {
-    /**
-     * Adds new screen to stack.
-     */
-    Add,
-
-    /**
-     * Adds new screen to stack, when current screen is of a different class.
-     * Updates args if current fragment is of the same class.
-     */
-    AddIfDifferent,
-
-    /**
-     * Clears stack to an empty state and then adds screen as first element.
-     */
-    Clear,
-
-    /**
-     * Searches for this screen class in a stack. If found, clears top of the stack
-     * and updates args in the found fragment. If not found, works same as Clear.
-     */
-    Retrieve
 }

@@ -10,7 +10,7 @@ import androidx.lifecycle.Lifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import me.szymanski.arch.domain.data.RepositoryId
-import me.szymanski.arch.domain.navigation.StackBehavior.Retrieve
+import me.szymanski.arch.domain.navigation.NavigationStackBehavior.Retrieve
 import me.szymanski.arch.screens.ColumnsScreen
 import me.szymanski.arch.utils.changeFragment
 import me.szymanski.arch.utils.fragmentArgs

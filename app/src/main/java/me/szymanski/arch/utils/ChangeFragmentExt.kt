@@ -3,22 +3,22 @@ package me.szymanski.arch.utils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import me.szymanski.arch.domain.navigation.StackBehavior
-import me.szymanski.arch.domain.navigation.StackBehavior.Add
-import me.szymanski.arch.domain.navigation.StackBehavior.AddIfDifferent
-import me.szymanski.arch.domain.navigation.StackBehavior.Clear
-import me.szymanski.arch.domain.navigation.StackBehavior.Retrieve
+import me.szymanski.arch.domain.navigation.NavigationStackBehavior
+import me.szymanski.arch.domain.navigation.NavigationStackBehavior.Add
+import me.szymanski.arch.domain.navigation.NavigationStackBehavior.AddIfDifferent
+import me.szymanski.arch.domain.navigation.NavigationStackBehavior.Clear
+import me.szymanski.arch.domain.navigation.NavigationStackBehavior.Retrieve
 
 inline fun <reified T : Fragment> AppCompatActivity.changeFragment(
-    fragment: T, stackBehavior: StackBehavior, frameId: Int
+    fragment: T, stackBehavior: NavigationStackBehavior, frameId: Int
 ) = supportFragmentManager.changeFragment(fragment, stackBehavior, frameId)
 
 inline fun <reified T : Fragment> Fragment.changeFragment(
-    fragment: T, stackBehavior: StackBehavior, frameId: Int
+    fragment: T, stackBehavior: NavigationStackBehavior, frameId: Int
 ) = childFragmentManager.changeFragment(fragment, stackBehavior, frameId)
 
 fun FragmentManager.changeFragment(
-    fragment: Fragment, stackBehavior: StackBehavior, frameId: Int
+    fragment: Fragment, stackBehavior: NavigationStackBehavior, frameId: Int
 ) = when (stackBehavior) {
     Add ->
         add(fragment, frameId)
