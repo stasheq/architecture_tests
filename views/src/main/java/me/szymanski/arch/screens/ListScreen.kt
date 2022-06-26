@@ -18,7 +18,6 @@ class ListScreen(ctx: Context, parent: ViewGroup? = null) : Screen {
     var items by binding.listListWidget::items
     var userName by binding.listInput::textValue
     val refreshAction = binding.listListWidget.refreshAction
-    val selectAction = binding.listListWidget.selectAction
     val userNameChanges = binding.listInput.textValueChanges
     var hasNextPage by binding.listListWidget::loadingNextPageIndicator
     val loadNextPageAction = binding.listListWidget.loadNextPageAction

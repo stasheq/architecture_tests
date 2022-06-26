@@ -13,7 +13,6 @@ class DetailsScreen(ctx: Context, parent: ViewGroup? = null) : Screen {
     private val binding = ctx.inflate(ScreenRepoDetailsBinding::inflate, parent).apply {
         detailsToolbar.showBackIcon = true
         detailsList.refreshingEnabled = false
-        detailsList.selectingEnabled = false
     }
     override val root = binding.root
 

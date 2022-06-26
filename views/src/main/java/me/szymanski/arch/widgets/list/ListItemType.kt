@@ -6,7 +6,7 @@ sealed class ListItemType(val type: Int) {
         val id: String,
         val text: String?,
         val description: String?,
-        val item: Any
+        val onClick: (() -> Unit)? = null
     ) : ListItemType(type) {
         companion object {
             const val type = 0

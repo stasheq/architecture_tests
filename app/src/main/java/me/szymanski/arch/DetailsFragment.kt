@@ -60,7 +60,7 @@ class DetailsFragment : Fragment() {
         }
         launch {
             logic.result.collect { list ->
-                view.items = list.map { ListItem(it.type.name, it.type.toTitle(), it.value, it) }
+                view.items = list.map { ListItem(it.type.name, it.type.toTitle(), it.value) }
             }
         }
         launch { logic.title.collect { view.title = it } }

@@ -30,7 +30,6 @@ class ListAdapter : androidx.recyclerview.widget.ListAdapter<ListItemType, Recyc
             field = value
             updateList()
         }
-    var selectItemAction: ((item: Any) -> Unit)? = null
 
     private val cells = mutableListOf<ListItemType>()
 
@@ -56,7 +55,7 @@ class ListAdapter : androidx.recyclerview.widget.ListAdapter<ListItemType, Recyc
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ListItemViewHolder -> holder.bind(getItem(position) as ListItem, selectItemAction)
+            is ListItemViewHolder -> holder.bind(getItem(position) as ListItem)
             is MessageItemViewHolder -> lastItemMessage?.let { holder.bind(it) }
         }
     }

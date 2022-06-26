@@ -40,7 +40,7 @@ class NavigationCoordinatorImpl @Inject constructor() : NavigationCoordinator {
 
     override fun onBackPressed() {
         when (currentScreen.value) {
-            is Details -> List(Retrieve)
+            is Details -> currentScreen.value = List(Retrieve)
             is List -> closeApp.tryEmit(Unit)
             is ListAndDetails -> closeApp.tryEmit(Unit)
         }

@@ -9,14 +9,14 @@ import me.szymanski.arch.widgets.list.ListItemType
 class ListItemViewHolder(parent: ViewGroup) : ViewHolder<ListItemBinding>(
     parent.inflate(ListItemBinding::inflate)
 ) {
-    fun bind(data: ListItemType.ListItem, onClick: ((Any) -> Unit)?) {
+    fun bind(data: ListItemType.ListItem) {
         binding.itemDescription.text = data.description
         binding.itemTitle.text = data.text
-        if (onClick == null) {
+        if (data.onClick == null) {
             binding.itemClickArea.isClickable = false
         } else {
             binding.itemClickArea.isClickable = true
-            binding.itemClickArea.setOnClickListener { onClick(data.item) }
+            binding.itemClickArea.setOnClickListener { data.onClick.invoke() }
         }
     }
 }

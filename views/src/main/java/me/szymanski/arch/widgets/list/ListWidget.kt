@@ -31,7 +31,6 @@ class ListWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = 
                     if (adapter.getItemViewType(lastPos) == LoadingItem.type) debounce(500, action)
                 }
             })
-            selectingEnabled = true
         }
     }
 
@@ -40,13 +39,7 @@ class ListWidget @JvmOverloads constructor(ctx: Context, attrs: AttributeSet? = 
             field = value
             isEnabled = value
         }
-    var selectingEnabled: Boolean = true
-        set(value) {
-            field = value
-            adapter.selectItemAction = if (value) { item -> selectAction.tryEmit(item) } else null
-        }
     val refreshAction = this.refreshes()
-    val selectAction = mutableEventFlow<Any>()
     val loadNextPageAction = mutableEventFlow<Unit>()
     var loadingNextPageIndicator: Boolean by adapter::loadingNextPageIndicator
     var lastItemMessage: String? by adapter::lastItemMessage
