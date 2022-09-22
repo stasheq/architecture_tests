@@ -31,20 +31,13 @@ class ListAdapter : androidx.recyclerview.widget.ListAdapter<ListItemType, Recyc
             updateList()
         }
 
-    private val cells = mutableListOf<ListItemType>()
+    private fun updateList() = submitList(buildList {
+        addAll(items)
+        if (loadingNextPageIndicator) add(LoadingItem)
+        else lastItemMessage?.let { add(MessageItem(it)) }
+    })
 
-    private fun updateList() {
-        val newCells = mutableListOf<ListItemType>().apply {
-            addAll(items)
-            if (loadingNextPageIndicator) add(LoadingItem)
-            else lastItemMessage?.let { add(MessageItem(it)) }
-        }
-        cells.clear()
-        cells.addAll(newCells)
-        submitList(newCells)
-    }
-
-    override fun getItemViewType(position: Int): Int = cells[position].type
+    override fun getItemViewType(position: Int): Int = getItem(position).type
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when (viewType) {
         ListItem.type -> ListItemViewHolder(parent)
