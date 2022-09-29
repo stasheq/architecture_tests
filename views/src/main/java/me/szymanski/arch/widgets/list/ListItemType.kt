@@ -5,12 +5,13 @@ sealed class ListItemType(val type: Int) {
     data class ListItem(
         val id: String,
         val text: String?,
-        val description: String?,
-        val onClick: (() -> Unit)? = null
+        val description: String?
     ) : ListItemType(type) {
         companion object {
             const val type = 0
         }
+
+        var onClick: (() -> Unit)? = null
     }
 
     data class MessageItem(

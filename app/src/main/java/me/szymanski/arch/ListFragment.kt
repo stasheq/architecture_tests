@@ -62,7 +62,8 @@ class ListFragment : Fragment() {
         launch { view.loadNextPageAction.collect { logic.loadNextPage() } }
     }
 
-    private fun List<Repository>.mapToUI() = map { ListItem(it.name, it.name, it.description) { logic.itemClick(it) } }
+    private fun List<Repository>.mapToUI() =
+        map { ListItem(it.name, it.name, it.description).apply { onClick = { logic.itemClick(it) } } }
 
     companion object {
         fun instantiate() = ListFragment()

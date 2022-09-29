@@ -12,11 +12,13 @@ class ListItemViewHolder(parent: ViewGroup) : ViewHolder<ListItemBinding>(
     fun bind(data: ListItemType.ListItem) {
         binding.itemDescription.text = data.description
         binding.itemTitle.text = data.text
-        if (data.onClick == null) {
-            binding.itemClickArea.isClickable = false
-        } else {
-            binding.itemClickArea.isClickable = true
-            binding.itemClickArea.setOnClickListener { data.onClick.invoke() }
+        data.onClick.let {
+            if (it == null) {
+                binding.itemClickArea.isClickable = false
+            } else {
+                binding.itemClickArea.isClickable = true
+                binding.itemClickArea.setOnClickListener { it() }
+            }
         }
     }
 }
