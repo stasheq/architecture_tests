@@ -3,10 +3,10 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.project
 
 object ModuleUtils {
-    fun setupDependencies(dependencyHandler: DependencyHandler, module: Module, implementation: (dependencyNotation: Any) -> Dependency?) =
+    fun setupDependencies(dependencyHandler: DependencyHandler, module: Module) =
         with(dependencyHandler) {
-            module.modulesDependencies.forEach { implementation(project(":${it.name}")) }
-            module.findDependencies(HashSet(), HashSet()).forEach { implementation(it) }
+            module.modulesDependencies.forEach { implementation(dependencyHandler, project(":${it.name}")) }
+            module.findDependencies(HashSet(), HashSet()).forEach { implementation(dependencyHandler, it) }
         }
 
     private fun Module.findDependencies(found: HashSet<String>, visited: HashSet<Module>): HashSet<String> {
@@ -18,4 +18,7 @@ object ModuleUtils {
         }
         return found
     }
+
+    private fun implementation(dependencyHandler: DependencyHandler, dependencyNotation: Any): Dependency? =
+        dependencyHandler.add("implementation", dependencyNotation)
 }

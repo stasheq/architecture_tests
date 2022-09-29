@@ -71,7 +71,7 @@ android {
 
 dependencies {
     debugImplementation(Deps.LeakCanary.lib)
-    ModuleUtils.setupDependencies(this, Modules.app, this::implementation)
+    ModuleUtils.setupDependencies(this, Modules.app)
     kapt(Deps.Dagger.Hilt.kapt)
 }
 

@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    ModuleUtils.setupDependencies(this, Modules.restApi, this::implementation)
+    ModuleUtils.setupDependencies(this, Modules.restApi)
     kapt(Deps.Dagger.kapt)
 }
 

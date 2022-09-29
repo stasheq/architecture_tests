@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    ModuleUtils.setupDependencies(this, Modules.commonTools, this::implementation)
+    ModuleUtils.setupDependencies(this, Modules.commonTools)
 }
 
 java {

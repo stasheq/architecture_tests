@@ -10,7 +10,7 @@ tasks.withType<Test> {
 }
 
 dependencies {
-    ModuleUtils.setupDependencies(this, Modules.domain, this::implementation)
+    ModuleUtils.setupDependencies(this, Modules.domain)
     kapt(Deps.Dagger.kapt)
     // unit tests
     kaptTest(Deps.Dagger.kapt)

@@ -50,5 +50,5 @@ android {
 }
 
 dependencies {
-    ModuleUtils.setupDependencies(this, Modules.views, this::implementation)
+    ModuleUtils.setupDependencies(this, Modules.views)
 }
