@@ -4,8 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(Deps.Kotlin.stdlib)
-    implementation(Deps.Kotlin.coroutines)
+    ModuleUtils.setupDependencies(this, Modules.commonTools, this::implementation)
 }
 
 java {

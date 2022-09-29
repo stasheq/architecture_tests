@@ -10,11 +10,7 @@ tasks.withType<Test> {
 }
 
 dependencies {
-    implementation(project(Deps.Module.commonTools))
-    implementation(project(Deps.Module.restApi))
-    implementation(Deps.Kotlin.stdlib)
-    implementation(Deps.Kotlin.coroutines)
-    implementation(Deps.Dagger.lib)
+    ModuleUtils.setupDependencies(this, Modules.domain, this::implementation)
     kapt(Deps.Dagger.kapt)
     // unit tests
     kaptTest(Deps.Dagger.kapt)

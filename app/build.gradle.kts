@@ -71,23 +71,7 @@ android {
 
 dependencies {
     debugImplementation(Deps.LeakCanary.lib)
-    implementation(project(Deps.Module.commonTools))
-    implementation(project(Deps.Module.restApi))
-    implementation(project(Deps.Module.domain))
-    implementation(project(Deps.Module.views))
-    implementation(Deps.Kotlin.stdlib)
-    implementation(Deps.Jetpack.coreKotlin)
-    implementation(Deps.Jetpack.appCompat)
-    implementation(Deps.Jetpack.constraintLayout)
-    implementation(Deps.Jetpack.swipeRefreshLayout)
-    implementation(Deps.Jetpack.recyclerView)
-    implementation(Deps.MaterialComponents.lib)
-    implementation(Deps.Ktx.activity)
-    implementation(Deps.Ktx.fragment)
-    implementation(Deps.Ktx.Lifecycle.runtime)
-    implementation(Deps.OkHttp.lib)
-    implementation(Deps.Dagger.lib)
-    implementation(Deps.Dagger.Hilt.lib)
+    ModuleUtils.setupDependencies(this, Modules.app, this::implementation)
     kapt(Deps.Dagger.Hilt.kapt)
 }
 

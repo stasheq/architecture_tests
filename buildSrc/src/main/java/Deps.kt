@@ -1,11 +1,4 @@
 object Deps {
-    object Module {
-        const val domain = ":domain"
-        const val views = ":views"
-        const val commonTools = ":commonTools"
-        const val restApi = ":restApi"
-    }
-
     object Kotlin {
         // https://kotlinlang.org/
         const val version = "1.6.21"
