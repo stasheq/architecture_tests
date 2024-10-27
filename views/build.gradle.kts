@@ -49,5 +49,10 @@ android {
 }
 
 dependencies {
-    ModuleUtils.setupDependencies(this, Modules.views)
+    implementation(project(":commonTools"))
+    implementation(Deps.Jetpack.coreKotlin)
+    implementation(Deps.Jetpack.constraintLayout)
+    implementation(Deps.Jetpack.swipeRefreshLayout)
+    implementation(Deps.Jetpack.recyclerView)
+    implementation(Deps.MaterialComponents.lib)
 }
