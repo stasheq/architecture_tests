@@ -1,11 +1,11 @@
 object Deps {
     object Kotlin {
         // https://kotlinlang.org/
-        const val version = "1.9.24"
+        const val version = "2.0.21"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$version"
 
         // https://github.com/Kotlin/kotlinx.coroutines
-        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1"
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0"
     }
 
     object Jetpack {
