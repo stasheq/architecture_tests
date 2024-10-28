@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("org.jetbrains.kotlin.plugin.compose")
     id("kotlin-parcelize")
     id("kotlin-android")
     id("kotlin-kapt")
@@ -84,6 +85,7 @@ dependencies {
     implementation(Deps.Kotlin.stdlib)
     implementation(Deps.Kotlin.coroutines)
     implementation(Deps.Jetpack.appCompat)
+    implementation(Deps.Jetpack.composeNavigation)
     implementation(Deps.MaterialComponents.lib)
     implementation(Deps.Ktx.activity)
     implementation(Deps.Ktx.fragment)

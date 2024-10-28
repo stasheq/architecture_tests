@@ -23,6 +23,9 @@ object Deps {
 
         // https://developer.android.com/jetpack/androidx/releases/recyclerview
         const val recyclerView = "androidx.recyclerview:recyclerview:1.3.2"
+
+        // https://developer.android.com/jetpack/androidx/releases/navigation
+        const val composeNavigation = "androidx.navigation:navigation-compose:2.8.3"
     }
 
     object Ktx {

@@ -1,18 +1,6 @@
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:8.7.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Deps.Kotlin.version}")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:${Deps.Dagger.version}")
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
+plugins {
+    id("com.android.application").version("8.7.1").apply(false)
+    id("com.google.dagger.hilt.android").version(Deps.Dagger.version).apply(false)
+    id("org.jetbrains.kotlin.android").version(Deps.Kotlin.version).apply(false)
+    id("org.jetbrains.kotlin.plugin.compose").version(Deps.Kotlin.version).apply(false)
 }

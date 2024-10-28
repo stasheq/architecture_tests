@@ -1,6 +1,0 @@
-include ':views'
-include ':domain'
-include ':app'
-include ':restApi'
-include ':commonTools'
-rootProject.name = "App Scheme"
