@@ -1,6 +1,7 @@
 package me.szymanski.arch.screens
 
 import android.content.Context
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import me.szymanski.arch.getValue
@@ -8,12 +9,17 @@ import me.szymanski.arch.inflate
 import me.szymanski.arch.setValue
 import me.szymanski.arch.widgets.databinding.ScreenRepoDetailsBinding
 
-class DetailsScreen(ctx: Context, parent: ViewGroup? = null) : Screen {
+class DetailsScreen(binding: ScreenRepoDetailsBinding) : Screen {
+    constructor(ctx: Context, parent: ViewGroup? = null) : this(ctx.inflate(ScreenRepoDetailsBinding::inflate, parent))
+    constructor(view: View) : this(ScreenRepoDetailsBinding.bind(view))
 
-    private val binding = ctx.inflate(ScreenRepoDetailsBinding::inflate, parent).apply {
-        detailsToolbar.showBackIcon = true
-        detailsList.refreshingEnabled = false
+    init {
+        binding.apply {
+            detailsToolbar.showBackIcon = true
+            detailsList.refreshingEnabled = false
+        }
     }
+
     override val root = binding.root
 
     var errorText by binding.detailsErrorBar::errorText

@@ -5,13 +5,15 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import me.szymanski.arch.domain.data.DetailId
 import me.szymanski.arch.domain.data.LoadingState
@@ -21,6 +23,7 @@ import me.szymanski.arch.screens.DetailsScreen
 import me.szymanski.arch.utils.fragmentArgs
 import me.szymanski.arch.utils.isWideScreen
 import me.szymanski.arch.widgets.list.ListItemType.ListItem
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
@@ -28,42 +31,46 @@ class DetailsFragment : Fragment() {
     @Inject
     lateinit var logic: DetailsLogic
     private var args by fragmentArgs<Args>()
-    private var viewUpdateJob: Job? = null
 
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         if (::logic.isInitialized) logic.repositoryId = this.args.repositoryId
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        DetailsScreen(inflater.context, container).apply {
-            viewUpdateJob = lifecycleScope.launch { subscribeToLogic(this@apply, logic) }
-        }.root
-
-    override fun onDestroyView() {
-        viewUpdateJob?.cancel()
-        viewUpdateJob = null
-        super.onDestroyView()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        logic.repositoryId = args.repositoryId
     }
 
-    private fun CoroutineScope.subscribeToLogic(view: DetailsScreen, logic: DetailsLogic) {
-        view.showBackIcon = !isWideScreen()
-        view.backClick = { logic.onBackPressed() }
-        logic.repositoryId = args.repositoryId
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        ComposeView(inflater.context).apply {
+            setContent { DetailsScreenComposable() }
+        }
 
-        launch {
-            logic.state.collect { state ->
-                view.loading = state == LoadingState.LOADING
-                view.errorText = if (state == LoadingState.ERROR) getString(R.string.loading_details_error) else null
-                view.listVisible = state == LoadingState.SUCCESS
+    @Composable
+    fun DetailsScreenComposable() {
+        val loadingState by logic.loadingState.collectAsStateWithLifecycle()
+        val itemsState by logic.result.collectAsStateWithLifecycle()
+        val titleState by logic.title.collectAsStateWithLifecycle()
+
+        AndroidView(
+            modifier = Modifier.fillMaxSize(),
+            factory = { context ->
+                DetailsScreen(context).apply {
+                    showBackIcon = !context.isWideScreen()
+                    backClick = { logic.onBackPressed() }
+                }.root
+            },
+            update = { view ->
+                DetailsScreen(view).apply {
+                    loading = loadingState == LoadingState.LOADING
+                    errorText = if (loadingState == LoadingState.ERROR) getString(R.string.loading_details_error) else null
+                    listVisible = loadingState == LoadingState.SUCCESS
+                    items = itemsState.map { ListItem(it.type.name, it.type.toTitle(), it.value) }
+                    title = titleState
+                }
             }
-        }
-        launch {
-            logic.result.collect { list ->
-                view.items = list.map { ListItem(it.type.name, it.type.toTitle(), it.value) }
-            }
-        }
-        launch { logic.title.collect { view.title = it } }
+        )
     }
 
     private fun DetailId.toTitle(): String = getString(

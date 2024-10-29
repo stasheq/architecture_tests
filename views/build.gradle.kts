@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -55,4 +56,5 @@ dependencies {
     implementation(Deps.Jetpack.swipeRefreshLayout)
     implementation(Deps.Jetpack.recyclerView)
     implementation(Deps.MaterialComponents.lib)
+    implementation(Deps.Jetpack.composeRuntime)
 }

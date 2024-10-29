@@ -71,6 +71,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        compose = true
     }
 }
 
@@ -86,6 +87,7 @@ dependencies {
     implementation(Deps.Kotlin.coroutines)
     implementation(Deps.Jetpack.appCompat)
     implementation(Deps.Jetpack.composeNavigation)
+    implementation(Deps.Jetpack.composeActivity)
     implementation(Deps.MaterialComponents.lib)
     implementation(Deps.Ktx.activity)
     implementation(Deps.Ktx.fragment)
