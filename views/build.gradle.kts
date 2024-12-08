@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
-    id("kotlin-android")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("kotlin-android")
 }
 
 android {
@@ -46,6 +46,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        compose = true
     }
 }
 
@@ -56,5 +57,6 @@ dependencies {
     implementation(Deps.Jetpack.swipeRefreshLayout)
     implementation(Deps.Jetpack.recyclerView)
     implementation(Deps.MaterialComponents.lib)
-    implementation(Deps.Jetpack.composeRuntime)
+    implementation(Deps.Jetpack.composeUi)
+    implementation(Deps.Jetpack.composeFoundation)
 }

@@ -12,8 +12,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.job
-import me.szymanski.arch.domain.details.DetailsLogic
-import me.szymanski.arch.domain.details.DetailsLogicImpl
 import me.szymanski.arch.domain.list.ListLogic
 import me.szymanski.arch.domain.list.ListLogicImpl
 
@@ -34,8 +32,4 @@ abstract class FragmentModuleBindings {
     @Binds
     @FragmentScoped
     abstract fun listLogic(listLogicImpl: ListLogicImpl): ListLogic
-
-    @Binds
-    @FragmentScoped
-    abstract fun detailsLogic(detailsLogicImpl: DetailsLogicImpl): DetailsLogic
 }

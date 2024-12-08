@@ -1,6 +1,6 @@
 package me.szymanski.arch.navigation
 
-import me.szymanski.arch.DetailsFragment
+import me.szymanski.arch.details.DetailsFragment
 import me.szymanski.arch.ListAndDetailsFragment
 import me.szymanski.arch.ListFragment
 import me.szymanski.arch.domain.navigation.NavigationScreen

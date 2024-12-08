@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
+import me.szymanski.arch.details.DetailsFragment
 import me.szymanski.arch.domain.data.RepositoryId
 import me.szymanski.arch.domain.navigation.NavigationStackBehavior.Retrieve
 import me.szymanski.arch.screens.ColumnsScreen
@@ -34,7 +35,7 @@ class ListAndDetailsFragment : Fragment() {
     }
 
     private fun updateDetails() =
-        changeFragment(DetailsFragment.instantiate(args.repositoryId), Retrieve, ColumnsScreen.rightColumnId)
+        changeFragment(DetailsFragment.Companion.instantiate(args.repositoryId), Retrieve, ColumnsScreen.rightColumnId)
 
     companion object {
         @Parcelize

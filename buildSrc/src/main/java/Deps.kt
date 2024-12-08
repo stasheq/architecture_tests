@@ -30,8 +30,14 @@ object Deps {
         // https://developer.android.com/jetpack/androidx/releases/activity
         const val composeActivity = "androidx.activity:activity-compose:1.9.3"
 
-        // https://developer.android.com/jetpack/androidx/releases/compose-runtime
-        const val composeRuntime = "androidx.compose.runtime:runtime:1.7.4"
+        // https://developer.android.com/jetpack/androidx/releases/compose-ui
+        const val composeUi = "androidx.compose.ui:ui:1.7.5"
+
+        // https://developer.android.com/jetpack/androidx/releases/compose-foundation
+        const val composeFoundation = "androidx.compose.foundation:foundation:1.7.5"
+
+        // https://developer.android.com/jetpack/androidx/releases/hilt
+        const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.2.0"
     }
 
     object Ktx {

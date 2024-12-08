@@ -18,9 +18,9 @@ import javax.inject.Inject
 interface DetailsLogic {
     var repositoryId: RepositoryId?
     fun reload()
-    fun onBackPressed()
+    fun onBackClick()
 
-    val result: StateFlow<List<RepositoryDetail>>
+    val items: StateFlow<List<RepositoryDetail>>
     val title: StateFlow<String>
     val loadingState: StateFlow<LoadingState>
 }
@@ -31,7 +31,7 @@ class DetailsLogicImpl @Inject constructor(
     private val navigationCoordinator: NavigationCoordinator
 ) : DetailsLogic {
     override val loadingState = MutableStateFlow(LoadingState.LOADING)
-    override val result = MutableStateFlow(emptyList<RepositoryDetail>())
+    override val items = MutableStateFlow(emptyList<RepositoryDetail>())
     override val title = MutableStateFlow("")
     private var lastJob: Job? = null
     override var repositoryId: RepositoryId? = null
@@ -54,7 +54,7 @@ class DetailsLogicImpl @Inject constructor(
             try {
                 val details = RepositoryDetails(restApi.getRepository(repository.userName, repository.repositoryName))
                 loadingState.value = LoadingState.SUCCESS
-                result.value = toDetailsItems(details)
+                items.value = toDetailsItems(details)
                 title.value = "${details.owner.login} / ${details.name}"
             } catch (e: ApiError) {
                 loadingState.value = LoadingState.ERROR
@@ -62,7 +62,7 @@ class DetailsLogicImpl @Inject constructor(
         }
     }
 
-    override fun onBackPressed() = navigationCoordinator.onBackPressed()
+    override fun onBackClick() = navigationCoordinator.onBackPressed()
 
     private fun toDetailsItems(repo: RepositoryDetails): List<RepositoryDetail> = listOf(
         RepositoryDetail(DetailId.NAME, repo.name),

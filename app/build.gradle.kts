@@ -88,6 +88,8 @@ dependencies {
     implementation(Deps.Jetpack.appCompat)
     implementation(Deps.Jetpack.composeNavigation)
     implementation(Deps.Jetpack.composeActivity)
+    implementation(Deps.Jetpack.composeUi)
+    implementation(Deps.Jetpack.hiltNavigationCompose)
     implementation(Deps.MaterialComponents.lib)
     implementation(Deps.Ktx.activity)
     implementation(Deps.Ktx.fragment)
