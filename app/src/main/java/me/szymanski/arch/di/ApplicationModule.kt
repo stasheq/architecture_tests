@@ -31,16 +31,20 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideLogger(@ApplicationContext context: Context): Logger = object : Logger {
+
         override fun log(message: String, t: Throwable?, tag: String?, level: Logger.Level) {
-            val priority = when (level) {
-                Logger.Level.VERBOSE -> Log.VERBOSE
-                Logger.Level.DEBUG -> Log.DEBUG
-                Logger.Level.INFO -> Log.INFO
-                Logger.Level.WARN -> Log.WARN
-                Logger.Level.ERROR -> Log.ERROR
+            val foundTag = tag ?: context.getString(R.string.app_name)
+            when (level) {
+                Logger.Level.VERBOSE -> Log.v(foundTag, message, t)
+                Logger.Level.DEBUG -> Log.d(foundTag, message, t)
+                Logger.Level.INFO -> Log.i(foundTag, message, t)
+                Logger.Level.WARN -> Log.w(foundTag, message, t)
+                Logger.Level.ERROR -> Log.e(foundTag, message, t)
             }
-            val text = t?.let { "${t::class.simpleName} ${t.message} $message" } ?: message
-            Log.println(priority, tag ?: context.getString(R.string.app_name), text)
+        }
+
+        override fun log(t: Throwable, tag: String?, level: Logger.Level) {
+            log(t.javaClass.simpleName ?: "", t, tag, level)
         }
     }
 }

@@ -9,12 +9,14 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import me.szymanski.arch.R
 import me.szymanski.arch.domain.data.DetailId
 import me.szymanski.arch.domain.data.LoadingState
+import me.szymanski.arch.domain.data.RepositoryId
 import me.szymanski.arch.domain.details.DetailsLogic
 import me.szymanski.arch.utils.map
 import me.szymanski.arch.widgets.list.ListItemType.ListItem
+import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel(
+class DetailsViewModel @Inject constructor(
     @ApplicationContext
     private val context: Context,
     private val detailsLogic: DetailsLogic
@@ -47,4 +49,8 @@ class DetailsViewModel(
             DetailId.BRANCH -> R.string.detail_branch
         }
     )
+
+    fun setRepositoryId(id: RepositoryId?) {
+        detailsLogic.loadDetails(viewModelScope, id)
+    }
 }

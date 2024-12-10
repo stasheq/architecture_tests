@@ -5,19 +5,18 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import me.szymanski.arch.Logger
 import me.szymanski.arch.domain.data.DetailId
 import me.szymanski.arch.domain.data.LoadingState
 import me.szymanski.arch.domain.data.RepositoryDetail
 import me.szymanski.arch.domain.data.RepositoryDetails
 import me.szymanski.arch.domain.data.RepositoryId
 import me.szymanski.arch.domain.navigation.NavigationCoordinator
-import me.szymanski.arch.rest.ApiError
 import me.szymanski.arch.rest.RestApi
 import javax.inject.Inject
 
 interface DetailsLogic {
-    var repositoryId: RepositoryId?
-    fun reload()
+    fun loadDetails(scope: CoroutineScope, repository: RepositoryId?, force: Boolean = false)
     fun onBackClick()
 
     val items: StateFlow<List<RepositoryDetail>>
@@ -27,36 +26,39 @@ interface DetailsLogic {
 
 class DetailsLogicImpl @Inject constructor(
     private val restApi: RestApi,
-    private val scope: CoroutineScope,
-    private val navigationCoordinator: NavigationCoordinator
+    private val navigationCoordinator: NavigationCoordinator,
+    private val logger: Logger
 ) : DetailsLogic {
     override val loadingState = MutableStateFlow(LoadingState.LOADING)
     override val items = MutableStateFlow(emptyList<RepositoryDetail>())
     override val title = MutableStateFlow("")
+
     private var lastJob: Job? = null
-    override var repositoryId: RepositoryId? = null
-        set(value) {
-            field = value
-            reload()
+    private var lastRepositoryId: RepositoryId? = null
+
+    override fun loadDetails(scope: CoroutineScope, repositoryId: RepositoryId?, force: Boolean) {
+        if (lastRepositoryId == repositoryId && !force) {
+            return
         }
 
-    override fun reload() {
-        lastJob?.cancel()
-        val repository = repositoryId
-        if (repository == null) {
+        if (repositoryId == null) {
             loadingState.value = LoadingState.ERROR
             return
         }
 
+        lastJob?.cancel()
+
         loadingState.value = LoadingState.LOADING
         title.value = ""
+        lastRepositoryId = repositoryId
         lastJob = scope.launch {
-            try {
-                val details = RepositoryDetails(restApi.getRepository(repository.userName, repository.repositoryName))
+            runCatching {
+                val details = RepositoryDetails(restApi.getRepository(repositoryId.userName, repositoryId.repositoryName))
                 loadingState.value = LoadingState.SUCCESS
                 items.value = toDetailsItems(details)
                 title.value = "${details.owner.login} / ${details.name}"
-            } catch (e: ApiError) {
+            }.onFailure {
+                logger.log(it)
                 loadingState.value = LoadingState.ERROR
             }
         }

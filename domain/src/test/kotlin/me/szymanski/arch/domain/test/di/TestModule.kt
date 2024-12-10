@@ -28,6 +28,10 @@ class TestModule {
             }
             println(message)
         }
+
+        override fun log(t: Throwable, tag: String?, level: Logger.Level) {
+            log(t.message ?: "", t, tag, level)
+        }
     }
 
     @Singleton
