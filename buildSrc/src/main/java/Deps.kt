@@ -36,6 +36,9 @@ object Deps {
         // https://developer.android.com/jetpack/androidx/releases/compose-foundation
         const val composeFoundation = "androidx.compose.foundation:foundation:1.7.5"
 
+        // https://developer.android.com/jetpack/androidx/releases/compose-material3
+        const val composeMaterial3 = "androidx.compose.material3:material3:1.3.1"
+
         // https://developer.android.com/jetpack/androidx/releases/hilt
         const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.2.0"
     }

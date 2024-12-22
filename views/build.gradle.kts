@@ -59,4 +59,5 @@ dependencies {
     implementation(Deps.MaterialComponents.lib)
     implementation(Deps.Jetpack.composeUi)
     implementation(Deps.Jetpack.composeFoundation)
+    implementation(Deps.Jetpack.composeMaterial3)
 }

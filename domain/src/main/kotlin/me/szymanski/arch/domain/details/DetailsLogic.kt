@@ -16,7 +16,7 @@ import me.szymanski.arch.rest.RestApi
 import javax.inject.Inject
 
 interface DetailsLogic {
-    fun loadDetails(scope: CoroutineScope, repository: RepositoryId?, force: Boolean = false)
+    fun loadDetails(scope: CoroutineScope, repository: RepositoryId, force: Boolean = false)
     fun onBackClick()
 
     val items: StateFlow<List<RepositoryDetail>>
@@ -36,20 +36,14 @@ class DetailsLogicImpl @Inject constructor(
     private var lastJob: Job? = null
     private var lastRepositoryId: RepositoryId? = null
 
-    override fun loadDetails(scope: CoroutineScope, repositoryId: RepositoryId?, force: Boolean) {
+    override fun loadDetails(scope: CoroutineScope, repositoryId: RepositoryId, force: Boolean) {
         if (lastRepositoryId == repositoryId && !force) {
             return
         }
-
-        if (repositoryId == null) {
-            loadingState.value = LoadingState.ERROR
-            return
-        }
-
+        title.value = repositoryId.repositoryName
         lastJob?.cancel()
 
         loadingState.value = LoadingState.LOADING
-        title.value = ""
         lastRepositoryId = repositoryId
         lastJob = scope.launch {
             runCatching {

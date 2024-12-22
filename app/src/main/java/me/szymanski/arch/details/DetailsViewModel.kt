@@ -50,7 +50,7 @@ class DetailsViewModel @Inject constructor(
         }
     )
 
-    fun setRepositoryId(id: RepositoryId?) {
+    fun setRepositoryId(id: RepositoryId) {
         detailsLogic.loadDetails(viewModelScope, id)
     }
 }

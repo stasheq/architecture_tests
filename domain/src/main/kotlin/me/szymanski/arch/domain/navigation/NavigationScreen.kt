@@ -15,9 +15,4 @@ sealed interface NavigationScreen {
         val repositoryId: RepositoryId,
         override val stackBehavior: NavigationStackBehavior = AddIfDifferent
     ) : NavigationScreen
-
-    data class ListAndDetails(
-        val repositoryId: RepositoryId?,
-        override val stackBehavior: NavigationStackBehavior = Retrieve
-    ) : NavigationScreen
 }

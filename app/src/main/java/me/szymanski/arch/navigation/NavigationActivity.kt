@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import me.szymanski.arch.R
 import me.szymanski.arch.domain.navigation.NavigationCoordinator
 import me.szymanski.arch.utils.changeFragment
-import me.szymanski.arch.utils.isWideScreen
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,7 +29,6 @@ class NavigationActivity : AppCompatActivity() {
     }
 
     private fun CoroutineScope.subscribeToNavigationCoordinator(logic: NavigationCoordinator) {
-        logic.wideScreen = isWideScreen()
         launch {
             logic.closeApp.collect { finish() }
         }
