@@ -14,7 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import me.szymanski.arch.R
-import me.szymanski.arch.domain.data.RepositoryId
+import me.szymanski.arch.domain.data.Repository
 import me.szymanski.arch.screens.DetailsScreen
 import me.szymanski.arch.utils.fragmentArgs
 
@@ -25,23 +25,23 @@ class DetailsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         ComposeView(inflater.context).apply {
-            setContent { DetailsScreenComposable(args.repositoryId) }
+            setContent { DetailsScreenComposable(args.repository) }
         }
 
     companion object {
         @Parcelize
-        private data class Args(val repositoryId: RepositoryId) : Parcelable
+        private data class Args(val repository: Repository) : Parcelable
 
-        fun instantiate(repositoryId: RepositoryId) = DetailsFragment().apply { args = Args(repositoryId) }
+        fun instantiate(repository: Repository) = DetailsFragment().apply { args = Args(repository) }
     }
 }
 
 @Composable
 fun DetailsScreenComposable(
-    repositoryId: RepositoryId,
+    repository: Repository,
     viewModel: DetailsViewModel = hiltViewModel()
 ) {
-    viewModel.setRepositoryId(repositoryId)
+    viewModel.setRepository(repository)
     DetailsScreen(
         title = viewModel.title.collectAsStateWithLifecycle(),
         items = viewModel.items.collectAsStateWithLifecycle(),

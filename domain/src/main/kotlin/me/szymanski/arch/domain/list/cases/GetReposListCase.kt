@@ -1,5 +1,6 @@
 package me.szymanski.arch.domain.list.cases
 
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 import me.szymanski.arch.domain.common.LoadPagedListCase
 import me.szymanski.arch.domain.data.Repository
@@ -13,12 +14,14 @@ class GetReposListCase @Inject constructor(
     private val restConfig: RestConfig
 ) : LoadPagedListCase<Repository, Int, ErrorType>(1) {
 
-    var userName = restConfig.defaultUser
-        set(value) {
-            if (userName == value) return
-            field = value
-            if (value.isNotBlank()) loadNextPage(true)
-        }
+    val defaultUser = restConfig.defaultUser
+    private var userName = restConfig.defaultUser
+
+    fun onUserNameInput(scope: CoroutineScope, user: String) {
+        if (userName == user) return
+        userName = user
+        if (user.isNotBlank()) loadNextPage(scope, true)
+    }
 
     override suspend fun getPage(page: Int): LoadingResult<Repository> {
         val result = restApi.getRepositories(userName, page).map { Repository(it) }

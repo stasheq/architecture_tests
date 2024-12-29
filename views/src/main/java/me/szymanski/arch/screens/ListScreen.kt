@@ -1,25 +1,130 @@
 package me.szymanski.arch.screens
 
-import android.content.Context
-import android.view.ViewGroup
-import me.szymanski.arch.getValue
-import me.szymanski.arch.inflate
-import me.szymanski.arch.refreshing
-import me.szymanski.arch.setValue
-import me.szymanski.arch.widgets.databinding.ScreenReposListBinding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import me.szymanski.arch.Style.barIconSize
+import me.szymanski.arch.Style.barInputPadding
+import me.szymanski.arch.Style.barTextSize
+import me.szymanski.arch.Style.fontFamily
+import me.szymanski.arch.designlib.Error
+import me.szymanski.arch.designlib.ListItem
+import me.szymanski.arch.designlib.Loading
+import me.szymanski.arch.widgets.R
+import me.szymanski.arch.widgets.list.ListItemType
 
-class ListScreen(ctx: Context, parent: ViewGroup? = null) : Screen {
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ListScreen(
+    items: State<List<ListItemType.ListItem>>,
+    isListVisible: State<Boolean>,
+    centerLoading: State<Boolean>,
+    pullLoading: State<Boolean>,
+    pageLoading: State<Boolean>,
+    error: State<String?>,
+    errorIconDescription: String,
+    defaultValue: String,
+    onValueChange: (String) -> Unit,
+    searchIconDescription: String,
+    onPullToRefresh: () -> Unit,
+) = Column {
+    ListToolbar(defaultValue, onValueChange, searchIconDescription)
+    PullToRefreshBox(
+        isRefreshing = pullLoading.value,
+        onRefresh = onPullToRefresh,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(R.color.background))
+    ) {
+        Error(error, errorIconDescription)
+        Loading(centerLoading)
+        ItemsList(isListVisible, items)
+    }
+}
 
-    private val binding = ctx.inflate(ScreenReposListBinding::inflate, parent)
-    override val root = binding.root
+@Composable
+fun ItemsList(
+    isListVisible: State<Boolean>,
+    items: State<List<ListItemType.ListItem>>
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        if (isListVisible.value) {
+            val itemsList = items.value
+            items(itemsList.size) {
+                ListItem(itemsList[it])
+            }
+        }
+    }
+}
 
-    var refreshing by binding.listListWidget::refreshing
-    var errorText by binding.listErrorBar::errorText
-    var items by binding.listListWidget::items
-    var userName by binding.listInput::textValue
-    val refreshAction = binding.listListWidget.refreshAction
-    val userNameChanges = binding.listInput.textValueChanges
-    var hasNextPage by binding.listListWidget::loadingNextPageIndicator
-    val loadNextPageAction = binding.listListWidget.loadNextPageAction
-    var lastItemMessage by binding.listListWidget::lastItemMessage
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ListToolbar(
+    defaultValue: String,
+    onValueChange: (String) -> Unit,
+    searchIconDescription: String,
+) {
+    val inputValue = remember { mutableStateOf(defaultValue) }
+    TopAppBar(
+        title = {
+            OutlinedTextField(
+                value = inputValue.value,
+                singleLine = true,
+                onValueChange = {
+                    inputValue.value = it
+                    onValueChange(it)
+                },
+                textStyle = TextStyle(
+                    fontSize = barTextSize,
+                    fontFamily = fontFamily,
+                    color = colorResource(R.color.barText),
+                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = barInputPadding),
+                colors = OutlinedTextFieldDefaults.colors().copy(
+                    focusedIndicatorColor = colorResource(R.color.barText),
+                    unfocusedIndicatorColor = colorResource(R.color.barTextAlpha),
+                )
+            )
+        },
+        navigationIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                tint = colorResource(R.color.barText),
+                contentDescription = searchIconDescription,
+                modifier = Modifier.width(barIconSize)
+            )
+        },
+        colors = topAppBarColors(
+            containerColor = colorResource(R.color.colorPrimary),
+        ),
+    )
 }

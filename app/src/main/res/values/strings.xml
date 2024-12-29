@@ -17,4 +17,5 @@
     <string name="detail_branch">Default branch</string>
     <string name="icon_error">Warning icon</string>
     <string name="icon_back">Back icon</string>
+    <string name="icon_search">Search icon</string>
 </resources>

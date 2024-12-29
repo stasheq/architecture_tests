@@ -9,7 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import me.szymanski.arch.R
 import me.szymanski.arch.domain.data.DetailId
 import me.szymanski.arch.domain.data.LoadingState
-import me.szymanski.arch.domain.data.RepositoryId
+import me.szymanski.arch.domain.data.Repository
 import me.szymanski.arch.domain.details.DetailsLogic
 import me.szymanski.arch.utils.map
 import me.szymanski.arch.widgets.list.ListItemType.ListItem
@@ -50,7 +50,7 @@ class DetailsViewModel @Inject constructor(
         }
     )
 
-    fun setRepositoryId(id: RepositoryId) {
-        detailsLogic.loadDetails(viewModelScope, id)
+    fun setRepository(repository: Repository) {
+        detailsLogic.loadDetails(viewModelScope, repository)
     }
 }

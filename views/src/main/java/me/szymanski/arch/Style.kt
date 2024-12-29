@@ -13,6 +13,8 @@ object Style {
     val titleTextSize = 18.sp
     val textSize = 16.sp
     val barTextSize = 18.sp
+    val barIconSize = 48.dp
+    val barInputPadding = 4.dp
     val infoIconTextSize = 24.sp
     val infoIconSize = 64.dp
     val dividerThickness = 1.dp

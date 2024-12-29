@@ -1,22 +1,23 @@
 package me.szymanski.arch.domain.list
 
-import javax.inject.Inject
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.StateFlow
 import me.szymanski.arch.domain.data.Repository
-import me.szymanski.arch.domain.data.RepositoryId
 import me.szymanski.arch.domain.list.cases.GetReposListCase
-import me.szymanski.arch.domain.navigation.NavigationCoordinator
 import me.szymanski.arch.domain.list.data.ErrorType
+import me.szymanski.arch.domain.navigation.NavigationCoordinator
+import javax.inject.Inject
 
 interface ListLogic {
-    fun reload()
-    fun loadNextPage()
+    fun reload(scope: CoroutineScope)
+    fun loadNextPage(scope: CoroutineScope)
     fun itemClick(repository: Repository)
-    var userName: String
-    val list: SharedFlow<List<Repository>?>
-    val loading: SharedFlow<Boolean>
-    val error: SharedFlow<ErrorType?>
-    val hasNextPage: SharedFlow<Boolean>
+    fun onUserNameInput(scope: CoroutineScope, user: String)
+    val defaultUser: String
+    val list: StateFlow<List<Repository>?>
+    val loading: StateFlow<Boolean>
+    val error: StateFlow<ErrorType?>
+    val hasNextPage: StateFlow<Boolean>
 }
 
 class ListLogicImpl @Inject constructor(
@@ -27,17 +28,17 @@ class ListLogicImpl @Inject constructor(
     override val loading = getReposListCase.loading
     override val error = getReposListCase.error
     override val hasNextPage = getReposListCase.hasNextPage
-    override var userName by getReposListCase::userName
+    override val defaultUser = getReposListCase.defaultUser
 
-    init {
-        reload()
-    }
+    override fun reload(scope: CoroutineScope) = getReposListCase.loadNextPage(scope, true)
 
-    override fun reload() = getReposListCase.loadNextPage(true)
-
-    override fun loadNextPage() = getReposListCase.loadNextPage(false)
+    override fun loadNextPage(scope: CoroutineScope) = getReposListCase.loadNextPage(scope, false)
 
     override fun itemClick(repository: Repository) {
-        navigationCoordinator.openDetails(RepositoryId(userName, repository.name))
+        navigationCoordinator.openDetails(repository)
+    }
+
+    override fun onUserNameInput(scope: CoroutineScope, user: String) {
+        getReposListCase.onUserNameInput(scope, user)
     }
 }

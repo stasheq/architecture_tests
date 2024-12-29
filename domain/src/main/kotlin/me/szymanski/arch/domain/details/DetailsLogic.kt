@@ -8,15 +8,15 @@ import kotlinx.coroutines.launch
 import me.szymanski.arch.Logger
 import me.szymanski.arch.domain.data.DetailId
 import me.szymanski.arch.domain.data.LoadingState
+import me.szymanski.arch.domain.data.Repository
 import me.szymanski.arch.domain.data.RepositoryDetail
 import me.szymanski.arch.domain.data.RepositoryDetails
-import me.szymanski.arch.domain.data.RepositoryId
 import me.szymanski.arch.domain.navigation.NavigationCoordinator
 import me.szymanski.arch.rest.RestApi
 import javax.inject.Inject
 
 interface DetailsLogic {
-    fun loadDetails(scope: CoroutineScope, repository: RepositoryId, force: Boolean = false)
+    fun loadDetails(scope: CoroutineScope, repository: Repository, force: Boolean = false)
     fun onBackClick()
 
     val items: StateFlow<List<RepositoryDetail>>
@@ -34,23 +34,22 @@ class DetailsLogicImpl @Inject constructor(
     override val title = MutableStateFlow("")
 
     private var lastJob: Job? = null
-    private var lastRepositoryId: RepositoryId? = null
+    private var lastRepository: Repository? = null
 
-    override fun loadDetails(scope: CoroutineScope, repositoryId: RepositoryId, force: Boolean) {
-        if (lastRepositoryId == repositoryId && !force) {
+    override fun loadDetails(scope: CoroutineScope, repository: Repository, force: Boolean) {
+        if (lastRepository == repository && !force) {
             return
         }
-        title.value = repositoryId.repositoryName
+        title.value = "${repository.owner}/${repository.name}"
         lastJob?.cancel()
 
         loadingState.value = LoadingState.LOADING
-        lastRepositoryId = repositoryId
+        lastRepository = repository
         lastJob = scope.launch {
             runCatching {
-                val details = RepositoryDetails(restApi.getRepository(repositoryId.userName, repositoryId.repositoryName))
+                val details = RepositoryDetails(restApi.getRepository(repository.owner, repository.name))
                 loadingState.value = LoadingState.SUCCESS
                 items.value = toDetailsItems(details)
-                title.value = "${details.owner.login} / ${details.name}"
             }.onFailure {
                 logger.log(it)
                 loadingState.value = LoadingState.ERROR

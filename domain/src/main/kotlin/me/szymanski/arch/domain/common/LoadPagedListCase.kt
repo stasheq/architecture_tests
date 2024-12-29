@@ -13,9 +13,6 @@ abstract class LoadPagedListCase<Item, Page, Error>(private val firstPageInfo: P
     @Inject
     lateinit var logger: Logger
 
-    @Inject
-    lateinit var scope: CoroutineScope
-
     val error = MutableStateFlow<Error?>(null)
     val list = MutableStateFlow<List<Item>?>(null)
     val loading = MutableStateFlow(true)
@@ -30,7 +27,7 @@ abstract class LoadPagedListCase<Item, Page, Error>(private val firstPageInfo: P
 
     abstract fun mapError(e: ApiError): Error
 
-    fun loadNextPage(fromFirstPage: Boolean = false) {
+    fun loadNextPage(scope: CoroutineScope, fromFirstPage: Boolean = false) {
         if (fromFirstPage) {
             lastJob?.cancel()
             loading.value = true
