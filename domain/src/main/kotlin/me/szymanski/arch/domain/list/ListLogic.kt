@@ -13,7 +13,7 @@ interface ListLogic {
     fun loadNextPage(scope: CoroutineScope)
     fun itemClick(repository: Repository)
     fun onUserNameInput(scope: CoroutineScope, user: String)
-    val defaultUser: String
+    val userName: String
     val list: StateFlow<List<Repository>?>
     val loading: StateFlow<Boolean>
     val error: StateFlow<ErrorType?>
@@ -28,7 +28,8 @@ class ListLogicImpl @Inject constructor(
     override val loading = getReposListCase.loading
     override val error = getReposListCase.error
     override val hasNextPage = getReposListCase.hasNextPage
-    override val defaultUser = getReposListCase.defaultUser
+    override val userName
+        get() = getReposListCase.userName
 
     override fun reload(scope: CoroutineScope) = getReposListCase.loadNextPage(scope, true)
 

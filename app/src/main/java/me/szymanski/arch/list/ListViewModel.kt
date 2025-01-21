@@ -22,7 +22,8 @@ class ListViewModel @Inject constructor(
 ) : ViewModel() {
     private var afterPullToRefresh = false
 
-    val defaultInputValue = listLogic.defaultUser
+    val userName
+        get() = listLogic.userName
     val centerLoading = listLogic.loading.map(viewModelScope) {
         it && !afterPullToRefresh
     }

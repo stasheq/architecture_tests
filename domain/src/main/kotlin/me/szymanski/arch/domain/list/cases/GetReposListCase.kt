@@ -18,8 +18,7 @@ class GetReposListCase @Inject constructor(
     private val restConfig: RestConfig
 ) : LoadPagedListCase<Repository, Int, ErrorType>(1) {
 
-    val defaultUser = restConfig.defaultUser
-    private var userName = restConfig.defaultUser
+    var userName = restConfig.defaultUser
     private var updateUserNameDebounceJob: Job? = null
 
     fun onUserNameInput(scope: CoroutineScope, user: String) {

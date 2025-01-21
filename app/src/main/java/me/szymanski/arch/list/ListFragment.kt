@@ -39,7 +39,7 @@ fun ListScreenComposable(
         hasNextPage = viewModel.hasNextPage.collectAsStateWithLifecycle(),
         error = viewModel.error.collectAsStateWithLifecycle(),
         errorIconDescription = stringResource(R.string.icon_error),
-        defaultValue = viewModel.defaultInputValue,
+        defaultValue = viewModel.userName,
         onValueChange = viewModel::onValueChange,
         searchIconDescription = stringResource(R.string.icon_search),
         onPullToRefresh = viewModel::onPullToRefresh,
