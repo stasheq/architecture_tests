@@ -1,4 +1,4 @@
-package me.szymanski.arch.designlib
+package me.szymanski.arch.designlib.listitem
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -19,7 +19,6 @@ import me.szymanski.arch.Style.textPadding
 import me.szymanski.arch.Style.textSize
 import me.szymanski.arch.Style.titleTextSize
 import me.szymanski.arch.widgets.R
-import me.szymanski.arch.widgets.list.ListItemType
 
 @Composable
 fun ListItem(item: ListItemType.ListItem) = Column(

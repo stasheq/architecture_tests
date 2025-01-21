@@ -34,7 +34,7 @@ abstract class LoadPagedListCase<Item, Page, Error>(private val firstPageInfo: P
             currentPage = firstPageInfo
         }
         if (lastJob?.isActive == true) {
-            logger.log("Not loading next page because previous loading is not finished")
+            logger.log("Not loading next page because previous loading is not finished yet")
             return
         }
         lastJob = scope.launch {

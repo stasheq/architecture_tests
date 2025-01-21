@@ -11,7 +11,7 @@ import me.szymanski.arch.domain.list.ListLogic
 import me.szymanski.arch.domain.list.data.ErrorType
 import me.szymanski.arch.utils.combine
 import me.szymanski.arch.utils.map
-import me.szymanski.arch.widgets.list.ListItemType.ListItem
+import me.szymanski.arch.designlib.listitem.ListItemType.ListItem
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,6 +43,8 @@ class ListViewModel @Inject constructor(
         error == null && !loading
     }
 
+    val hasNextPage = listLogic.hasNextPage
+
     fun init() {
         reload()
     }
@@ -54,10 +56,10 @@ class ListViewModel @Inject constructor(
 
     fun reload() = listLogic.reload(viewModelScope)
 
+    fun loadNextPage() = listLogic.loadNextPage(viewModelScope)
+
     private fun List<Repository>.mapToUI() = map {
-        ListItem(it.name, it.name, it.description).apply {
-            onClick = { listLogic.itemClick(it) }
-        }
+        ListItem(it.name, it.name, it.description) { listLogic.itemClick(it) }
     }
 
     fun onValueChange(value: String) {

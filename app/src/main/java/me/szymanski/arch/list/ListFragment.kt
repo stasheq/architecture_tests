@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
@@ -38,12 +36,13 @@ fun ListScreenComposable(
         isListVisible = viewModel.listVisible.collectAsStateWithLifecycle(),
         centerLoading = viewModel.centerLoading.collectAsStateWithLifecycle(),
         pullLoading = viewModel.pullLoading.collectAsStateWithLifecycle(),
-        pageLoading = remember { mutableStateOf(false) },
+        hasNextPage = viewModel.hasNextPage.collectAsStateWithLifecycle(),
         error = viewModel.error.collectAsStateWithLifecycle(),
         errorIconDescription = stringResource(R.string.icon_error),
         defaultValue = viewModel.defaultInputValue,
         onValueChange = viewModel::onValueChange,
         searchIconDescription = stringResource(R.string.icon_search),
-        onPullToRefresh = viewModel::onPullToRefresh
+        onPullToRefresh = viewModel::onPullToRefresh,
+        onLoadNextPage = viewModel::loadNextPage
     )
 }

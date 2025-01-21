@@ -30,10 +30,11 @@ import me.szymanski.arch.Style.barInputPadding
 import me.szymanski.arch.Style.barTextSize
 import me.szymanski.arch.Style.fontFamily
 import me.szymanski.arch.designlib.Error
-import me.szymanski.arch.designlib.ListItem
+import me.szymanski.arch.designlib.listitem.ListItem
 import me.szymanski.arch.designlib.Loading
 import me.szymanski.arch.widgets.R
-import me.szymanski.arch.widgets.list.ListItemType
+import me.szymanski.arch.designlib.listitem.ListItemType
+import me.szymanski.arch.designlib.listitem.LoadingNextPageItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,13 +43,14 @@ fun ListScreen(
     isListVisible: State<Boolean>,
     centerLoading: State<Boolean>,
     pullLoading: State<Boolean>,
-    pageLoading: State<Boolean>,
+    hasNextPage: State<Boolean>,
     error: State<String?>,
     errorIconDescription: String,
     defaultValue: String,
     onValueChange: (String) -> Unit,
     searchIconDescription: String,
     onPullToRefresh: () -> Unit,
+    onLoadNextPage: () -> Unit
 ) = Column {
     ListToolbar(defaultValue, onValueChange, searchIconDescription)
     PullToRefreshBox(
@@ -60,14 +62,16 @@ fun ListScreen(
     ) {
         Error(error, errorIconDescription)
         Loading(centerLoading)
-        ItemsList(isListVisible, items)
+        ItemsList(isListVisible, items, hasNextPage, onLoadNextPage)
     }
 }
 
 @Composable
 fun ItemsList(
     isListVisible: State<Boolean>,
-    items: State<List<ListItemType.ListItem>>
+    items: State<List<ListItemType.ListItem>>,
+    hasNextPage: State<Boolean>,
+    onLoadNextPage: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize()
@@ -76,6 +80,11 @@ fun ItemsList(
             val itemsList = items.value
             items(itemsList.size) {
                 ListItem(itemsList[it])
+            }
+            if (hasNextPage.value) {
+                item {
+                    LoadingNextPageItem(onLoadNextPage)
+                }
             }
         }
     }

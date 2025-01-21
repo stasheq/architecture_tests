@@ -5,6 +5,8 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldBeIn
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import me.szymanski.arch.domain.list.data.ErrorType
 import me.szymanski.arch.domain.navigation.NavigationScreen
 import me.szymanski.arch.domain.test.di.DaggerTestComponent
@@ -15,7 +17,9 @@ import me.szymanski.arch.domain.test.utils.test
 import me.szymanski.arch.rest.RestConfig
 import okhttp3.mockwebserver.MockWebServer
 
+@OptIn(DelicateCoroutinesApi::class)
 class ListTest : FreeSpec({
+    val scope = GlobalScope
     isolationMode = IsolationMode.InstancePerLeaf
     val firstPageFile = "1st_page_response.json"
     val secondPageFile = "2nd_page_response.json"
@@ -38,7 +42,6 @@ class ListTest : FreeSpec({
         val detailsLogic = component.getDetailsLogic()
         val navigationCoordinator = component.getNavigationCoordinator()
 
-        navigationCoordinator.wideScreen = false
         listLogic shouldNotBe null
         detailsLogic shouldNotBe null
         navigationCoordinator shouldNotBe null
@@ -50,7 +53,7 @@ class ListTest : FreeSpec({
         val close = navigationCoordinator.closeApp.test()
         val currentScreen = navigationCoordinator.currentScreen.test()
 
-        "loading not started"  { loading.last shouldBe true }
+        "loading not started" { loading.last shouldBe true }
         "has no items yet" { list.last shouldBe null }
         "no error" { error.last shouldBe null }
         "app alive" { close.assertNoValues() }
@@ -59,7 +62,7 @@ class ListTest : FreeSpec({
 
         "On started with unsupported response" - {
             server.dispatch(reposPath to "Unsupported Format Response")
-            listLogic.reload()
+            listLogic.reload(scope)
             error.awaitValue(ErrorType.OTHER)
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
             "received error" { error.last shouldBe ErrorType.OTHER }
@@ -67,7 +70,7 @@ class ListTest : FreeSpec({
 
         "On started with not found response" - {
             server.dispatch(reposPath to 404)
-            listLogic.reload()
+            listLogic.reload(scope)
             error.awaitValue(ErrorType.USER_DOESNT_EXIST)
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
             "received error" { error.last shouldBe ErrorType.USER_DOESNT_EXIST }
@@ -75,7 +78,7 @@ class ListTest : FreeSpec({
 
         "On started with no connection" - {
             server.noConnection()
-            listLogic.reload()
+            listLogic.reload(scope)
             error.awaitValue(ErrorType.NO_CONNECTION)
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
             "received error" { error.last shouldBe ErrorType.NO_CONNECTION }
@@ -83,7 +86,7 @@ class ListTest : FreeSpec({
 
         "On started and download 1st page" - {
             server.dispatch(reposPath to FileReader.readText(firstPageFile))
-            listLogic.reload()
+            listLogic.reload(scope)
             list.awaitCondition { !it.last().isNullOrEmpty() }
             "finished loading" { true shouldBeIn loading.values; loading.last shouldBe false }
             "no error" { error.last shouldBe null }
@@ -92,7 +95,7 @@ class ListTest : FreeSpec({
 
             "On download 2nd page" - {
                 server.dispatch(reposPath to FileReader.readText(secondPageFile))
-                listLogic.loadNextPage()
+                listLogic.loadNextPage(scope)
                 list.awaitCondition {
                     val size = it.last()?.size
                     size != null && size > 2
@@ -105,7 +108,7 @@ class ListTest : FreeSpec({
 
             "On error downloading 2nd page" - {
                 server.noConnection()
-                listLogic.loadNextPage()
+                listLogic.loadNextPage(scope)
                 error.awaitValue(ErrorType.NO_CONNECTION)
                 "finished loading" { loading.last shouldBe false }
                 "received error" { error.last shouldBe ErrorType.NO_CONNECTION }
@@ -119,21 +122,7 @@ class ListTest : FreeSpec({
                 listLogic.itemClick(item!!)
                 "details are shown" {
                     val screen = currentScreen.last as? NavigationScreen.Details
-                    screen?.repositoryId?.repositoryName shouldBe item.name
-                }
-            }
-
-            "On big screen" - {
-                navigationCoordinator.wideScreen = true
-                "both columns are shown" { currentScreen.last?.javaClass shouldBe NavigationScreen.ListAndDetails::class.java }
-                "On Click item" - {
-                    val item = list.last?.get(0)
-                    "it has no empty name" { item?.name.isNullOrBlank() shouldBe false }
-                    listLogic.itemClick(item!!)
-                    "details are shown" {
-                        val screen = currentScreen.last as? NavigationScreen.ListAndDetails
-                        screen?.repositoryId?.repositoryName shouldBe item.name
-                    }
+                    screen?.repository?.name shouldBe item.name
                 }
             }
         }

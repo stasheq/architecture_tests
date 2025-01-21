@@ -27,10 +27,10 @@ import me.szymanski.arch.Style.barIconSize
 import me.szymanski.arch.Style.barTextSize
 import me.szymanski.arch.Style.fontFamily
 import me.szymanski.arch.designlib.Error
-import me.szymanski.arch.designlib.ListItem
+import me.szymanski.arch.designlib.listitem.ListItem
 import me.szymanski.arch.designlib.Loading
 import me.szymanski.arch.widgets.R
-import me.szymanski.arch.widgets.list.ListItemType
+import me.szymanski.arch.designlib.listitem.ListItemType
 import kotlin.collections.forEach
 
 @Composable

@@ -12,7 +12,7 @@ import me.szymanski.arch.domain.data.LoadingState
 import me.szymanski.arch.domain.data.Repository
 import me.szymanski.arch.domain.details.DetailsLogic
 import me.szymanski.arch.utils.map
-import me.szymanski.arch.widgets.list.ListItemType.ListItem
+import me.szymanski.arch.designlib.listitem.ListItemType.ListItem
 import javax.inject.Inject
 
 @HiltViewModel

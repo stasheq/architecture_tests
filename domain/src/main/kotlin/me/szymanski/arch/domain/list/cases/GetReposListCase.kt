@@ -1,13 +1,17 @@
 package me.szymanski.arch.domain.list.cases
 
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.szymanski.arch.domain.common.LoadPagedListCase
 import me.szymanski.arch.domain.data.Repository
 import me.szymanski.arch.domain.list.data.ErrorType
 import me.szymanski.arch.rest.ApiError
 import me.szymanski.arch.rest.RestApi
 import me.szymanski.arch.rest.RestConfig
+import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 class GetReposListCase @Inject constructor(
     private val restApi: RestApi,
@@ -16,11 +20,16 @@ class GetReposListCase @Inject constructor(
 
     val defaultUser = restConfig.defaultUser
     private var userName = restConfig.defaultUser
+    private var updateUserNameDebounceJob: Job? = null
 
     fun onUserNameInput(scope: CoroutineScope, user: String) {
         if (userName == user) return
-        userName = user
-        if (user.isNotBlank()) loadNextPage(scope, true)
+        updateUserNameDebounceJob?.cancel()
+        updateUserNameDebounceJob = scope.launch {
+            delay(1.seconds)
+            userName = user
+            if (user.isNotBlank()) loadNextPage(scope, true)
+        }
     }
 
     override suspend fun getPage(page: Int): LoadingResult<Repository> {
