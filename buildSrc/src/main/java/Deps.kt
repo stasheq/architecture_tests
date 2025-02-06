@@ -5,7 +5,10 @@ object Deps {
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$version"
 
         // https://github.com/Kotlin/kotlinx.coroutines
-        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0"
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1"
+
+        // https://github.com/Kotlin/kotlinx.serialization/
+        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0"
     }
 
     object Jetpack {

@@ -1,43 +1,58 @@
 package me.szymanski.arch.navigation
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import me.szymanski.arch.R
+import me.szymanski.arch.details.DetailsScreen
 import me.szymanski.arch.domain.navigation.NavigationCoordinator
-import me.szymanski.arch.utils.changeFragment
+import me.szymanski.arch.domain.navigation.NavigationScreen
+import me.szymanski.arch.list.ListScreen
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NavigationActivity : AppCompatActivity() {
+class NavigationActivity : ComponentActivity() {
+
     @Inject
     lateinit var navigationCoordinator: NavigationCoordinator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.navigation_frame)
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                subscribeToNavigationCoordinator(navigationCoordinator)
+
+        setContent {
+            val navController = rememberNavController()
+
+            LaunchedEffect(Unit) {
+                launch {
+                    navigationCoordinator.screenChange.collect {
+                        navController.navigate(it)
+                    }
+                }
+                launch {
+                    navigationCoordinator.onBackPressed.collect {
+                        navController.popBackStack()
+                    }
+                }
+            }
+
+            NavHost(
+                navController = navController,
+                startDestination = NavigationScreen.List
+            ) {
+                composable<NavigationScreen.List> {
+                    ListScreen()
+                }
+                composable<NavigationScreen.Details> {
+                    val args = it.toRoute<NavigationScreen.Details>()
+                    DetailsScreen(args)
+                }
             }
         }
     }
-
-    private fun CoroutineScope.subscribeToNavigationCoordinator(logic: NavigationCoordinator) {
-        launch {
-            logic.closeApp.collect { finish() }
-        }
-        launch {
-            logic.currentScreen.collect {
-                changeFragment(it.mapToFragment(), it.stackBehavior, R.id.app_frame)
-            }
-        }
-    }
-
-    override fun onBackPressed() = navigationCoordinator.onBackPressed()
 }

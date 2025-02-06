@@ -9,10 +9,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import me.szymanski.arch.R
 import me.szymanski.arch.domain.data.DetailId
 import me.szymanski.arch.domain.data.LoadingState
-import me.szymanski.arch.domain.data.Repository
 import me.szymanski.arch.domain.details.DetailsLogic
 import me.szymanski.arch.utils.map
 import me.szymanski.arch.designlib.listitem.ListItemType.ListItem
+import me.szymanski.arch.domain.navigation.NavigationScreen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,7 +50,7 @@ class DetailsViewModel @Inject constructor(
         }
     )
 
-    fun setRepository(repository: Repository) {
-        detailsLogic.loadDetails(viewModelScope, repository)
+    fun setArgs(args: NavigationScreen.Details) {
+        detailsLogic.loadDetails(viewModelScope, args.owner, args.name)
     }
 }

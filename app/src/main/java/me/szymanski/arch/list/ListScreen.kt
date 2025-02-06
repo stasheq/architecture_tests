@@ -1,33 +1,15 @@
 package me.szymanski.arch.list
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dagger.hilt.android.AndroidEntryPoint
 import me.szymanski.arch.R
 import me.szymanski.arch.screens.ListScreen
 
-@AndroidEntryPoint
-class ListFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        ComposeView(inflater.context).apply {
-            setContent { ListScreenComposable() }
-        }
-
-    companion object {
-        fun instantiate() = ListFragment()
-    }
-}
 
 @Composable
-fun ListScreenComposable(
+fun ListScreen(
     viewModel: ListViewModel = hiltViewModel()
 ) {
     viewModel.init()

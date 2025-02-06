@@ -2,6 +2,7 @@ plugins {
     id("java-library")
     id("kotlin")
     id("kotlin-kapt")
+    id("org.jetbrains.kotlin.plugin.serialization").version("2.1.10")
 }
 
 tasks.withType<Test> {
@@ -15,6 +16,7 @@ dependencies {
     implementation(Deps.Dagger.lib)
     implementation(Deps.Kotlin.stdlib)
     implementation(Deps.Kotlin.coroutines)
+    implementation(Deps.Kotlin.serialization)
     kapt(Deps.Dagger.kapt)
     // unit tests
     kaptTest(Deps.Dagger.kapt)

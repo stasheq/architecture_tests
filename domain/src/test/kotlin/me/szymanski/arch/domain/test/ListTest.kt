@@ -50,14 +50,13 @@ class ListTest : FreeSpec({
         val list = listLogic.list.test()
         val error = listLogic.error.test()
         val hasNextPage = listLogic.hasNextPage.test()
-        val close = navigationCoordinator.closeApp.test()
-        val currentScreen = navigationCoordinator.currentScreen.test()
+        val back = navigationCoordinator.onBackPressed.test()
+        val currentScreen = navigationCoordinator.screenChange.test()
 
         "loading not started" { loading.last shouldBe true }
         "has no items yet" { list.last shouldBe null }
         "no error" { error.last shouldBe null }
-        "app alive" { close.assertNoValues() }
-        "list shown" { currentScreen.last?.javaClass shouldBe NavigationScreen.List::class.java }
+        "app alive" { back.assertNoValues() }
         "next page not known" { hasNextPage.last shouldBe false }
 
         "On started with unsupported response" - {
@@ -122,7 +121,7 @@ class ListTest : FreeSpec({
                 listLogic.itemClick(item!!)
                 "details are shown" {
                     val screen = currentScreen.last as? NavigationScreen.Details
-                    screen?.repository?.name shouldBe item.name
+                    screen?.name shouldBe item.name
                 }
             }
         }

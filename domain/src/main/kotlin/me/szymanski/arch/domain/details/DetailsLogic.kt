@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import me.szymanski.arch.Logger
 import me.szymanski.arch.domain.data.DetailId
 import me.szymanski.arch.domain.data.LoadingState
-import me.szymanski.arch.domain.data.Repository
 import me.szymanski.arch.domain.data.RepositoryDetail
 import me.szymanski.arch.domain.data.RepositoryDetails
 import me.szymanski.arch.domain.navigation.NavigationCoordinator
@@ -16,7 +15,7 @@ import me.szymanski.arch.rest.RestApi
 import javax.inject.Inject
 
 interface DetailsLogic {
-    fun loadDetails(scope: CoroutineScope, repository: Repository, force: Boolean = false)
+    fun loadDetails(scope: CoroutineScope, owner: String, name: String, force: Boolean = false)
     fun onBackClick()
 
     val items: StateFlow<List<RepositoryDetail>>
@@ -34,20 +33,21 @@ class DetailsLogicImpl @Inject constructor(
     override val title = MutableStateFlow("")
 
     private var lastJob: Job? = null
-    private var lastRepository: Repository? = null
+    private var lastRepository: String? = null
 
-    override fun loadDetails(scope: CoroutineScope, repository: Repository, force: Boolean) {
-        if (lastRepository == repository && !force) {
+    override fun loadDetails(scope: CoroutineScope, owner: String, name: String, force: Boolean) {
+        val newRepository = "${owner}/${name}"
+        if (lastRepository == newRepository && !force) {
             return
         }
-        title.value = "${repository.owner}/${repository.name}"
+        title.value = newRepository
         lastJob?.cancel()
 
         loadingState.value = LoadingState.LOADING
-        lastRepository = repository
+        lastRepository = newRepository
         lastJob = scope.launch {
             runCatching {
-                val details = RepositoryDetails(restApi.getRepository(repository.owner, repository.name))
+                val details = RepositoryDetails(restApi.getRepository(owner, name))
                 loadingState.value = LoadingState.SUCCESS
                 items.value = toDetailsItems(details)
             }.onFailure {
