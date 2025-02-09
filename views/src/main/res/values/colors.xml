@@ -2,11 +2,9 @@
 <resources>
     <color name="background">#F9F9F9</color>
     <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryAlpha">#336200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">@color/colorPrimaryDark</color>
     <color name="divider">#BBBBBB</color>
-    <color name="error">#FF6961</color>
     <color name="text">#CC000000</color>
     <color name="textSecondary">#AA000000</color>
     <color name="barText">#FFFFFF</color>

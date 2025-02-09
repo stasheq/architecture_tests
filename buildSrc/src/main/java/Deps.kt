@@ -15,18 +15,6 @@ object Deps {
         // https://developer.android.com/jetpack/androidx/releases/core
         const val coreKotlin = "androidx.core:core-ktx:1.13.1"
 
-        // https://developer.android.com/jetpack/androidx/releases/appcompat
-        const val appCompat = "androidx.appcompat:appcompat:1.7.0"
-
-        // https://developer.android.com/jetpack/androidx/releases/constraintlayout
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
-
-        // https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout
-        const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-
-        // https://developer.android.com/jetpack/androidx/releases/recyclerview
-        const val recyclerView = "androidx.recyclerview:recyclerview:1.3.2"
-
         // https://developer.android.com/jetpack/androidx/releases/navigation
         const val composeNavigation = "androidx.navigation:navigation-compose:2.8.3"
 
@@ -44,20 +32,6 @@ object Deps {
 
         // https://developer.android.com/jetpack/androidx/releases/hilt
         const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.2.0"
-    }
-
-    object Ktx {
-        // https://developer.android.com/kotlin/ktx/extensions-list#androidxactivity
-        const val activity = "androidx.activity:activity-ktx:1.9.3"
-
-        // https://developer.android.com/kotlin/ktx/extensions-list#androidxfragmentapp
-        const val fragment = "androidx.fragment:fragment-ktx:1.8.4"
-
-        object Lifecycle {
-            // https://developer.android.com/kotlin/ktx/extensions-list#androidxlifecycle
-            private const val version = "2.8.6"
-            const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
-        }
     }
 
     object Dagger {
@@ -85,11 +59,6 @@ object Deps {
         const val lib = "com.squareup.okhttp3:okhttp:$version"
         const val logging = "com.squareup.okhttp3:logging-interceptor:$version"
         const val mockwebserver = "com.squareup.okhttp3:mockwebserver:$version"
-    }
-
-    object MaterialComponents {
-        // https://github.com/material-components/material-components-android/releases
-        const val lib = "com.google.android.material:material:1.12.0"
     }
 
     object LeakCanary {

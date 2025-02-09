@@ -39,6 +39,7 @@ fun ListItem(item: ListItemType.ListItem) = Column(
         fontSize = titleTextSize,
         fontWeight = FontWeight.Bold,
         fontFamily = fontFamily,
+        color = colorResource(R.color.text)
     )
     Text(
         text = item.description ?: "",
@@ -47,6 +48,7 @@ fun ListItem(item: ListItemType.ListItem) = Column(
             .padding(horizontal = layoutPadding),
         fontSize = textSize,
         fontFamily = fontFamily,
+        color = colorResource(R.color.text)
     )
     HorizontalDivider(
         modifier = Modifier

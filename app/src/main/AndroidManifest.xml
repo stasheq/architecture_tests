@@ -7,12 +7,10 @@
         android:name="me.szymanski.arch.Application"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="true">
         <activity
             android:name="me.szymanski.arch.navigation.NavigationActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

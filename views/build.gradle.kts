@@ -53,10 +53,6 @@ android {
 dependencies {
     implementation(project(":commonTools"))
     implementation(Deps.Jetpack.coreKotlin)
-    implementation(Deps.Jetpack.constraintLayout)
-    implementation(Deps.Jetpack.swipeRefreshLayout)
-    implementation(Deps.Jetpack.recyclerView)
-    implementation(Deps.MaterialComponents.lib)
     implementation(Deps.Jetpack.composeUi)
     implementation(Deps.Jetpack.composeFoundation)
     implementation(Deps.Jetpack.composeMaterial3)
