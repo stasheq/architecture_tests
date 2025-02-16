@@ -10,10 +10,6 @@ import me.szymanski.arch.domain.navigation.NavigationCoordinatorImpl
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-class ActivityRetainedModule
-
-@Module
-@InstallIn(ActivityRetainedComponent::class)
 abstract class ActivityRetainedModuleBindings {
 
     @Binds

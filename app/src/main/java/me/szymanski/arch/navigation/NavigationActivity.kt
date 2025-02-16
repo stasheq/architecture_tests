@@ -1,6 +1,7 @@
 package me.szymanski.arch.navigation
 
 import android.os.Bundle
+import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -25,7 +26,7 @@ class NavigationActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        actionBar?.hide()
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
         enableEdgeToEdge()
 
         setContent {
